@@ -1,0 +1,25 @@
+syntax = "proto3";
+
+option csharp_namespace = "AutoParts.Web.Protos";
+
+package SignIn;
+
+service GrpcSignInService {
+  rpc SignIn (UserSignInRequest) returns (UserSignInResponse);
+}
+
+message UserSignInRequest {
+  string email = 1;
+  string password = 2;
+}
+
+message UserSignInResponse {
+  string accessToken = 1;
+  string identity_token = 2;
+  string token_type = 3;
+  string refresh_token = 4;
+  bool is_error = 5;
+  string error = 6;
+  string error_description = 7;
+  int32 expires_in = 8;
+}

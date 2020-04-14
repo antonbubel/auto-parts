@@ -1,0 +1,23 @@
+syntax = "proto3";
+
+option csharp_namespace = "AutoParts.Web.Protos";
+
+package SignUp;
+
+service GrpcSignUpService {
+  rpc UserSignUp (UserSignUpRequest) returns (UserSignUpResponse);
+}
+
+message UserSignUpRequest {
+  string first_name = 1;
+  string last_name = 2;
+  string email = 3;
+  string password = 4;
+  string password_confirmation = 5;
+}
+
+message UserSignUpResponse {
+  bool is_error = 1;
+  string error = 2;
+  string error_description = 3;
+}

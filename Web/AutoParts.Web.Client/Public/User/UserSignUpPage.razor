@@ -1,0 +1,29 @@
+﻿@page "/sign-up"
+
+@inject Public.User.Services.UserSignUpService signUpService
+
+@using Public.User.Models;
+
+<div>
+    <EditForm Model="@signUpForm" OnValidSubmit="HandleValidSubmit">
+        <DataAnnotationsValidator />
+        <ValidationSummary />
+
+        <InputText id="first-name" @bind-Value="signUpForm.FirstName" />
+        <InputText id="last-name" @bind-Value="signUpForm.LastName" />
+        <InputText id="email" @bind-Value="signUpForm.Email" />
+        <InputText id="password" type="password" @bind-Value="signUpForm.Password" />
+        <InputText id="password-confirmation" type="password" @bind-Value="signUpForm.PasswordConfirmation" />
+
+        <button type="submit">Sign Up!</button>
+    </EditForm>
+</div>
+
+@code {
+    public UserSignUpFormModel signUpForm = new UserSignUpFormModel();
+
+    public async Task HandleValidSubmit()
+    {
+        var success = await signUpService.SignUp(signUpForm);
+    }
+}

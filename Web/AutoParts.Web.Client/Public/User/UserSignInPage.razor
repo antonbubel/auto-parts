@@ -1,0 +1,25 @@
+﻿@page "/sign-in"
+
+@inject Public.User.Services.UserSignInService signInService
+
+@using Public.User.Models;
+
+<div>
+    <EditForm Model="@signInForm" OnValidSubmit="HandleValidSubmit">
+        <DataAnnotationsValidator />
+
+        <InputText id="email" @bind-Value="signInForm.Email" />
+        <InputText id="password" type="password" @bind-Value="signInForm.Password" />
+
+        <button type="submit">Sign In</button>
+    </EditForm>
+</div>
+
+@code {
+    public UserSignInFormModel signInForm = new UserSignInFormModel();
+
+    public async Task HandleValidSubmit()
+    {
+        var success = await signInService.SignIn(signInForm);
+    }
+}

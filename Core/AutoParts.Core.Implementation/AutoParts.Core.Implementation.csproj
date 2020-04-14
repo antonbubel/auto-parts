@@ -1,0 +1,23 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="9.0.0" />
+    <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="7.0.0" />
+    <PackageReference Include="FluentValidation.AspNetCore" Version="8.6.0" />
+    <PackageReference Include="MediatR" Version="7.0.0" />
+    <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="7.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Data\AutoParts.Data.Model\AutoParts.Data.Model.csproj" />
+    <ProjectReference Include="..\..\Infrastructure\AutoParts.Infrastructure.CQS\AutoParts.Infrastructure.CQS.csproj" />
+    <ProjectReference Include="..\..\Utilities\AutoParts.Utilities.Common\AutoParts.Utilities.Common.csproj" />
+    <ProjectReference Include="..\AutoParts.Core.Constants\AutoParts.Core.Constants.csproj" />
+    <ProjectReference Include="..\AutoParts.Core.Contracts\AutoParts.Core.Contracts.csproj" />
+  </ItemGroup>
+
+</Project>

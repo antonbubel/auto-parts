@@ -9,6 +9,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\Data\AutoParts.Data.Model\AutoParts.Data.Model.csproj" />
     <ProjectReference Include="..\..\Infrastructure\AutoParts.Infrastructure.Exceptions\AutoParts.Infrastructure.Exceptions.csproj" />
   </ItemGroup>
 

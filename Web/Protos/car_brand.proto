@@ -6,6 +6,9 @@ package CarBrand;
 
 service GrpcCarBrandService {
   rpc GetCarBrands (GetCarBrandsRequest) returns (GetCarBrandsResponse);
+  rpc CreateCarBrand (CreateCarBrandRequest) returns (CreateCarBrandResponse);
+  rpc UpdateCarBrand (UpdateCarBrandRequest) returns (UpdateCarBrandResponse);
+  rpc DeleteCarBrand (DeleteCarBrandRequest) returns (DeleteCarBrandResponse);
 }
 
 message GetCarBrandsRequest {
@@ -19,4 +22,35 @@ message CarBrand {
   int64 id = 1;
   string name = 2;
   string image_url = 3;
+}
+
+message CreateCarBrandRequest {
+  string name = 1;
+}
+
+message CreateCarBrandResponse {
+  bool is_error = 1;
+  string error = 2;
+  string error_description = 3;
+}
+
+message UpdateCarBrandRequest {
+  int64 id = 1;
+  string name = 2;
+}
+
+message UpdateCarBrandResponse {
+  bool is_error = 1;
+  string error = 2;
+  string error_description = 3;
+}
+
+message DeleteCarBrandRequest {
+  int64 id = 1;
+}
+
+message DeleteCarBrandResponse {
+  bool is_error = 1;
+  string error = 2;
+  string error_description = 3;
 }

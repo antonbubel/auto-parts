@@ -23,11 +23,11 @@
 
         public override async Task<GetCarBrandsResponse> GetCarBrands(Protos.GetCarBrandsRequest request, ServerCallContext context)
         {
-            var carBrandModels = await mediator.Send(new GetCarBrandsRequest());
+            var carBrands = await mediator.Send(new GetCarBrandsRequest());
 
             var response = new GetCarBrandsResponse();
 
-            var carBrands = carBrandModels
+            var responseCarBrands = carBrands
                 .Select(carBrandModel =>
                     new CarBrand
                     {
@@ -37,7 +37,7 @@
                     })
                 .ToArray();
 
-            response.CarBrands.AddRange(carBrands);
+            response.CarBrands.AddRange(responseCarBrands);
 
             return response;
         }

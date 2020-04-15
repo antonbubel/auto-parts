@@ -26,6 +26,7 @@
     <Protobuf Include="..\Protos\sign_in.proto" GrpcServices="Client" />
     <Protobuf Include="..\Protos\sign_up.proto" GrpcServices="Client" />
     <Protobuf Include="..\Protos\car_brand.proto" GrpcServices="Client" />
+    <Protobuf Include="..\Protos\car_model.proto" GrpcServices="Client" />
   </ItemGroup>
 
   <ItemGroup>

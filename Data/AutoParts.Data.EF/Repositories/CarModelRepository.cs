@@ -1,7 +1,12 @@
 ﻿namespace AutoParts.Data.EF.Repositories
 {
-    using Base;
+    using System.Linq;
+    using System.Threading.Tasks;
 
+    using Microsoft.EntityFrameworkCore;
+
+    using Base;
+    
     using Model.Entities;
     using Model.Repositories;
 
@@ -9,6 +14,14 @@
     {
         public CarModelRepository(IDatabaseContext context) : base(context)
         {
+        }
+
+        public Task<CarModel[]> GetCarModelsByBrand(long carBrandId)
+        {
+            return GetQueryable()
+                .Include(carModel => carModel.CarBrand)
+                .Where(carModel => carModel.CarBrandId == carBrandId)
+                .ToArrayAsync();
         }
     }
 }

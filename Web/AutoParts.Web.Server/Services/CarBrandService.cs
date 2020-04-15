@@ -28,12 +28,12 @@
             var response = new GetCarBrandsResponse();
 
             var responseCarBrands = carBrands
-                .Select(carBrandModel =>
+                .Select(carBrand =>
                     new CarBrand
                     {
-                        Id = carBrandModel.Id,
-                        Name = carBrandModel.Name,
-                        ImageUrl = carBrandModel.ImageUrl
+                        Id = carBrand.Id,
+                        Name = carBrand.Name,
+                        ImageUrl = carBrand.ImageUrl
                     })
                 .ToArray();
 

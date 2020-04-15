@@ -1,0 +1,25 @@
+syntax = "proto3";
+
+option csharp_namespace = "AutoParts.Web.Protos";
+
+package CarModification;
+
+service GrpcCarModificationService {
+  rpc GetCarModifications (GetCarModificationsRequest) returns (GetCarModificationsResponse);
+}
+
+message GetCarModificationsRequest {
+  int64 car_model_id = 1;
+  int32 year = 2;
+}
+
+message GetCarModificationsResponse {
+  repeated CarModification car_modifications = 1;
+}
+
+message CarModification {
+  int64 id = 1;
+  string name = 2;
+  string description = 3;
+  int32 year = 4;
+}

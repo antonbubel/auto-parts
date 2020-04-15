@@ -43,6 +43,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Protos", "Protos", "{351C8B
 	ProjectSection(SolutionItems) = preProject
 		Web\Protos\car_brand.proto = Web\Protos\car_brand.proto
 		Web\Protos\car_model.proto = Web\Protos\car_model.proto
+		Web\Protos\car_modification.proto = Web\Protos\car_modification.proto
 		Web\Protos\sign_in.proto = Web\Protos\sign_in.proto
 		Web\Protos\sign_up.proto = Web\Protos\sign_up.proto
 	EndProjectSection

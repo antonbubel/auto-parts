@@ -34,6 +34,7 @@
     <Protobuf Include="..\Protos\sign_up.proto" GrpcServices="Server" />
     <Protobuf Include="..\Protos\car_brand.proto" GrpcServices="Server" />
     <Protobuf Include="..\Protos\car_model.proto" GrpcServices="Server" />
+    <Protobuf Include="..\Protos\car_modification.proto" GrpcServices="Server" />
   </ItemGroup>
 
 </Project>

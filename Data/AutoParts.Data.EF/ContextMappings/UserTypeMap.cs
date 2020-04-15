@@ -18,7 +18,9 @@
                 .IsRequired();
 
             builder.HasData(
-                new UserType { Id = UserTypeEnum.User, Name = UserTypeEnum.User.ToString() }
+                new UserType { Id = UserTypeEnum.User, Name = UserTypeEnum.User.ToString() },
+                new UserType { Id = UserTypeEnum.Supplier, Name = UserTypeEnum.Supplier.ToString() },
+                new UserType { Id = UserTypeEnum.Administrator, Name = UserTypeEnum.Administrator.ToString() }
             );
         }
     }

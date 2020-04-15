@@ -119,6 +119,12 @@ namespace AutoParts.Web.Server
                 endpoints.MapGrpcService<SignUpService>().EnableGrpcWeb();
 
                 endpoints.MapGrpcService<SignInService>().EnableGrpcWeb();
+                
+                endpoints.MapGrpcService<CarBrandService>().EnableGrpcWeb();
+                
+                endpoints.MapGrpcService<CarModelService>().EnableGrpcWeb();
+
+                endpoints.MapGrpcService<CarModificationService>().EnableGrpcWeb();
 
                 endpoints.MapGet("/", async context =>
                 {

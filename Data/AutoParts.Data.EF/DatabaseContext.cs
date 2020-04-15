@@ -19,6 +19,12 @@
     {
         public DbSet<UserType> UserTypes { get; set; }
 
+        public DbSet<CarBrand> CarBrands { get; set; }
+
+        public DbSet<CarModel> CarModels { get; set; }
+
+        public DbSet<CarModification> CarModifications { get; set; }
+
         public DatabaseContext(DbContextOptions<DatabaseContext> options)
             : base(options)
         {

@@ -10,6 +10,8 @@
     {
         Task<TEntity> FindAsync(TKey key);
 
+        Task<TEntity[]> GetAllAsync();
+
         Task<OperationResult<TEntity>> CreateAsync(TEntity entity);
 
         Task<OperationResult<TEntity>> CreateRangeAsync(IEnumerable<TEntity> entities);

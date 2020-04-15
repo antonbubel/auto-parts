@@ -1,0 +1,22 @@
+syntax = "proto3";
+
+option csharp_namespace = "AutoParts.Web.Protos";
+
+package CarBrand;
+
+service GrpcCarBrandService {
+  rpc GetCarBrands (GetCarBrandsRequest) returns (GetCarBrandsResponse);
+}
+
+message GetCarBrandsRequest {
+}
+
+message GetCarBrandsResponse {
+  repeated CarBrand car_brands = 1;
+}
+
+message CarBrand {
+  int64 id = 1;
+  string name = 2;
+  string image_url = 3;
+}

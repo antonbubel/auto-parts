@@ -6,7 +6,6 @@
 
     using Microsoft.EntityFrameworkCore;
 
-    using Model;
     using Model.Results;
     using Model.Entities.Base;
     using Model.Repositories.Base;
@@ -31,6 +30,12 @@
         {
             return await context.DbSet<TEntity>()
                 .FindAsync(key);
+        }
+
+        public async Task<TEntity[]> GetAllAsync()
+        {
+            return await context.DbSet<TEntity>()
+                .ToArrayAsync();
         }
 
         public async Task<OperationResult<TEntity>> CreateAsync(TEntity entity)

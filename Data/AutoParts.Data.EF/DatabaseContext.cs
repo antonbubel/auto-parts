@@ -25,6 +25,10 @@
 
         public DbSet<CarModification> CarModifications { get; set; }
 
+        public DbSet<AutoPartsCatalogGroup> AutoPartsCatalogGroups { get; set; }
+
+        public DbSet<AutoPartsCatalogSubGroup> AutoPartsCatalogSubGroups { get; set; }
+
         public DatabaseContext(DbContextOptions<DatabaseContext> options)
             : base(options)
         {

@@ -19,6 +19,14 @@
 
             CreateMap<CreateCarModificationNotification, CarModification>()
                 .ForMember(carModification => carModification.Id, conf => conf.Ignore())
+                .ForMember(carModification => carModification.CarModelId, conf => conf.MapFrom(notification => notification.CarModelId))
+                .ForMember(carModification => carModification.Name, conf => conf.MapFrom(notification => notification.Name))
+                .ForMember(carModification => carModification.Description, conf => conf.MapFrom(notification => notification.Description))
+                .ForMember(carModification => carModification.Year, conf => conf.MapFrom(notification => notification.Year));
+
+            CreateMap<UpdateCarModificationNotification, CarModification>()
+                .ForMember(carModification => carModification.Id, conf => conf.Ignore())
+                .ForMember(carModification => carModification.CarModelId, conf => conf.Ignore())
                 .ForMember(carModification => carModification.Name, conf => conf.MapFrom(notification => notification.Name))
                 .ForMember(carModification => carModification.Description, conf => conf.MapFrom(notification => notification.Description))
                 .ForMember(carModification => carModification.Year, conf => conf.MapFrom(notification => notification.Year));

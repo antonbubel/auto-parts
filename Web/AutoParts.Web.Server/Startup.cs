@@ -1,24 +1,26 @@
-﻿using AutoParts.Core.Implementation;
-using AutoParts.Data.EF.Migrations;
-using AutoParts.Infrastructure.Web;
-using AutoParts.Infrastructure.Web.Authorization;
-using AutoParts.Infrastructure.Web.Options;
-using AutoParts.Web.Server.Services;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.ResponseCompression;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
-using Microsoft.IdentityModel.Tokens;
-using System;
-using System.Linq;
-using System.Security.Claims;
-
-namespace AutoParts.Web.Server
+﻿namespace AutoParts.Web.Server
 {
+    using System;
+    using System.Linq;
+    using System.Security.Claims;
+
+    using Microsoft.AspNetCore.Authentication.JwtBearer;
+    using Microsoft.AspNetCore.Builder;
+    using Microsoft.AspNetCore.Hosting;
+    using Microsoft.AspNetCore.Http;
+    using Microsoft.AspNetCore.ResponseCompression;
+    using Microsoft.Extensions.Configuration;
+    using Microsoft.Extensions.DependencyInjection;
+    using Microsoft.Extensions.Hosting;
+    using Microsoft.IdentityModel.Tokens;
+
+    using AutoParts.Core.Implementation;
+    using AutoParts.Data.EF.Migrations;
+    using AutoParts.Infrastructure.Web;
+    using AutoParts.Infrastructure.Web.Authorization;
+    using AutoParts.Infrastructure.Web.Options;
+    using AutoParts.Web.Server.Services;
+
     public class Startup
     {
         public IConfiguration Configuration { get; }

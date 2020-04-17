@@ -19,7 +19,12 @@
             CreateMap<CreateCarBrandNotification, CarBrand>()
                 .ForMember(carBrand => carBrand.Id, conf => conf.Ignore())
                 .ForMember(carBrand => carBrand.Name, conf => conf.MapFrom(notification => notification.Name))
-                .ForMember(carBrand => carBrand.Image, conf => conf.MapFrom(notification => notification.Image));
+                .ForMember(carBrand => carBrand.Image, conf => conf.Ignore());
+
+            CreateMap<UpdateCarBrandNotification, CarBrand>()
+                .ForMember(carBrand => carBrand.Id, conf => conf.Ignore())
+                .ForMember(carBrand => carBrand.Name, conf => conf.MapFrom(notification => notification.Name))
+                .ForMember(carBrand => carBrand.Image, conf => conf.Ignore());
         }
     }
 }

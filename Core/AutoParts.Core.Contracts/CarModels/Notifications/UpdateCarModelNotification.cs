@@ -1,12 +1,12 @@
-﻿namespace AutoParts.Core.Contracts.CarBrands.Notifications
+﻿namespace AutoParts.Core.Contracts.CarModels.Notifications
 {
     using MediatR;
 
     using System;
 
-    public class UpdateCarBrandNotification : INotification
+    public class UpdateCarModelNotification : INotification
     {
-        public long CarBrandId { get; set; }
+        public long CarModelId { get; set; }
 
         public string Name { get; set; }
 

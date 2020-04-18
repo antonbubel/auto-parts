@@ -4,18 +4,26 @@
 
 @using Public.User.Models;
 
-<div>
-    <EditForm Model="@signUpForm" OnValidSubmit="HandleValidSubmit">
+<div class="container text-center">
+    <EditForm class="form-signup" Model="@signUpForm" OnValidSubmit="HandleValidSubmit">
+        <h1 class="h3 mb-3 font-weight-normal">
+            Create a new account
+        </h1>
+
         <DataAnnotationsValidator />
-        <ValidationSummary />
+        <div class="text-left">
+            <ValidationSummary />
+        </div>
 
-        <InputText id="first-name" @bind-Value="signUpForm.FirstName" />
-        <InputText id="last-name" @bind-Value="signUpForm.LastName" />
-        <InputText id="email" @bind-Value="signUpForm.Email" />
-        <InputText id="password" type="password" @bind-Value="signUpForm.Password" />
-        <InputText id="password-confirmation" type="password" @bind-Value="signUpForm.PasswordConfirmation" />
+        <InputText id="first-name" class="form-control" placeholder="First name" @bind-Value="signUpForm.FirstName" />
+        <InputText id="last-name" class="form-control" placeholder="Last name" @bind-Value="signUpForm.LastName" />
+        <InputText id="email" class="form-control" placeholder="Email address" @bind-Value="signUpForm.Email" />
+        <InputText id="password" class="form-control" placeholder="Password" type="password" @bind-Value="signUpForm.Password" />
+        <InputText id="password-confirmation" class="form-control" placeholder="Confirm password" type="password" @bind-Value="signUpForm.PasswordConfirmation" />
 
-        <button type="submit">Sign Up!</button>
+        <button class="btn btn-lg btn-primary btn-block mt-3" type="submit">
+            Sign Up!
+        </button>
     </EditForm>
 </div>
 

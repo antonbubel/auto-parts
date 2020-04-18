@@ -4,14 +4,20 @@
 
 @using Public.User.Models;
 
-<div>
-    <EditForm Model="@signInForm" OnValidSubmit="HandleValidSubmit">
+<div class="container text-center">
+    <EditForm class="form-signin" Model="@signInForm" OnValidSubmit="HandleValidSubmit">
+        <h1 class="h3 mb-3 font-weight-normal">
+            Please sign in
+        </h1>
+
         <DataAnnotationsValidator />
 
-        <InputText id="email" @bind-Value="signInForm.Email" />
-        <InputText id="password" type="password" @bind-Value="signInForm.Password" />
+        <InputText id="email" class="form-control" placeholder="Email address" @bind-Value="signInForm.Email" />
+        <InputText id="password" class="form-control" placeholder="Password" type="password" @bind-Value="signInForm.Password" />
 
-        <button type="submit">Sign In</button>
+        <button class="btn btn-lg btn-primary btn-block mt-3" type="submit">
+            Sign In
+        </button>
     </EditForm>
 </div>
 

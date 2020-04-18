@@ -1,0 +1,26 @@
+syntax = "proto3";
+
+option csharp_namespace = "AutoParts.Web.Protos";
+
+package User;
+
+service GrpcUserService {
+  rpc GetCurrentUserInfo (GetCurrentUserInfoRequest) returns (GetCurrentUserInfoResponse);
+}
+
+message GetCurrentUserInfoRequest {
+}
+
+message GetCurrentUserInfoResponse {
+  int64 id = 1;
+  string first_name = 2;
+  string last_name = 3;
+  string email = 4;
+  UserType user_type = 5;
+}
+
+enum UserType {
+  USER = 0;
+  SUPPLIER = 1;
+  ADMINISTRATOR = 2;
+}

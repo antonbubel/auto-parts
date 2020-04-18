@@ -11,6 +11,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\Data\AutoParts.Data.Model\AutoParts.Data.Model.csproj" />
     <ProjectReference Include="..\..\Infrastructure\AutoParts.Infrastructure.Exceptions\AutoParts.Infrastructure.Exceptions.csproj" />
+    <ProjectReference Include="..\AutoParts.Core.Constants\AutoParts.Core.Constants.csproj" />
   </ItemGroup>
 
 </Project>

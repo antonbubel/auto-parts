@@ -10,14 +10,17 @@
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
 
-    using Data.Model.Repositories.Base;
+    using IdentityServer4.EntityFramework.Options;
+
     using Data.Model.Entities;
+    using Data.Model.Repositories;
+    using Data.Model.Repositories.Base;
 
     using Data.EF;
+    using Data.EF.Repositories;
     using Data.EF.Repositories.Base;
 
     using Utilities.Common.Extensions;
-    using IdentityServer4.EntityFramework.Options;
 
     public static class DataAccessConfigurationExtensions
     {
@@ -25,6 +28,8 @@
         {
             RegisterDatabaseContext(services, configuration);
             RegisterRepositories(services);
+
+            services.AddScoped<IUserRepository, UserRepository>();
         }
 
         private static void RegisterDatabaseContext(IServiceCollection services, IConfiguration configuration)

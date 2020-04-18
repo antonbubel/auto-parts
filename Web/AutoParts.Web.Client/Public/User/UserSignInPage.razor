@@ -1,6 +1,7 @@
 ﻿@page "/sign-in"
 
 @inject Public.User.Services.UserSignInService signInService
+@inject NavigationManager navigationManager
 
 @using Public.User.Models;
 
@@ -9,6 +10,13 @@
         <h1 class="h3 mb-3 font-weight-normal">
             Please sign in
         </h1>
+
+        @if (!string.IsNullOrEmpty(ErrorMessage))
+        {
+            <div class="my-3 alert-danger">
+                @ErrorMessage
+            </div>
+        }
 
         <DataAnnotationsValidator />
 
@@ -22,10 +30,21 @@
 </div>
 
 @code {
-    public UserSignInFormModel signInForm = new UserSignInFormModel();
+    protected UserSignInFormModel signInForm = new UserSignInFormModel();
 
-    public async Task HandleValidSubmit()
+    protected string ErrorMessage { get; set; }
+
+    protected async Task HandleValidSubmit()
     {
         var success = await signInService.SignIn(signInForm);
+
+        if (success)
+        {
+            navigationManager.NavigateTo("/");
+        }
+        else
+        {
+            ErrorMessage = "Invalid username or password";
+        }
     }
 }

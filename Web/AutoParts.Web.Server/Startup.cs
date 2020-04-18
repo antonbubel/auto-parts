@@ -116,6 +116,8 @@
             
             app.UseAuthentication();
 
+            app.UseAuthorization();
+
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapGrpcService<SignUpService>().EnableGrpcWeb();
@@ -127,6 +129,8 @@
                 endpoints.MapGrpcService<CarModelService>().EnableGrpcWeb();
 
                 endpoints.MapGrpcService<CarModificationService>().EnableGrpcWeb();
+
+                endpoints.MapGrpcService<UserService>().EnableGrpcWeb();
 
                 endpoints.MapGet("/", async context =>
                 {

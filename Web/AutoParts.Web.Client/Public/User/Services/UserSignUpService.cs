@@ -27,7 +27,7 @@ namespace AutoParts.Web.Client.Public.User.Services
 
             var response = await signUpClient.UserSignUpAsync(request);
 
-            return response.IsError;
+            return !response.IsError;
         }
     }
 }

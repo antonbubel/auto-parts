@@ -1,6 +1,7 @@
 ﻿@page "/sign-up"
 
 @inject Public.User.Services.UserSignUpService signUpService
+@inject NavigationManager navigationManager
 
 @using Public.User.Models;
 
@@ -9,6 +10,13 @@
         <h1 class="h3 mb-3 font-weight-normal">
             Create a new account
         </h1>
+
+        @if (!string.IsNullOrEmpty(ErrorMessage))
+        {
+            <div class="my-3 alert-danger">
+                @ErrorMessage
+            </div>
+        }
 
         <DataAnnotationsValidator />
         <div class="text-left">
@@ -28,10 +36,21 @@
 </div>
 
 @code {
-    public UserSignUpFormModel signUpForm = new UserSignUpFormModel();
+    protected UserSignUpFormModel signUpForm = new UserSignUpFormModel();
 
-    public async Task HandleValidSubmit()
+    protected string ErrorMessage { get; set; }
+
+    protected async Task HandleValidSubmit()
     {
         var success = await signUpService.SignUp(signUpForm);
+
+        if (success)
+        {
+            navigationManager.NavigateTo("sign-in");
+        }
+        else
+        {
+            ErrorMessage = "Email is already in use";
+        }
     }
 }

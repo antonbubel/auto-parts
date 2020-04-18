@@ -10,21 +10,15 @@ namespace AutoParts.Web.Client.Shared.Utils
         {
             Metadata headers = null;
 
-            if (HasAccessToken(localStorage))
+            if (localStorage.HasAccessToken())
             {
-                var tokenType = localStorage.GetItem<string>(LocalStorageConstants.TokenType);
-                var accessToken = localStorage.GetItem<string>(LocalStorageConstants.AccessToken);
+                var tokenType = localStorage.GetTokenType();
+                var accessToken = localStorage.GetAccessToken();
 
                 headers = SetAuthorizationHeader(headers, tokenType, accessToken);
             }
 
             return headers;
-        }
-
-        private static bool HasAccessToken(ISyncLocalStorageService localStorage)
-        {
-            return localStorage.ContainKey(LocalStorageConstants.TokenType)
-                && localStorage.ContainKey(LocalStorageConstants.AccessToken);
         }
 
         private static Metadata SetAuthorizationHeader(Metadata headers, string tokenType, string accessToken)

@@ -6,6 +6,8 @@ package User;
 
 service GrpcUserService {
   rpc GetCurrentUserInfo (GetCurrentUserInfoRequest) returns (GetCurrentUserInfoResponse);
+  rpc GetRefreshedToken (GetRefreshedTokenRequest) returns (GetRefreshedTokenResponse);
+  rpc SignOut (SignOutRequest) returns (SignOutResponse);
 }
 
 message GetCurrentUserInfoRequest {
@@ -23,4 +25,24 @@ enum UserType {
   USER = 0;
   SUPPLIER = 1;
   ADMINISTRATOR = 2;
+}
+
+message SignOutRequest {
+  string refresh_token = 1;
+}
+
+message SignOutResponse {
+}
+
+message GetRefreshedTokenRequest {
+  string refresh_token = 1;
+}
+
+message GetRefreshedTokenResponse {
+  string access_token = 1;
+  string refresh_token = 2;
+  string token_type = 3;
+  bool is_error = 4;
+  string error = 5;
+  string error_description = 6;
 }

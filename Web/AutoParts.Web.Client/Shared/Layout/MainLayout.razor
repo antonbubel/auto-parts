@@ -1,20 +1,49 @@
 ﻿@inherits LayoutComponentBase
 
+@inject Services.CurrentUserProvider currentUserProvider
+@inject Services.CurrentUserService currentUserService
+
 <div class="sidebar">
     <NavMenu />
 </div>
 
 <div class="main">
     <div class="top-row px-4">
-        <NavLink class="ml-md-auto" href="sign-in">
-            Sign In
-        </NavLink>
-        <NavLink class="ml-4 btn btn-md btn-primary" href="sign-up">
-            Sign Up
-        </NavLink>
+        @if (currentUserProvider.LoadingUserInfo)
+        {
+            <p class="mb-0 font-italic">Loading...</p>
+        }
+        else if (currentUserProvider.IsLoggedIn)
+        {
+            <p class="mb-0">Hello, <b>@currentUserProvider.CurrentUserInfo.FirstName @currentUserProvider.CurrentUserInfo.LastName!</b></p>
+            <NavLink class="ml-4" @onclick="SignOut">
+                Sign Out
+            </NavLink>
+        }
+        else
+        {
+            <NavLink class="ml-md-auto" href="sign-in">
+                Sign In
+            </NavLink>
+            <NavLink class="ml-4 btn btn-md btn-primary" href="sign-up">
+                Sign Up
+            </NavLink>
+        }
     </div>
 
     <div class="content px-4">
         @Body
     </div>
 </div>
+
+@code {
+    protected override async Task OnInitializedAsync()
+    {
+        await currentUserService.SyncCurrentUserInfo();
+    }
+
+    protected async Task SignOut()
+    {
+        await currentUserService.SignOut();
+    }
+}

@@ -1,0 +1,28 @@
+﻿@inject Services.CarBrandService carBrandService
+
+@using Protos;
+
+@if (Loading)
+{
+    <p class="font-italic">Loading...</p>
+}
+else
+{
+    @foreach (var carBrand in CarBrands)
+    {
+        @carBrand.Name
+    }
+}
+
+
+@code {
+    protected bool Loading { get; set; } = true;
+    protected CarBrand[] CarBrands { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        CarBrands = await carBrandService.GetCarBrands();
+
+        Loading = false;
+    }
+}

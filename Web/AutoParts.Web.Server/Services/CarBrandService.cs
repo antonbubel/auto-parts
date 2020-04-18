@@ -33,7 +33,7 @@
                     {
                         Id = carBrand.Id,
                         Name = carBrand.Name,
-                        ImageUrl = carBrand.ImageUrl
+                        ImageUrl = carBrand.ImageUrl ?? string.Empty
                     })
                 .ToArray();
 

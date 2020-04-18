@@ -162,3 +162,31 @@ app {
     padding: 15px;
     margin: auto;
 }
+
+.carousel-item {
+    height: 32rem !important;
+}
+
+.carousel-first-image {
+    background: url(../images/autoparts-1.jpg) no-repeat center center fixed;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+}
+
+.carousel-second-image {
+    background: url(../images/autoparts-2.jpeg) no-repeat center center fixed;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+}
+
+.carousel-third-image {
+    background: url(../images/autoparts-3.jpg) no-repeat center center fixed;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+}

@@ -33,6 +33,8 @@
 
   <ItemGroup>
     <Folder Include="Private\" />
+    <Folder Include="Public\Car\Models\" />
+    <Folder Include="wwwroot\images\" />
   </ItemGroup>
 
 </Project>

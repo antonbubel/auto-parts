@@ -1,4 +1,5 @@
-﻿using AutoParts.Web.Client.Public.User.Services;
+﻿using AutoParts.Web.Client.Public.Car.Services;
+using AutoParts.Web.Client.Public.User.Services;
 using AutoParts.Web.Client.Shared.Services;
 using Grpc.Net.Client;
 using Grpc.Net.Client.Web;
@@ -41,6 +42,8 @@ namespace AutoParts.Web.Client
             services.AddTransient<UserSignInService>();
             services.AddTransient<UserSignUpService>();
             services.AddTransient<CurrentUserService>();
+            services.AddTransient<CarBrandService>();
+
             services.AddSingleton<CurrentUserProvider>();
         }
     }

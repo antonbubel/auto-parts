@@ -43,7 +43,6 @@
             };
         }
 
-        [Authorize]
         public override async Task<GetRefreshedTokenResponse> GetRefreshedToken(GetRefreshedTokenRequest request, ServerCallContext context)
         {
             var response = await identityClient.GetRefreshedTokenAsync(request.RefreshToken);

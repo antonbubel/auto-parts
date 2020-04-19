@@ -1,4 +1,5 @@
-﻿using Blazored.LocalStorage;
+﻿using Blazor.FileReader;
+using Blazored.LocalStorage;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using System.Threading.Tasks;
 
@@ -18,6 +19,8 @@ namespace AutoParts.Web.Client
             streamingProperty.SetValue(null, true, null);
 
             builder.Services.AddBlazoredLocalStorage();
+
+            builder.Services.AddFileReaderService(options => options.UseWasmSharedBuffer = true);
 
             builder.Services.ConfigureServices();
 

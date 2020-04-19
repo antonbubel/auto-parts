@@ -2,6 +2,9 @@
 {
     using Protos;
 
+    using System;
+    using System.Collections.Generic;
+
     using Models;
 
     public class CurrentUserProvider
@@ -12,16 +15,28 @@
 
         public bool LoadingUserInfo { get; private set; } = true;
 
+        private List<Action> actions = new List<Action>();
+
+        public void AddEventListenerOnLoadedUserInfo(Action action)
+        {
+            actions.Add(action);
+        }
+
         public void SetUserInfoLoading(bool isLoading)
         {
             LoadingUserInfo = isLoading;
+
+            if (!isLoading)
+            {
+                actions.ForEach(action => action());
+            }
         }
 
         public void SetCurrentUserInfo(CurrentUserInfoModel currentUserInfo)
         {
             CurrentUserInfo = currentUserInfo;
 
-            LoadingUserInfo = false;
+            SetUserInfoLoading(false);
         }
 
         public void SetCurrentUserInfoFromResponse(GetCurrentUserInfoResponse response)
@@ -35,7 +50,7 @@
                 UserType = response.UserType
             };
 
-            LoadingUserInfo = false;
+            SetUserInfoLoading(false);
         }
     }
 }

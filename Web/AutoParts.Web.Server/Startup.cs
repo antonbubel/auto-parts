@@ -20,6 +20,10 @@
     using AutoParts.Infrastructure.Web.Authorization;
     using AutoParts.Infrastructure.Web.Options;
     using AutoParts.Web.Server.Services;
+    using AutoParts.Core.Constants;
+    using Microsoft.Extensions.FileProviders;
+    using System.IO;
+    using AutoParts.Core.Constants.Enums;
 
     public class Startup
     {
@@ -84,7 +88,12 @@
                     };
                 });
 
-            services.AddAuthorization();
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy(nameof(UserType.User), builder => { builder.RequireRole(nameof(UserType.User)); });
+                options.AddPolicy(nameof(UserType.Supplier), builder => { builder.RequireRole(nameof(UserType.Supplier)); });
+                options.AddPolicy(nameof(UserType.Administrator), builder => { builder.RequireRole(nameof(UserType.Administrator)); });
+            });
 
             services.AddGrpc();
 
@@ -102,7 +111,18 @@
                 app.UseWebAssemblyDebugging();
             }
 
-            app.UseStaticFiles();
+            app.UseHttpsRedirection();
+
+            app.UseDefaultFiles();
+
+            var assemblyDirectory = Path.GetDirectoryName(AppDomain.CurrentDomain.BaseDirectory);
+            var filesDirectory = Path.Combine(assemblyDirectory, FileConstants.LocalFilesFolderName);
+
+            app.UseStaticFiles(new StaticFileOptions
+            {
+                FileProvider = new PhysicalFileProvider(filesDirectory),
+                RequestPath = $"/{FileConstants.LocalFilesFolderName}"
+            });
 
             app.UseCors(policy => policy.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod());
 
@@ -111,8 +131,6 @@
             app.UseRouting();
 
             app.UseGrpcWeb();
-
-            app.UseHttpsRedirection();
             
             app.UseAuthentication();
 

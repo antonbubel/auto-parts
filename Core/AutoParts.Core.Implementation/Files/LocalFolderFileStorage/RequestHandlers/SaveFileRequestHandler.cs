@@ -21,7 +21,7 @@
             }
 
             var fileNameToSave = GetFileNameToSave(request.FileName);
-            var fullFilePath = Path.Combine(FileConstants.LocalFilesFolderName, fileNameToSave);
+            var fullFilePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, FileConstants.LocalFilesFolderName, fileNameToSave);
             var fullFileFolderPath = Path.GetDirectoryName(fullFilePath);
 
             if (!Directory.Exists(fullFileFolderPath))

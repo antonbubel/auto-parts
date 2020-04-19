@@ -21,6 +21,7 @@ app {
 }
 
 .top-row {
+    z-index: 1000;
     height: 3.5rem;
     display: flex;
     align-items: center;
@@ -189,4 +190,24 @@ app {
     -moz-background-size: cover;
     -o-background-size: cover;
     background-size: cover;
+}
+
+.car-image {
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+    height: 10rem;
+    width: 10rem;
+    border-radius: 50%;
+}
+
+.car-brand-wrapper {
+    cursor: pointer;
+    border-radius: 6px;
+    transition: all ease-in 0.2s;
+}
+
+.car-brand-wrapper:hover {
+    background-color: white;
 }

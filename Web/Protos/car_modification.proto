@@ -6,6 +6,9 @@ package CarModification;
 
 service GrpcCarModificationService {
   rpc GetCarModifications (GetCarModificationsRequest) returns (GetCarModificationsResponse);
+  rpc CreateCarModification (CreateCarModificationRequest) returns (CreateCarModificationResponse);
+  rpc UpdateCarModification (UpdateCarModificationRequest) returns (UpdateCarModificationResponse);
+  rpc DeleteCarModification (DeleteCarModificationRequest) returns (DeleteCarModificationResponse);
 }
 
 message GetCarModificationsRequest {
@@ -22,4 +25,37 @@ message CarModification {
   string name = 2;
   string description = 3;
   int32 year = 4;
+}
+
+message CreateCarModificationRequest {
+  int64 car_model_id = 1;
+  string name = 2;
+  string description = 3;
+  int32 year = 4;
+}
+
+message CreateCarModificationResponse {
+  bool is_error = 1;
+  string error = 2;
+}
+
+message UpdateCarModificationRequest {
+  int64 id = 1;
+  string name = 2;
+  string description = 3;
+  int32 year = 4;
+}
+
+message UpdateCarModificationResponse {
+  bool is_error = 1;
+  string error = 2;
+}
+
+message DeleteCarModificationRequest {
+  int64 id = 1;
+}
+
+message DeleteCarModificationResponse {
+  bool is_error = 1;
+  string error = 2;
 }

@@ -1,117 +1,50 @@
 ﻿@inject Services.CarBrandService carBrandService
+@inject Services.CarModelService carModelService
 
 @using Protos;
 
-@if (Loading)
-{
-    <p class="font-italic">Loading...</p>
-}
-else
-{
 <div class="my-4 mx-0 jumbotron row">
-    <div class="col-md-12 mb-4 d-flex">
-        <h2 class="flex-grow-1">Autoparts catalog</h2>
-
-        <form @onsubmit="() => SelectCarBrand(autocompleteItems.FirstOrDefault())">
-            <input type="search" class="form-control" placeholder="Search for brand" list="products-autocomplete"
-                   value="@searchText" @oninput="UpdateAutocomplete" />
-        </form>
-        <datalist id="products-autocomplete">
-            @foreach (var item in autocompleteItems)
-            {
-                <option>@item.Name</option>
-            }
-        </datalist>
-    </div>
-
-    @foreach (var carBrand in carBrandsToShow)
+    @if (Loading)
     {
-        <div class="car-brand-wrapper col-md-2 my-2">
-            <div class="car-image mx-auto" style="background-image: url('@carBrand.ImageUrl');"></div>
-            <h3 class="text-center text-dark">
-                @carBrand.Name
-            </h3>
-        </div>
+        <p class="font-italic">Loading...</p>
     }
-
-    <div class="col-md-12 mt-2">
-
-        @if (carBrandsToShow.Count > pageSize)
+    else if (SelectedCarBrand == null)
+    {
+        <SelectCarBrandComponent CarBrands="CarBrands" OnItemChosen="HandleCarBrandChosen"></SelectCarBrandComponent>
+    }
+    else
+    {
+        @foreach (var carModel in CarModels)
         {
-            <button class="btn btn-outline-dark float-right mr-2" @onclick="HideAdditionalBrands">
-                <span class="oi oi-arrow-top" aria-hidden="true"></span> Hide
-            </button>
+            <img src="@carModel.ImageUrl"/>
+            <h2>@carModel.Name</h2>
         }
-
-        @if (carBrandsToShow.Count < CarBrands.Length)
-        {
-            <button class="btn btn-outline-dark float-right" @onclick="ShowMoreBrands">
-                <span class="oi oi-arrow-bottom" aria-hidden="true"></span> More brands
-            </button>
-        }
-    </div>
+    }
 </div>
-}
-
 
 @code {
-    private const int pageSize = 12;
-
-    private string searchText;
-    private List<CarBrand> carBrandsToShow = new List<CarBrand>();
-    private List<CarBrand> autocompleteItems = new List<CarBrand>();
-
     private bool Loading { get; set; } = true;
     private CarBrand[] CarBrands { get; set; }
+    private CarModel[] CarModels { get; set; }
     private CarBrand SelectedCarBrand { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
-        CarBrands = await carBrandService.GetCarBrands();
+        Loading = true;
 
-        ShowMoreBrands();
+        CarBrands = await carBrandService.GetCarBrands();
 
         Loading = false;
     }
 
-    private void SelectCarBrand(CarBrand carBrand)
+    private async Task HandleCarBrandChosen(CarBrand carBrand)
     {
+        Loading = true;
+
         SelectedCarBrand = carBrand;
-        searchText = null;
-        autocompleteItems.Clear();
-    }
 
-    private void UpdateAutocomplete(ChangeEventArgs eventArgs)
-    {
-        searchText = ((string)eventArgs.Value).ToLowerInvariant();
-        var matchingItem = CarBrands.FirstOrDefault(carBrand => carBrand.Name.ToLowerInvariant() == searchText);
-        if (matchingItem != null)
-        {
-            // They selected an item from the list. Treat as a form submission.
-            searchText = matchingItem.Name;
-            SelectCarBrand(matchingItem);
-        }
-        else
-        {
-            autocompleteItems = CarBrands
-                .Where(carBrand => carBrand.Name.ToLowerInvariant().StartsWith(searchText))
-                .ToList();
-        }
-    }
+        CarModels = await carModelService.GetCarModels(carBrand.Id);
 
-    private void ShowMoreBrands()
-    {
-        var carBrandsToAdd = CarBrands
-            .Skip(carBrandsToShow.Count)
-            .Take(pageSize);
-
-        carBrandsToShow.AddRange(carBrandsToAdd);
-    }
-
-    private void HideAdditionalBrands()
-    {
-        carBrandsToShow = new List<CarBrand>();
-
-        ShowMoreBrands();
+        Loading = false;
     }
 }

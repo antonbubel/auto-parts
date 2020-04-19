@@ -1,0 +1,107 @@
+﻿@using Protos;
+
+<div class="col-md-12 mb-4 d-flex">
+    <h2 class="flex-grow-1">Autoparts catalog</h2>
+
+    <form @onsubmit="() => SelectCarBrand(autocompleteItems.FirstOrDefault())">
+        <input type="search" class="form-control" placeholder="Search for brand" list="products-autocomplete"
+               value="@searchText" @oninput="UpdateAutocomplete" />
+    </form>
+    <datalist id="products-autocomplete">
+        @foreach (var item in autocompleteItems)
+        {
+            <option>@item.Name</option>
+        }
+    </datalist>
+</div>
+
+@foreach (var carBrand in carBrandsToShow)
+{
+    <div class="car-brand-wrapper col-md-2 my-2" @onclick="() => SelectCarBrand(carBrand)">
+        <div class="car-image mx-auto" style="background-image: url('@carBrand.ImageUrl');"></div>
+        <h3 class="text-center text-dark">
+            @carBrand.Name
+        </h3>
+    </div>
+}
+
+<div class="col-md-12 mt-2">
+
+    @if (carBrandsToShow.Count > PageSize)
+    {
+        <button class="btn btn-outline-dark float-right mr-2" @onclick="HideAdditionalBrands">
+            <span class="oi oi-arrow-top" aria-hidden="true"></span> Hide
+        </button>
+    }
+
+    @if (carBrandsToShow.Count < CarBrands.Length)
+    {
+        <button class="btn btn-outline-dark float-right" @onclick="ShowMoreBrands">
+            <span class="oi oi-arrow-bottom" aria-hidden="true"></span> More brands
+        </button>
+    }
+</div>
+
+@code {
+
+    [Parameter]
+    public int PageSize { get; set; } = 12;
+
+    [Parameter]
+    public CarBrand[] CarBrands { get; set; }
+
+    [Parameter]
+    public EventCallback<CarBrand> OnItemChosen { get; set; }
+
+    private string searchText;
+    private List<CarBrand> carBrandsToShow = new List<CarBrand>();
+    private List<CarBrand> autocompleteItems = new List<CarBrand>();
+
+    protected override void OnInitialized()
+    {
+        ShowMoreBrands();
+    }
+
+    private async Task SelectCarBrand(CarBrand carBrand)
+    {
+        if (carBrand != null)
+        {
+            searchText = null;
+            autocompleteItems.Clear();
+            await OnItemChosen.InvokeAsync(carBrand);
+        }
+    }
+
+    private async Task UpdateAutocomplete(ChangeEventArgs eventArgs)
+    {
+        searchText = ((string)eventArgs.Value).ToLowerInvariant();
+        var matchingItem = CarBrands.FirstOrDefault(carBrand => carBrand.Name.ToLowerInvariant() == searchText);
+        if (matchingItem != null)
+        {
+            searchText = matchingItem.Name;
+            await SelectCarBrand(matchingItem);
+        }
+        else
+        {
+            autocompleteItems = CarBrands
+                .Where(carBrand => carBrand.Name.ToLowerInvariant().StartsWith(searchText))
+                .ToList();
+        }
+    }
+
+    private void ShowMoreBrands()
+    {
+        var carBrandsToAdd = CarBrands
+            .Skip(carBrandsToShow.Count)
+            .Take(PageSize);
+
+        carBrandsToShow.AddRange(carBrandsToAdd);
+    }
+
+    private void HideAdditionalBrands()
+    {
+        carBrandsToShow = new List<CarBrand>();
+
+        ShowMoreBrands();
+    }
+}

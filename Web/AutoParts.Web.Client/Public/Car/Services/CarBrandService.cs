@@ -16,6 +16,13 @@
             carBrandServiceClient = new GrpcCarBrandService.GrpcCarBrandServiceClient(channel);
         }
 
+        public async Task<CarBrand> GetCarBrand(long id)
+        {
+            var response = await carBrandServiceClient.GetCarBrandAsync(new GetCarBrandRequest { Id = id });
+
+            return response.Model;
+        }
+
         public async Task<CarBrand[]> GetCarBrands()
         {
             var response = await carBrandServiceClient.GetCarBrandsAsync(new GetCarBrandsRequest());

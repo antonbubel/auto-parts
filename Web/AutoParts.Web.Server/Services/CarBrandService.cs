@@ -13,6 +13,8 @@
 
     using Protos;
 
+    using Core.Contracts.CarBrands.Models;
+    using Core.Contracts.CarBrands.Requests;
     using Core.Contracts.CarBrands.Exceptions;
     using Core.Contracts.CarBrands.Notifications;
 
@@ -25,6 +27,34 @@
         public CarBrandService(IMediator mediator)
         {
             this.mediator = mediator;
+        }
+
+        public override async Task<GetCarBrandResponse> GetCarBrand(GetCarBrandRequest request, ServerCallContext context)
+        {
+            CarBrandModel carBrand;
+
+            try
+            {
+                carBrand = await mediator.Send(new GetCarBrandByIdRequest { CarBrandId = request.Id });
+            }
+            catch
+            {
+                return new GetCarBrandResponse
+                {
+                    IsError = true
+                };
+            }
+
+            return new GetCarBrandResponse
+            {
+                Model = new CarBrand
+                {
+                    Id = carBrand.Id,
+                    Name = carBrand.Name,
+                    ImageUrl = carBrand.ImageUrl
+                },
+                IsError = false
+            };
         }
 
         public override async Task<GetCarBrandsResponse> GetCarBrands(Protos.GetCarBrandsRequest request, ServerCallContext context)

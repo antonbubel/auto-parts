@@ -5,6 +5,7 @@ option csharp_namespace = "AutoParts.Web.Protos";
 package CarBrand;
 
 service GrpcCarBrandService {
+  rpc GetCarBrand (GetCarBrandRequest) returns (GetCarBrandResponse);
   rpc GetCarBrands (GetCarBrandsRequest) returns (GetCarBrandsResponse);
   rpc CreateCarBrand (CreateCarBrandRequest) returns (CreateCarBrandResponse);
   rpc UpdateCarBrand (UpdateCarBrandRequest) returns (UpdateCarBrandResponse);
@@ -16,6 +17,15 @@ message GetCarBrandsRequest {
 
 message GetCarBrandsResponse {
   repeated CarBrand car_brands = 1;
+}
+
+message GetCarBrandRequest {
+  int64 id = 1;
+}
+
+message GetCarBrandResponse {
+  CarBrand model = 1;
+  bool is_error = 2;
 }
 
 message CarBrand {

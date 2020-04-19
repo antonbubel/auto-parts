@@ -45,6 +45,8 @@ namespace AutoParts.Web.Client
             services.AddTransient<CurrentUserService>();
             services.AddTransient<CarBrandService>();
             services.AddTransient<CarBrandsManagerService>();
+            services.AddTransient<CarModelService>();
+            services.AddTransient<CarModelsManagerService>();
 
             services.AddSingleton<CurrentUserProvider>();
         }

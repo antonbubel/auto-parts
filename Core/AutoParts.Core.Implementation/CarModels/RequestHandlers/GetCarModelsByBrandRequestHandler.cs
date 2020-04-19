@@ -11,16 +11,20 @@
     using Contracts.CarModels.Models;
     using Contracts.CarModels.Requests;
 
+    using Contracts.Files.Requests;
+
     using Data.Model.Repositories;
 
     public class GetCarModelsByBrandRequestHandler : IRequestHandler<GetCarModelsByBrandRequest, CarModelModel[]>
     {
         private readonly IMapper mapper;
+        private readonly IMediator mediator;
         private readonly ICarModelRepository carModelRepository;
 
-        public GetCarModelsByBrandRequestHandler(IMapper mapper, ICarModelRepository carModelRepository)
+        public GetCarModelsByBrandRequestHandler(IMapper mapper, IMediator mediator, ICarModelRepository carModelRepository)
         {
             this.mapper = mapper;
+            this.mediator = mediator;
             this.carModelRepository = carModelRepository;
         }
 
@@ -33,6 +37,14 @@
 
             var carModels = await carModelRepository.GetCarModelsByBrand(request.CarBrandId)
                 .ConfigureAwait(false);
+
+            foreach (var carModel in carModels)
+            {
+                if (!string.IsNullOrEmpty(carModel.Image))
+                {
+                    carModel.Image = await mediator.Send(new GetFileUrlRequest { FileName = carModel.Image });
+                }
+            }
 
             return mapper.Map<CarModelModel[]>(carModels);
         }

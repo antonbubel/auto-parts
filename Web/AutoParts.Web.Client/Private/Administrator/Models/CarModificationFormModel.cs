@@ -14,8 +14,7 @@ namespace AutoParts.Web.Client.Private.Administrator.Models
         public string Description { get; set; }
 
         [Required(ErrorMessage = "Car modification year is required.")]
-        [Range(ValidationConstants.CarModificationMinYear, ValidationConstants.CarModificationMaxYear, ErrorMessage = "Car modification year must be between 1990 and 2020.")]
-        public int Year { get; set; }
+        public string Year { get; set; }
 
         public long CarModelId { get; set; }
     }

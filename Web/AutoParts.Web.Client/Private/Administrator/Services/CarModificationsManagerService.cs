@@ -30,7 +30,7 @@
                 CarModelId = formModel.CarModelId,
                 Name = formModel.Name,
                 Description = formModel.Description,
-                Year = formModel.Year
+                Year = int.Parse(formModel.Year)
             };
 
             var headers = RequestHeadersUtility.GetRequestHeaders(localStorage);
@@ -47,7 +47,7 @@
                 Id = carModificationId,
                 Name = formModel.Name,
                 Description = formModel.Description,
-                Year = formModel.Year
+                Year = int.Parse(formModel.Year)
             };
 
             var headers = RequestHeadersUtility.GetRequestHeaders(localStorage);

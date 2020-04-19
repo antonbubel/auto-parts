@@ -10,7 +10,6 @@
 @using Shared.Utils;
 @using Blazor.FileReader;
 
-
 @if (CarBrand != null)
 {
     <div class="d-flex mb-3">
@@ -40,7 +39,7 @@
                 <ValidationSummary />
             </div>
 
-            <InputText id="email" class="form-control" placeholder="Car model name" @bind-Value="formModel.Name" />
+            <InputText id="car-model-name" class="form-control mb-2" placeholder="Car model name" @bind-Value="formModel.Name" />
 
             <div class="input-group mb-3">
                 <div class="custom-file">
@@ -71,6 +70,7 @@ else
             <tr>
                 <th scope="col">#</th>
                 <th scope="col">Car model name</th>
+                <th scope="col">Car model modifications</th>
                 <th scope="col">Car model image</th>
                 <th scope="col">Actions</th>
             </tr>
@@ -84,6 +84,11 @@ else
                     </th>
                     <td>
                         @carModel.Name
+                    </td>
+                    <td>
+                        <a class="btn btn-info" href="manage-car-modifications/@carModel.Id">
+                            <span class="oi oi-external-link" aria-hidden="true"></span> Manage car model modifications
+                        </a>
                     </td>
                     <td>
                         @if (!string.IsNullOrEmpty(carModel.ImageUrl))

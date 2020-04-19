@@ -26,13 +26,13 @@
                 .AsNoTracking();
         }
 
-        public async Task<TEntity> FindAsync(TKey key)
+        public virtual async Task<TEntity> FindAsync(TKey key)
         {
             return await context.DbSet<TEntity>()
                 .FindAsync(key);
         }
 
-        public async Task<TEntity[]> GetAllAsync()
+        public virtual async Task<TEntity[]> GetAllAsync()
         {
             return await context.DbSet<TEntity>()
                 .ToArrayAsync();

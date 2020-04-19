@@ -20,7 +20,7 @@
                 .MaximumLength(ValidationConstants.CarModificationDescriptionMaxLength);
 
             RuleFor(notification => notification.Year)
-                .Must(year => year > ValidationConstants.CarModificationYearMinValue)
+                .Must(year => year >= ValidationConstants.CarModificationYearMinValue)
                 .Must(year => year <= DateTime.UtcNow.Year);
         }
     }

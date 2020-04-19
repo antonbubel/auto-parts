@@ -5,7 +5,7 @@
 
     using Microsoft.EntityFrameworkCore;
 
-    using Base;
+    using AutoParts.Data.EF.Repositories.Base;
     
     using Model.Entities;
     using Model.Repositories;
@@ -14,6 +14,13 @@
     {
         public CarModelRepository(IDatabaseContext context) : base(context)
         {
+        }
+
+        public override async Task<CarModel> FindAsync(long key)
+        {
+            return await GetQueryable()
+                .Include(carModel => carModel.CarBrand)
+                .FirstOrDefaultAsync(carModel => carModel.Id == key);
         }
 
         public Task<CarModel[]> GetCarModelsByBrand(long carBrandId)

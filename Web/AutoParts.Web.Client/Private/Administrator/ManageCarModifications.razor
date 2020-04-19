@@ -1,0 +1,147 @@
+﻿@page "/manage-car-modifications/{CarModelId:long}"
+
+@inject Public.Car.Services.CarModificationService carModificationService
+@inject Public.Car.Services.CarModelService carModelService
+@inject Services.CarModificationsManagerService carModificationsManagerService
+
+@using Protos;
+@using Models;
+@using Shared.Constants;
+
+@if (CarModel != null)
+{
+    <div class="d-flex mb-3">
+        <h2 class="flex-grow-1">
+            Car modifications manager for <i>@CarModel.CarBrandName @CarModel.Name</i>
+        </h2>
+
+        <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapseForm" aria-expanded="false" aria-controls="collapseForm">
+            <span class="oi oi-plus" aria-hidden="true"></span> Create new car modification
+        </button>
+    </div>
+}
+
+<div class="collapse mb-3" id="collapseForm">
+    <div class="card card-body">
+        <EditForm class="col-md-3" Model="@formModel" OnValidSubmit="HandleCreateCarModification">
+            @if (!string.IsNullOrEmpty(ErrorMessage))
+            {
+                <div class="my-3 alert-danger">
+                    @ErrorMessage
+                </div>
+            }
+
+            <DataAnnotationsValidator />
+
+            <div class="text-left">
+                <ValidationSummary />
+            </div>
+
+            <InputText id="car-modification-name" class="form-control mb-2" placeholder="Car modification name" @bind-Value="formModel.Name" />
+            <InputTextArea id="car-modification-description" class="form-control mb-2" placeholder="Car modification description" @bind-Value="formModel.Description" />
+            <InputSelect id="car-modification-year" class="form-control" @bind-Value="formModel.Year">
+                @for (var year = ValidationConstants.CarModificationMinYear; year <= ValidationConstants.CarModificationMaxYear; year++)
+                {
+                    <option value="@year">@year</option>
+                }
+            </InputSelect>
+
+            <button class="btn btn-md btn-primary btn-block mt-3" type="submit">
+                Submit
+            </button>
+        </EditForm>
+    </div>
+</div>
+
+@if (Loading)
+{
+    <p class="font-italic">Loading...</p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Car modification name</th>
+                <th scope="col">Car modification description</th>
+                <th scope="col">Car modification year</th>
+                <th scope="col">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var carModification in CarModifications)
+            {
+                <tr>
+                    <th scope="row">
+                        @carModification.Id
+                    </th>
+                    <td>
+                        @carModification.Name
+                    </td>
+                    <td>
+                        @carModification.Description
+                    </td>
+                    <td>
+                        @carModification.Year
+                    </td>
+                    <td>
+                        <button class="btn btn-primary">
+                            <span class="oi oi-pencil" aria-hidden="true"></span> Edit
+                        </button>
+                        <button class="btn btn-danger" @onclick="() => HandleDeleteCarModification(carModification.Id)">
+                            <span class="oi oi-trash" aria-hidden="true"></span> Delete
+                        </button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    [Parameter]
+    public long CarModelId { get; set; }
+
+    public bool Loading { get; set; } = true;
+    public string ErrorMessage { get; set; }
+    public CarModel CarModel { get; set; }
+    public CarModification[] CarModifications { get; set; }
+
+    private CarModificationFormModel formModel = new CarModificationFormModel();
+
+    protected override async Task OnInitializedAsync()
+    {
+        formModel.CarModelId = CarModelId;
+
+        CarModel = await carModelService.GetCarModel(CarModelId);
+
+        await LoadCarModifications();
+    }
+
+    private async Task HandleCreateCarModification()
+    {
+        await carModificationsManagerService.CreateCarModification(formModel);
+
+        formModel = new CarModificationFormModel();
+
+        await LoadCarModifications();
+
+    }
+
+    private async Task HandleDeleteCarModification(long carModificationId)
+    {
+        await carModificationsManagerService.DeleteCarModification(carModificationId);
+
+        await LoadCarModifications();
+    }
+
+    private async Task LoadCarModifications()
+    {
+        Loading = true;
+
+        CarModifications = await carModificationService.GetCarModifications(CarModelId);
+
+        Loading = false;
+    }
+}

@@ -4,7 +4,7 @@
     <h2 class="flex-grow-1">Autoparts catalog <i>@CarBrand.Name</i></h2>
 
     <form @onsubmit="() => SelectCarModel(autocompleteItems.FirstOrDefault())">
-        <input type="search" class="form-control" placeholder="Search for brand" list="products-autocomplete"
+        <input type="search" class="form-control" placeholder="Search for @CarBrand.Name model" list="products-autocomplete"
                value="@searchText" @oninput="UpdateAutocomplete" />
     </form>
     <datalist id="products-autocomplete">

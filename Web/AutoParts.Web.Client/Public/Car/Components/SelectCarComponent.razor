@@ -21,16 +21,25 @@
 
         <SelectCarModelComponent CarBrand="SelectedCarBrand" CarModels="SelectedCarBrandModels" OnItemChosen="HandleCarModelChosen"></SelectCarModelComponent>
     }
-    else
+    else if (SelectedCarModification == null)
     {
         <button class="btn btn-outline-dark mb-4" @onclick="() => SelectedCarModel = null">
             <span class="oi oi-arrow-left" aria-hidden="true"></span> Back to the car models list
         </button>
 
-        @foreach (var carModification in SelectedCarModelModifications)
-        {
-            <p>@carModification.Name</p>
-        }
+        <SelectCarModificationComponent CarModel="SelectedCarModel" CarModifications="SelectedCarModelModifications" OnItemChosen="HandleCarModificationChosen" ></SelectCarModificationComponent>
+    }
+    else
+    {
+        <button class="btn btn-outline-dark mb-4" @onclick="() => SelectedCarModification = null">
+            <span class="oi oi-arrow-left" aria-hidden="true"></span> Back to the car modifications list
+        </button>
+
+        <div class="col-md-12">
+            <h2 class="d-block">
+                @SelectedCarBrand.Name @SelectedCarModel.Name @SelectedCarModification.Name @SelectedCarModification.Year
+            </h2>
+        </div>
     }
 </div>
 
@@ -43,6 +52,7 @@
     private CarModel[] SelectedCarBrandModels { get; set; }
     private CarModel SelectedCarModel { get; set; }
     private CarModification[] SelectedCarModelModifications { get; set; }
+    private CarModification SelectedCarModification { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
@@ -73,5 +83,10 @@
         SelectedCarModelModifications = await carModificationService.GetCarModifications(carModel.Id);
 
         LoadingCarModifications = false;
+    }
+
+    private void HandleCarModificationChosen(CarModification carModification)
+    {
+        SelectedCarModification = carModification;
     }
 }

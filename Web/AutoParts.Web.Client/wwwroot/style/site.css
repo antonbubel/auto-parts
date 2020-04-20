@@ -227,3 +227,11 @@ app {
 .car-brand-wrapper:hover {
     opacity: 0.7;
 }
+
+.car-modification-search {
+    width: 12rem;
+}
+
+.car-modification-select-year {
+    width: 8rem;
+}

@@ -1,0 +1,108 @@
+﻿@using Protos;
+
+<div class="col-md-12 mb-4 d-flex">
+    <h2 class="flex-grow-1">Autoparts catalog <i>@CarModel.CarBrandName @CarModel.Name</i></h2>
+</div>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th scope="col" class="d-flex">
+                <p class="my-auto mr-3">
+                    Name
+                </p>
+                <input type="search" class="form-control car-modification-search" placeholder="Search..."
+                       value="@SearchText" @oninput="HandleOnInputSearchByName" />
+
+            </th>
+            <th scope="col">
+                <p class="my-auto">
+                    Description
+                </p>
+            </th>
+            <th scope="col" class="d-flex">
+                <p class="my-auto mr-3">
+                    Year
+                </p>
+                <select type="search" class="form-control car-modification-select-year" value="@SelectedCarModificationYear" @oninput="HandleCarModificationYearChosen">
+                    <option>Select year...</option>
+                    @foreach (var year in AvailableCarModificationYears)
+                    {
+                        <option value="@year">@year</option>
+                    }
+                </select>
+            </th>
+            <th scope="col"></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var carModification in FilteredCarModifications)
+        {
+            <tr>
+                <td>
+                    @carModification.Name
+                </td>
+                <td>
+                    @carModification.Description
+                </td>
+                <td>
+                    @carModification.Year
+                </td>
+                <td>
+                    <button class="btn btn-outline-info float-right" @onclick="() => SelectCarModification(carModification)">
+                        Select
+                    </button>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@code {
+    [Parameter]
+    public CarModel CarModel { get; set; }
+
+    [Parameter]
+    public CarModification[] CarModifications { get; set; }
+
+    [Parameter]
+    public EventCallback<CarModification> OnItemChosen { get; set; }
+
+    private int[] AvailableCarModificationYears => CarModifications.Select(carModification => carModification.Year)
+        .Distinct()
+        .ToArray();
+
+    private CarModification[] FilteredCarModifications => CarModifications
+        .Where(carModification => SelectedCarModificationYear.HasValue ? carModification.Year == SelectedCarModificationYear.Value : true)
+        .Where(carModification => SearchText.ToLowerInvariant().Split((string)null, StringSplitOptions.RemoveEmptyEntries).All(match => carModification.Name.ToLowerInvariant().Contains(match)))
+        .ToArray();
+
+    private string SearchText { get; set; } = string.Empty;
+
+    private int? SelectedCarModificationYear { get; set; } = null;
+
+    private void HandleCarModificationYearChosen(ChangeEventArgs eventArgs)
+    {
+        var selectedYearValue = (string)eventArgs.Value;
+
+        if (int.TryParse(selectedYearValue, out var year))
+        {
+            SelectedCarModificationYear = year;
+        }
+        else
+        {
+            SelectedCarModificationYear = null;
+        }
+    }
+
+    private void HandleOnInputSearchByName(ChangeEventArgs eventArgs)
+    {
+        SearchText = ((string)eventArgs.Value)
+            .Trim();
+    }
+
+    private async Task SelectCarModification(CarModification carModification)
+    {
+        await OnItemChosen.InvokeAsync(carModification);
+    }
+}

@@ -1,32 +1,48 @@
 ﻿@inject Services.CarBrandService carBrandService
 @inject Services.CarModelService carModelService
+@inject Services.CarModificationService carModificationService
 
 @using Protos;
 
-<div class="my-4 mx-0 jumbotron row">
+<div class="my-4 mx-0 py-5 jumbotron row">
     @if (Loading)
     {
         <p class="font-italic">Loading...</p>
     }
-    else if (SelectedCarBrand == null)
+    else if (SelectedCarBrand == null || LoadingCarModels)
     {
         <SelectCarBrandComponent CarBrands="CarBrands" OnItemChosen="HandleCarBrandChosen"></SelectCarBrandComponent>
     }
+    else if (SelectedCarModel == null || LoadingCarModifications)
+    {
+        <button class="btn btn-outline-dark mb-4" @onclick="() => SelectedCarBrand = null">
+            <span class="oi oi-arrow-left" aria-hidden="true"></span> Back to the car brands list
+        </button>
+
+        <SelectCarModelComponent CarBrand="SelectedCarBrand" CarModels="SelectedCarBrandModels" OnItemChosen="HandleCarModelChosen"></SelectCarModelComponent>
+    }
     else
     {
-        @foreach (var carModel in CarModels)
+        <button class="btn btn-outline-dark mb-4" @onclick="() => SelectedCarModel = null">
+            <span class="oi oi-arrow-left" aria-hidden="true"></span> Back to the car models list
+        </button>
+
+        @foreach (var carModification in SelectedCarModelModifications)
         {
-            <img src="@carModel.ImageUrl"/>
-            <h2>@carModel.Name</h2>
+            <p>@carModification.Name</p>
         }
     }
 </div>
 
 @code {
     private bool Loading { get; set; } = true;
+    private bool LoadingCarModels { get; set; } = true;
+    private bool LoadingCarModifications { get; set; } = true;
     private CarBrand[] CarBrands { get; set; }
-    private CarModel[] CarModels { get; set; }
     private CarBrand SelectedCarBrand { get; set; }
+    private CarModel[] SelectedCarBrandModels { get; set; }
+    private CarModel SelectedCarModel { get; set; }
+    private CarModification[] SelectedCarModelModifications { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
@@ -39,12 +55,23 @@
 
     private async Task HandleCarBrandChosen(CarBrand carBrand)
     {
-        Loading = true;
+        LoadingCarModels = true;
 
         SelectedCarBrand = carBrand;
 
-        CarModels = await carModelService.GetCarModels(carBrand.Id);
+        SelectedCarBrandModels = await carModelService.GetCarModels(carBrand.Id);
 
-        Loading = false;
+        LoadingCarModels = false;
+    }
+
+    private async Task HandleCarModelChosen(CarModel carModel)
+    {
+        LoadingCarModifications = true;
+
+        SelectedCarModel = carModel;
+
+        SelectedCarModelModifications = await carModificationService.GetCarModifications(carModel.Id);
+
+        LoadingCarModifications = false;
     }
 }

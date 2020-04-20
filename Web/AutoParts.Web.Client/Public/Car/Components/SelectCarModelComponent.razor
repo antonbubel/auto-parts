@@ -1,0 +1,71 @@
+﻿@using Protos;
+
+<div class="col-md-12 mb-4 d-flex">
+    <h2 class="flex-grow-1">Autoparts catalog <i>@CarBrand.Name</i></h2>
+
+    <form @onsubmit="() => SelectCarModel(autocompleteItems.FirstOrDefault())">
+        <input type="search" class="form-control" placeholder="Search for brand" list="products-autocomplete"
+               value="@searchText" @oninput="UpdateAutocomplete" />
+    </form>
+    <datalist id="products-autocomplete">
+        @foreach (var item in autocompleteItems)
+        {
+            <option>@item.Name</option>
+        }
+    </datalist>
+</div>
+
+@foreach (var carModel in CarModels)
+{
+    <div class="col-md-6 mb-4">
+        <div class="row no-gutters border rounded shadow-sm h-md-250 bg-white car-model-wrapper" @onclick="() => SelectCarModel(carModel)">
+            <div class="col p-4 d-flex flex-column position-static">
+                <h3 class="mr-2 my-auto">@carModel.CarBrandName @carModel.Name</h3>
+            </div>
+            <div class="col-auto d-none d-lg-block">
+                <div class="car-model-image h-100" style="background-image: url('@carModel.ImageUrl')"></div>
+            </div>
+        </div>
+    </div>
+}
+
+@code {
+    [Parameter]
+    public CarBrand CarBrand { get; set; }
+
+    [Parameter]
+    public CarModel[] CarModels { get; set; }
+
+    [Parameter]
+    public EventCallback<CarModel> OnItemChosen { get; set; }
+
+    private string searchText;
+    private List<CarModel> autocompleteItems = new List<CarModel>();
+
+    private async Task UpdateAutocomplete(ChangeEventArgs eventArgs)
+    {
+        searchText = ((string)eventArgs.Value).ToLowerInvariant();
+        var matchingItem = CarModels.FirstOrDefault(carModel => carModel.Name.ToLowerInvariant() == searchText);
+        if (matchingItem != null)
+        {
+            searchText = matchingItem.Name;
+            await SelectCarModel(matchingItem);
+        }
+        else
+        {
+            autocompleteItems = CarModels
+                .Where(carModel => carModel.Name.ToLowerInvariant().StartsWith(searchText))
+                .ToList();
+        }
+    }
+
+    private async Task SelectCarModel(CarModel carModel)
+    {
+        if (carModel != null)
+        {
+            searchText = null;
+            autocompleteItems.Clear();
+            await OnItemChosen.InvokeAsync(carModel);
+        }
+    }
+}

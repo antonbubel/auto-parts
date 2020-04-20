@@ -17,11 +17,13 @@
 
 @foreach (var carBrand in carBrandsToShow)
 {
-    <div class="car-brand-wrapper col-md-2 my-2" @onclick="() => SelectCarBrand(carBrand)">
-        <div class="car-image mx-auto" style="background-image: url('@carBrand.ImageUrl');"></div>
-        <h3 class="text-center text-dark">
-            @carBrand.Name
-        </h3>
+    <div class="car-brand-wrapper col-md-3 mb-4" @onclick="() => SelectCarBrand(carBrand)">
+        <div class="border rounded shadow-sm bg-white py-2">
+            <div class="car-image mx-auto" style="background-image: url('@carBrand.ImageUrl');"></div>
+            <h3 class="text-center text-dark mt-1">
+                @carBrand.Name
+            </h3>
+        </div>
     </div>
 }
 
@@ -45,7 +47,7 @@
 @code {
 
     [Parameter]
-    public int PageSize { get; set; } = 12;
+    public int PageSize { get; set; } = 8;
 
     [Parameter]
     public CarBrand[] CarBrands { get; set; }

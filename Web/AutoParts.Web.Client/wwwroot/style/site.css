@@ -199,15 +199,31 @@ app {
     background-size: cover;
     height: 10rem;
     width: 10rem;
-    border-radius: 50%;
+}
+
+.car-model-image {
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+    width: 24rem;
+}
+
+.car-model-wrapper {
+    height: 16rem;
+    cursor: pointer;
+    transition: all ease-in 0.3s;
+}
+
+.car-model-wrapper:hover {
+    opacity: 0.7;
 }
 
 .car-brand-wrapper {
     cursor: pointer;
-    border-radius: 6px;
-    transition: all ease-in 0.2s;
+    transition: all ease-in 0.3s;
 }
 
 .car-brand-wrapper:hover {
-    background-color: white;
+    opacity: 0.7;
 }

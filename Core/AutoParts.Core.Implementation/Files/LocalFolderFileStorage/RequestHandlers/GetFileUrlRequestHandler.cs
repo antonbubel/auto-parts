@@ -26,7 +26,7 @@
                 throw new ArgumentNullException($"{nameof(request)} of type {nameof(GetFileUrlRequest)} argument cannot be null.");
             }
 
-            var apiBaseUrl = configuration.GetValue<string>(ConfigurationConstants.ApiBaseUrlConfigurationSectionKey);
+            var apiBaseUrl = configuration.GetValue<string>(ConfigurationConstants.ApiBaseUrlSectionKey);
             var fileUrl = $"{apiBaseUrl}/{FileConstants.LocalFilesFolderName}/{request.FileName}";
 
             return Task.FromResult(fileUrl);

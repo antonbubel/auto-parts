@@ -48,7 +48,7 @@
 
             services.ConfigureDataAccess(Configuration);
 
-            services.ConfigureBusinessLayer();
+            services.ConfigureBusinessLayer(Configuration);
 
             services.AddLogging();
 

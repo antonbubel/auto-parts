@@ -26,7 +26,8 @@
                     var carBrandExists = await mediator.Send(request);
 
                     return !carBrandExists;
-                });
+                })
+                .WithMessage(name => $"Car brand with name {name} already exists.");
 
         }
     }

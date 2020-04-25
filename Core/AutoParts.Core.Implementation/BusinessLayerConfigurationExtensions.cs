@@ -30,6 +30,7 @@
             RegisterAutoMapper(services, executingAssembly);
             RegisterMediatR(services, executingAssembly);
             RegisterValidators(services, executingAssembly);
+            RegisterOptions(services, configuration);
             RegisterSendGrid(services, configuration);
         }
 
@@ -56,12 +57,19 @@
                 services.AddTransient(validatorType.GetGenericInterfaceDefinition(typeof(IValidator<>)), validatorType));
         }
 
-        private static void RegisterSendGrid(IServiceCollection services, IConfiguration configuration)
+        private static void RegisterOptions(IServiceCollection services, IConfiguration configuration)
         {
             services.AddOptions<SendGridOptions>()
                 .Bind(configuration.GetSection(ConfigurationConstants.SendGridSectionKey))
                 .ValidateDataAnnotations();
 
+            services.AddOptions<ClientOptions>()
+                .Bind(configuration.GetSection(ConfigurationConstants.ClientSectionKey))
+                .ValidateDataAnnotations();
+        }
+
+        private static void RegisterSendGrid(IServiceCollection services, IConfiguration configuration)
+        {
             var sendGridOptions = configuration.GetSection(ConfigurationConstants.SendGridSectionKey)
                 .Get<SendGridOptions>();
 

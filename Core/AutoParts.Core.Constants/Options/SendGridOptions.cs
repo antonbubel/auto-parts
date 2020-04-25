@@ -13,5 +13,8 @@
 
         [Required]
         public string FromName { get; set; }
+
+        [Required]
+        public string SupplierInvitationTemplateId { get; set; }
     }
 }

@@ -1,13 +1,18 @@
 ﻿namespace AutoParts.Core.Implementation.Users.NotificationValidators
 {
+    using MediatR;
+
     using FluentValidation;
 
     using Constants.ValidationConstants;
+
     using Contracts.Users.Notifications;
+
+    using Contracts.Suppliers.Requests;
 
     public class UserSignUpNotificationValidator : AbstractValidator<UserSignUpNotification>
     {
-        public UserSignUpNotificationValidator()
+        public UserSignUpNotificationValidator(IMediator mediator)
         {
             RuleFor(notification => notification.FirstName)
                 .NotEmpty()
@@ -19,7 +24,18 @@
 
             RuleFor(notification => notification.Email)
                 .NotEmpty()
-                .EmailAddress();
+                .EmailAddress()
+                .MustAsync(async (email, cancelationToken) =>
+                {
+                    var request = new SupplierInvitationExistsByEmailRequest
+                    {
+                        Email = email
+                    };
+
+                    var supplierInvitationExists = await mediator.Send(request);
+
+                    return !supplierInvitationExists;
+                });
 
             RuleFor(notification => notification.Password)
                 .NotEmpty()

@@ -8,7 +8,12 @@ package User;
 
 service GrpcSupplierService {
   rpc InviteSupplier (InviteSupplierRequest) returns (InviteSupplierResponse);
+  rpc UpdateSupplierProfile (UpdateSupplierProfileRequest) returns (UpdateSupplierProfileResponse);
   rpc GetSupplierEmailFromInvitation (GetSupplierEmailFromInvitationRequest) returns (GetSupplierEmailFromInvitationResponse);
+  rpc GetCurrentUserSupplierPrivateProfile (GetCurrentUserSupplierPrivateProfileRequest) returns (GetCurrentUserSupplierPrivateProfileResponse);
+  rpc GetSupplierPrivateProfileById (GetSupplierPrivateProfileByIdRequest) returns (GetSupplierPrivateProfileByIdResponse);
+  rpc GetSupplierPublicProfileById (GetSupplierPublicProfileByIdRequest) returns (GetSupplierPublicProfileByIdResponse);
+  rpc GetSuppliers (Common.PaginationFilter) returns (GetSuppliersResponse);
 }
 
 message InviteSupplierRequest {
@@ -28,4 +33,83 @@ message GetSupplierEmailFromInvitationRequest {
 message GetSupplierEmailFromInvitationResponse {
   string email = 1;
   Common.RequestStatus status = 2;
+}
+
+message GetCurrentUserSupplierPrivateProfileRequest {
+}
+
+message GetCurrentUserSupplierPrivateProfileResponse {
+  SupplierPrivateProfile model = 1;
+}
+
+message GetSupplierPrivateProfileByIdRequest {
+  int64 id = 1;
+}
+
+message GetSupplierPrivateProfileByIdResponse {
+  SupplierPrivateProfile model = 1;
+  Common.RequestStatus status = 2;
+}
+
+message GetSupplierPublicProfileByIdRequest {
+  int64 id = 1;
+}
+
+message GetSupplierPublicProfileByIdResponse {
+  SupplierPublicProfile model = 1;
+  Common.RequestStatus status = 2;
+}
+
+message GetSuppliersResponse {
+  repeated SupplierShortPublicProfile suppliers = 1;
+}
+
+message UpdateSupplierProfileRequest {
+  string name = 1;
+  string organization_address = 2;
+  string organization_description = 3;
+  string sales_email = 4;
+  string sales_phone_number = 5;
+  string website = 6;
+  string first_name = 7;
+  string last_name = 8;
+  string phone_number = 9;
+  string logo_file_name = 10;
+  bytes logo_file_buffer = 11;
+}
+
+message UpdateSupplierProfileResponse {
+  bool is_error = 1;
+  string error = 2;
+}
+
+message SupplierPrivateProfile {
+  int64 id = 1;
+  string name = 2;
+  string organization_address = 3;
+  string organization_description = 4;
+  string sales_email = 5;
+  string sales_phone_number = 6;
+  string website = 7;
+  string logo_url = 8;
+  string first_name = 9;
+  string last_name = 10;
+  string phone_number = 11;
+}
+
+message SupplierPublicProfile {
+  int64 id = 1;
+  string name = 2;
+  string organization_address = 3;
+  string organization_description = 4;
+  string sales_email = 5;
+  string sales_phone_number = 6;
+  string website = 7;
+  string logo_url = 8;
+}
+
+message SupplierShortPublicProfile {
+  int64 id = 1;
+  string name = 2;
+  string logo_url = 3;
 }

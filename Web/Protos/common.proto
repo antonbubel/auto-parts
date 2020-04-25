@@ -9,3 +9,8 @@ enum RequestStatus {
   NOT_FOUND = 1;
   INTERNAL_SERVER_ERROR = 2;
 }
+
+message PaginationFilter {
+  int32 page_number = 1;
+  int32 page_size = 2;
+}

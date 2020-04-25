@@ -53,7 +53,10 @@
 
             services.ConfigureBusinessLayer(Configuration);
 
-            services.AddAutoMapper(typeof(BusinessLayerConfigurationExtensions).Assembly, typeof(DatabaseContext).Assembly);
+            services.AddAutoMapper(
+                typeof(BusinessLayerConfigurationExtensions).Assembly,
+                typeof(DatabaseContext).Assembly,
+                typeof(Startup).Assembly);
 
             services.AddLogging();
 

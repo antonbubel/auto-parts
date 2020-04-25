@@ -1,5 +1,7 @@
 ﻿namespace AutoParts.Web.Server.Services
 {
+    using AutoMapper;
+
     using Grpc.Core;
 
     using MediatR;
@@ -18,23 +20,18 @@
 
     public class SignUpService : GrpcSignUpService.GrpcSignUpServiceBase
     {
+        private readonly IMapper mapper;
         private readonly IMediator mediator;
 
-        public SignUpService(IMediator mediator)
+        public SignUpService(IMapper mapper, IMediator mediator)
         {
+            this.mapper = mapper;
             this.mediator = mediator;
         }
 
         public override async Task<UserSignUpResponse> UserSignUp(UserSignUpRequest request, ServerCallContext context)
         {
-            var notification = new UserSignUpNotification()
-            {
-                Email = request.Email,
-                FirstName = request.FirstName,
-                LastName = request.LastName,
-                Password = request.Password,
-                PasswordConfirmation = request.PasswordConfirmation
-            };
+            var notification = mapper.Map<UserSignUpNotification>(request);
 
             try
             {
@@ -65,18 +62,7 @@
 
         public override async Task<SupplierSignUpResponse> SupplierSignUp(SupplierSignUpRequest request, ServerCallContext context)
         {
-            var notification = new SupplierSignUpNotification()
-            {
-                FirstName = request.FirstName,
-                LastName = request.LastName,
-                PhoneNumber = request.PhoneNumber,
-                Password = request.Password,
-                PasswordConfirmation = request.PasswordConfirmation,
-                OrganizationName = request.OrganizationName,
-                OrganizationAddress = request.OrganizationAddress,
-                Website = request.Website,
-                InvitationToken = request.InvitationToken
-            };
+            var notification = mapper.Map<SupplierSignUpNotification>(request);
 
             try
             {

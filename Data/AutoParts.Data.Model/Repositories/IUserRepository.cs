@@ -7,5 +7,7 @@
     public interface IUserRepository
     {
         Task<User> FindAsync(long key);
+
+        Task<bool> UserExistsByEmail(string email);
     }
 }

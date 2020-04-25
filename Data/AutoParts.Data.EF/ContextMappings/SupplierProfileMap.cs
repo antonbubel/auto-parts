@@ -30,8 +30,7 @@
 
             builder
                 .Property(supplierProfile => supplierProfile.OrganizationDescription)
-                .HasMaxLength(500)
-                .IsRequired();
+                .HasMaxLength(500);
 
             builder
                 .Property(supplierProfile => supplierProfile.Website)

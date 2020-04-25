@@ -6,6 +6,7 @@ package SignUp;
 
 service GrpcSignUpService {
   rpc UserSignUp (UserSignUpRequest) returns (UserSignUpResponse);
+  rpc SupplierSignUp (SupplierSignUpRequest) returns (SupplierSignUpResponse);
 }
 
 message UserSignUpRequest {
@@ -17,6 +18,23 @@ message UserSignUpRequest {
 }
 
 message UserSignUpResponse {
+  bool is_error = 1;
+  string error = 2;
+}
+
+message SupplierSignUpRequest {
+  string first_name = 1;
+  string last_name = 2;
+  string password = 3;
+  string password_confirmation = 4;
+  string organization_name = 5;
+  string organization_address = 6;
+  string website = 7;
+  string invitation_token = 8;
+  string phone_number = 9;
+}
+
+message SupplierSignUpResponse {
   bool is_error = 1;
   string error = 2;
 }

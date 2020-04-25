@@ -2,10 +2,13 @@ syntax = "proto3";
 
 option csharp_namespace = "AutoParts.Web.Protos";
 
+import public "common.proto";
+
 package User;
 
 service GrpcSupplierService {
   rpc InviteSupplier (InviteSupplierRequest) returns (InviteSupplierResponse);
+  rpc GetSupplierEmailFromInvitation (GetSupplierEmailFromInvitationRequest) returns (GetSupplierEmailFromInvitationResponse);
 }
 
 message InviteSupplierRequest {
@@ -16,4 +19,13 @@ message InviteSupplierRequest {
 message InviteSupplierResponse {
   bool is_error = 1;
   string error = 2;
+}
+
+message GetSupplierEmailFromInvitationRequest {
+  string invitation_token = 1;
+}
+
+message GetSupplierEmailFromInvitationResponse {
+  string email = 1;
+  Common.RequestStatus status = 2;
 }

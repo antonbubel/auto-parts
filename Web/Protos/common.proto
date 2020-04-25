@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+option csharp_namespace = "AutoParts.Web.Protos";
+
+package Common;
+
+enum RequestStatus {
+  OK = 0;
+  NOT_FOUND = 1;
+  INTERNAL_SERVER_ERROR = 2;
+}

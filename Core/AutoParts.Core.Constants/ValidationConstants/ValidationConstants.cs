@@ -7,5 +7,9 @@
         public const int CarModificationDescriptionMaxLength = 200;
 
         public const int CarModificationYearMinValue = 1990;
+
+        public const int SupplierOrganizationAddressMaxLength = 200;
+
+        public const int SupplierOrganizationDescriptionMaxLength = 200;
     }
 }

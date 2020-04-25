@@ -6,8 +6,6 @@
 
     using FluentValidation;
 
-    using Microsoft.Extensions.Logging;
-    
     using System.Threading.Tasks;
 
     using Protos;
@@ -15,15 +13,16 @@
     using Core.Contracts.Users.Exceptions;
     using Core.Contracts.Users.Notifications;
 
+    using Core.Contracts.Suppliers.Exceptions;
+    using Core.Contracts.Suppliers.Notifications;
+
     public class SignUpService : GrpcSignUpService.GrpcSignUpServiceBase
     {
         private readonly IMediator mediator;
-        private readonly ILogger<SignUpService> logger;
 
-        public SignUpService(IMediator mediator, ILogger<SignUpService> logger)
+        public SignUpService(IMediator mediator)
         {
             this.mediator = mediator;
-            this.logger = logger;
         }
 
         public override async Task<UserSignUpResponse> UserSignUp(UserSignUpRequest request, ServerCallContext context)
@@ -59,6 +58,48 @@
             }
 
             return new UserSignUpResponse
+            {
+                IsError = false
+            };
+        }
+
+        public override async Task<SupplierSignUpResponse> SupplierSignUp(SupplierSignUpRequest request, ServerCallContext context)
+        {
+            var notification = new SupplierSignUpNotification()
+            {
+                FirstName = request.FirstName,
+                LastName = request.LastName,
+                PhoneNumber = request.PhoneNumber,
+                Password = request.Password,
+                PasswordConfirmation = request.PasswordConfirmation,
+                OrganizationName = request.OrganizationName,
+                OrganizationAddress = request.OrganizationAddress,
+                Website = request.Website,
+                InvitationToken = request.InvitationToken
+            };
+
+            try
+            {
+                await mediator.Publish(notification);
+            }
+            catch (ValidationException exception)
+            {
+                return new SupplierSignUpResponse
+                {
+                    IsError = true,
+                    Error = exception.Message
+                };
+            }
+            catch (SupplierSignUpException exception)
+            {
+                return new SupplierSignUpResponse
+                {
+                    IsError = true,
+                    Error = exception.Message
+                };
+            }
+
+            return new SupplierSignUpResponse
             {
                 IsError = false
             };

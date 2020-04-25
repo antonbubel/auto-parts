@@ -22,5 +22,11 @@
             return await GetQueryable()
                 .AnyAsync(supplierInvitation => supplierInvitation.NormalizedEmail == normalizedEmail);
         }
+
+        public async Task<SupplierInvitation> GetInvitationByToken(string token)
+        {
+            return await GetQueryable()
+                .FirstOrDefaultAsync(supplierInvitation => supplierInvitation.Token == token);
+        }
     }
 }

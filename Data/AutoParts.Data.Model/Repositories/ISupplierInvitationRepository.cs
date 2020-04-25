@@ -8,5 +8,7 @@
     public interface ISupplierInvitationRepository : IRepository<long, SupplierInvitation>
     {
         Task<bool> SupplierInvitationExistsByEmail(string email);
+
+        Task<SupplierInvitation> GetInvitationByToken(string token);
     }
 }

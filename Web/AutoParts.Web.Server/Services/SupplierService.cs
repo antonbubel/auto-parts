@@ -12,8 +12,11 @@
 
     using Protos;
 
+    using Core.Contracts.Suppliers.Requests;
     using Core.Contracts.Suppliers.Exceptions;
     using Core.Contracts.Suppliers.Notifications;
+
+    using Infrastructure.Exceptions;
 
     public class SupplierService : GrpcSupplierService.GrpcSupplierServiceBase
     {
@@ -57,6 +60,30 @@
             return new InviteSupplierResponse
             {
                 IsError = false
+            };
+        }
+
+        public override async Task<GetSupplierEmailFromInvitationResponse> GetSupplierEmailFromInvitation(GetSupplierEmailFromInvitationRequest request, ServerCallContext context)
+        {
+            var email = string.Empty;
+
+            try
+            {
+                email = await mediator.Send(new GetSupplierEmailByInvitationTokenRequest { Token = request.InvitationToken });
+            }
+            catch (NotFoundException)
+            {
+                return new GetSupplierEmailFromInvitationResponse
+                {
+                    Email = email,
+                    Status = RequestStatus.NotFound
+                };
+            }
+
+            return new GetSupplierEmailFromInvitationResponse
+            {
+                Email = email,
+                Status = RequestStatus.Ok
             };
         }
     }

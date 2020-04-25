@@ -38,6 +38,17 @@
                 .ForMember(profileModel => profileModel.SalesPhoneNumber, conf => conf.MapFrom(profile => profile.SalesPhoneNumber))
                 .ForMember(profileModel => profileModel.Website, conf => conf.MapFrom(profile => profile.Website))
                 .ForMember(profileModel => profileModel.LogoUrl, conf => conf.MapFrom(profile => profile.Logo));
+
+            CreateMap<UpdateSupplierProfileNotification, SupplierProfile>()
+                .ForMember(profile => profile.Id, conf => conf.Ignore())
+                .ForMember(profile => profile.User, conf => conf.Ignore())
+                .ForMember(profile => profile.Logo, conf => conf.Ignore())
+                .ForMember(profile => profile.OrganizationName, conf => conf.MapFrom(notification => notification.OrganizationName))
+                .ForMember(profile => profile.OrganizationAddress, conf => conf.MapFrom(notification => notification.OrganizationAddress))
+                .ForMember(profile => profile.OrganizationDescription, conf => conf.MapFrom(notification => notification.OrganizationDescription))
+                .ForMember(profile => profile.SalesEmail, conf => conf.MapFrom(notification => notification.SalesEmail))
+                .ForMember(profile => profile.SalesPhoneNumber, conf => conf.MapFrom(notification => notification.SalesPhoneNumber))
+                .ForMember(profile => profile.Website, conf => conf.MapFrom(notification => notification.Website));
         }
     }
 }

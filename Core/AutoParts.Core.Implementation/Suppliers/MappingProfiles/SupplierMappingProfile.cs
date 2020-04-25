@@ -2,6 +2,7 @@
 {
     using AutoMapper;
 
+    using Contracts.Suppliers.Models;
     using Contracts.Suppliers.Notifications;
 
     using Data.Model.Entities;
@@ -25,6 +26,18 @@
                 .ForMember(profile => profile.OrganizationAddress, conf => conf.MapFrom(notification => notification.OrganizationAddress))
                 .ForMember(profile => profile.Website, conf => conf.MapFrom(notification => notification.Website));
 
+            CreateMap<SupplierProfile, SupplierPrivateProfileModel>()
+                .ForMember(profileModel => profileModel.Id, conf => conf.MapFrom(profile => profile.Id))
+                .ForMember(profileModel => profileModel.FirstName, conf => conf.MapFrom(profile => profile.User.FirstName))
+                .ForMember(profileModel => profileModel.LastName, conf => conf.MapFrom(profile => profile.User.LastName))
+                .ForMember(profileModel => profileModel.PhoneNumber, conf => conf.MapFrom(profile => profile.User.PhoneNumber))
+                .ForMember(profileModel => profileModel.OrganizationName, conf => conf.MapFrom(profile => profile.OrganizationName))
+                .ForMember(profileModel => profileModel.OrganizationAddress, conf => conf.MapFrom(profile => profile.OrganizationAddress))
+                .ForMember(profileModel => profileModel.OrganizationDescription, conf => conf.MapFrom(profile => profile.OrganizationDescription))
+                .ForMember(profileModel => profileModel.SalesEmail, conf => conf.MapFrom(profile => profile.SalesEmail))
+                .ForMember(profileModel => profileModel.SalesPhoneNumber, conf => conf.MapFrom(profile => profile.SalesPhoneNumber))
+                .ForMember(profileModel => profileModel.Website, conf => conf.MapFrom(profile => profile.Website))
+                .ForMember(profileModel => profileModel.LogoUrl, conf => conf.MapFrom(profile => profile.Logo));
         }
     }
 }

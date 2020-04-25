@@ -8,6 +8,8 @@
 
     using System.Threading.Tasks;
 
+    using Microsoft.AspNetCore.Authorization;
+
     using Protos;
 
     using Core.Contracts.Suppliers.Exceptions;
@@ -22,6 +24,7 @@
             this.mediator = mediator;
         }
 
+        [Authorize(nameof(UserType.Administrator))]
         public override async Task<InviteSupplierResponse> IniteSupplier(InviteSupplierRequest request, ServerCallContext context)
         {
             var notification = new InviteSupplierNotification

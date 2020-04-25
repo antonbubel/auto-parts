@@ -55,6 +55,17 @@
                 .ForMember(profile => profile.Id, conf => conf.MapFrom(projection => projection.Id))
                 .ForMember(profile => profile.Name, conf => conf.MapFrom(projection => projection.OrganizationName))
                 .ForMember(profile => profile.LogoUrl, conf => conf.MapFrom(projection => projection.Logo));
+
+            CreateMap<SupplierProfile, SupplierPublicProfileModel>()
+                .ForMember(profileModel => profileModel.Id, conf => conf.MapFrom(profile => profile.Id))
+                .ForMember(profileModel => profileModel.Name, conf => conf.MapFrom(profile => profile.OrganizationName))
+                .ForMember(profileModel => profileModel.OrganizationAddress, conf => conf.MapFrom(profile => profile.OrganizationAddress))
+                .ForMember(profileModel => profileModel.OrganizationDescription, conf => conf.MapFrom(profile => profile.OrganizationDescription))
+                .ForMember(profileModel => profileModel.SalesEmail, conf => conf.MapFrom(profile => profile.SalesEmail))
+                .ForMember(profileModel => profileModel.SalesPhoneNumber, conf => conf.MapFrom(profile => profile.SalesPhoneNumber))
+                .ForMember(profileModel => profileModel.Website, conf => conf.MapFrom(profile => profile.Website))
+                .ForMember(profileModel => profileModel.LogoUrl, conf => conf.MapFrom(profile => profile.Logo));
+
         }
     }
 }

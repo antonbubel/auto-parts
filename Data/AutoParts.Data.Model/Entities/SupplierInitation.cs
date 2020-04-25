@@ -2,9 +2,11 @@
 {
     using Base;
 
-    public class SupplierInitation : BaseEntity<long>
+    public class SupplierInvitation : BaseEntity<long>
     {
         public string Email { get; set; }
+
+        public string NormalizedEmail { get; set; }
 
         public string Name { get; set; }
 

@@ -7,14 +7,55 @@ namespace AutoParts.Data.EF.Migrations.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "SupplierInitations",
+                name: "SupplierInvitations",
                 columns: table => new
                 {
                     Id = table.Column<long>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Email = table.Column<string>(nullable: false),
+                    NormalizedEmail = table.Column<string>(nullable: true),
                     Name = table.Column<string>(maxLength: 50, nullable: false),
                     Token = table.Column<string>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_SupplierInvitations", x => x.Id);
+                });
+
+            migrationBuilder.UpdateData(
+                table: "AspNetRoles",
+                keyColumn: "Id",
+                keyValue: 1L,
+                column: "ConcurrencyStamp",
+                value: "dc255920-271e-4af0-aa60-440da92b6520");
+
+            migrationBuilder.UpdateData(
+                table: "AspNetRoles",
+                keyColumn: "Id",
+                keyValue: 2L,
+                column: "ConcurrencyStamp",
+                value: "e03a66c6-94e2-42e6-aa93-904d4f9f1d61");
+
+            migrationBuilder.UpdateData(
+                table: "AspNetRoles",
+                keyColumn: "Id",
+                keyValue: 3L,
+                column: "ConcurrencyStamp",
+                value: "8b49c19f-1978-4b3a-b66a-b6297b7dedea");
+        }
+
+        protected override void Down(MigrationBuilder migrationBuilder)
+        {
+            migrationBuilder.CreateTable(
+                name: "SupplierInitations",
+                columns: table => new
+                {
+                    Id = table.Column<long>(type: "bigint", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    NormalizedEmail = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Token = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -26,48 +67,21 @@ namespace AutoParts.Data.EF.Migrations.Migrations
                 keyColumn: "Id",
                 keyValue: 1L,
                 column: "ConcurrencyStamp",
-                value: "9ab7fd25-43ab-46f9-9c02-ea82cd42e1e2");
+                value: "226375ab-bb08-47df-ba6b-e5d8af1ec0de");
 
             migrationBuilder.UpdateData(
                 table: "AspNetRoles",
                 keyColumn: "Id",
                 keyValue: 2L,
                 column: "ConcurrencyStamp",
-                value: "e30ae510-d17e-4a92-b0bf-500735b99882");
+                value: "1cd39921-84e5-4b83-961d-139b12296660");
 
             migrationBuilder.UpdateData(
                 table: "AspNetRoles",
                 keyColumn: "Id",
                 keyValue: 3L,
                 column: "ConcurrencyStamp",
-                value: "e5ea9b2b-1def-4b2e-b17d-c605f4b42796");
-        }
-
-        protected override void Down(MigrationBuilder migrationBuilder)
-        {
-            migrationBuilder.DropTable(
-                name: "SupplierInitations");
-
-            migrationBuilder.UpdateData(
-                table: "AspNetRoles",
-                keyColumn: "Id",
-                keyValue: 1L,
-                column: "ConcurrencyStamp",
-                value: "a4585434-bdee-45ae-bbcb-0d44111bb19c");
-
-            migrationBuilder.UpdateData(
-                table: "AspNetRoles",
-                keyColumn: "Id",
-                keyValue: 2L,
-                column: "ConcurrencyStamp",
-                value: "4159157a-75b7-4986-8fe9-53188b9e846f");
-
-            migrationBuilder.UpdateData(
-                table: "AspNetRoles",
-                keyColumn: "Id",
-                keyValue: 3L,
-                column: "ConcurrencyStamp",
-                value: "f100582b-f41e-4930-8e82-7454b64d2b50");
+                value: "be3167ea-8568-4a53-973e-e296e89114f8");
         }
     }
 }

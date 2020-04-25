@@ -5,9 +5,9 @@
 
     using Model.Entities;
 
-    public class SupplierInvitationMap : IEntityTypeConfiguration<SupplierInitation>
+    public class SupplierInvitationMap : IEntityTypeConfiguration<SupplierInvitation>
     {
-        public void Configure(EntityTypeBuilder<SupplierInitation> builder)
+        public void Configure(EntityTypeBuilder<SupplierInvitation> builder)
         {
             builder
                 .Property(supplierInvitation => supplierInvitation.Name)
@@ -15,11 +15,11 @@
                 .IsRequired();
 
             builder
-                .Property(supplierInitation => supplierInitation.Email)
+                .Property(supplierInvitation => supplierInvitation.Email)
                 .IsRequired();
 
             builder
-                .Property(supplierInitation => supplierInitation.Token)
+                .Property(supplierInvitation => supplierInvitation.Token)
                 .IsRequired();
         }
     }

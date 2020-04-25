@@ -164,27 +164,27 @@ namespace AutoParts.Data.EF.Migrations.Migrations
                         new
                         {
                             Id = 1L,
-                            ConcurrencyStamp = "9ab7fd25-43ab-46f9-9c02-ea82cd42e1e2",
+                            ConcurrencyStamp = "dc255920-271e-4af0-aa60-440da92b6520",
                             Name = "User",
                             NormalizedName = "USER"
                         },
                         new
                         {
                             Id = 2L,
-                            ConcurrencyStamp = "e30ae510-d17e-4a92-b0bf-500735b99882",
+                            ConcurrencyStamp = "e03a66c6-94e2-42e6-aa93-904d4f9f1d61",
                             Name = "Supplier",
                             NormalizedName = "SUPPLIER"
                         },
                         new
                         {
                             Id = 3L,
-                            ConcurrencyStamp = "e5ea9b2b-1def-4b2e-b17d-c605f4b42796",
+                            ConcurrencyStamp = "8b49c19f-1978-4b3a-b66a-b6297b7dedea",
                             Name = "Administrator",
                             NormalizedName = "ADMINISTRATOR"
                         });
                 });
 
-            modelBuilder.Entity("AutoParts.Data.Model.Entities.SupplierInitation", b =>
+            modelBuilder.Entity("AutoParts.Data.Model.Entities.SupplierInvitation", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
@@ -200,13 +200,16 @@ namespace AutoParts.Data.EF.Migrations.Migrations
                         .HasColumnType("nvarchar(50)")
                         .HasMaxLength(50);
 
+                    b.Property<string>("NormalizedEmail")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Token")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
-                    b.ToTable("SupplierInitations");
+                    b.ToTable("SupplierInvitations");
                 });
 
             modelBuilder.Entity("AutoParts.Data.Model.Entities.User", b =>

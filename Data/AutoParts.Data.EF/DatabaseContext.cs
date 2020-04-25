@@ -29,7 +29,7 @@
 
         public DbSet<AutoPartsCatalogSubGroup> AutoPartsCatalogSubGroups { get; set; }
 
-        public DbSet<SupplierInitation> SupplierInitations { get; set; }
+        public DbSet<SupplierInvitation> SupplierInvitations { get; set; }
 
         public DatabaseContext(DbContextOptions<DatabaseContext> options)
             : base(options)

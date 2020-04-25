@@ -5,7 +5,7 @@ option csharp_namespace = "AutoParts.Web.Protos";
 package User;
 
 service GrpcSupplierService {
-  rpc IniteSupplier (InviteSupplierRequest) returns (InviteSupplierResponse);
+  rpc InviteSupplier (InviteSupplierRequest) returns (InviteSupplierResponse);
 }
 
 message InviteSupplierRequest {

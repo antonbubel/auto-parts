@@ -25,7 +25,7 @@
         }
 
         [Authorize(nameof(UserType.Administrator))]
-        public override async Task<InviteSupplierResponse> IniteSupplier(InviteSupplierRequest request, ServerCallContext context)
+        public override async Task<InviteSupplierResponse> InviteSupplier(InviteSupplierRequest request, ServerCallContext context)
         {
             var notification = new InviteSupplierNotification
             {

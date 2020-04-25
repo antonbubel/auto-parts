@@ -70,11 +70,13 @@
 
     private int[] AvailableCarModificationYears => CarModifications.Select(carModification => carModification.Year)
         .Distinct()
+        .OrderBy(year => year)
         .ToArray();
 
     private CarModification[] FilteredCarModifications => CarModifications
         .Where(carModification => SelectedCarModificationYear.HasValue ? carModification.Year == SelectedCarModificationYear.Value : true)
         .Where(carModification => SearchText.ToLowerInvariant().Split((string)null, StringSplitOptions.RemoveEmptyEntries).All(match => carModification.Name.ToLowerInvariant().Contains(match)))
+        .OrderBy(carModification => carModification.Year)
         .ToArray();
 
     private string SearchText { get; set; } = string.Empty;

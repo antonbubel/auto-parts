@@ -19,18 +19,18 @@
             mediator = new Mediator(serviceFactory);
         }
 
-        public Task Publish(object notification, CancellationToken cancellationToken = default)
+        public async Task Publish(object notification, CancellationToken cancellationToken = default)
         {
-            ValidateNotification(notification);
+            await ValidateNotification(notification);
 
-            return mediator.Publish(notification, cancellationToken);
+            await mediator.Publish(notification, cancellationToken);
         }
 
-        public Task Publish<TNotification>(TNotification notification, CancellationToken cancellationToken = default) where TNotification : INotification
+        public async Task Publish<TNotification>(TNotification notification, CancellationToken cancellationToken = default) where TNotification : INotification
         {
-            ValidateNotification(notification);
+            await ValidateNotification(notification);
 
-            return mediator.Publish(notification, cancellationToken);
+            await mediator.Publish(notification, cancellationToken);
         }
 
         public Task<TResponse> Send<TResponse>(IRequest<TResponse> request, CancellationToken cancellationToken = default)
@@ -38,7 +38,7 @@
             return mediator.Send(request);
         }
 
-        private void ValidateNotification(object notification)
+        private async Task ValidateNotification(object notification)
         {
             var validatorType = typeof(IValidator<>).MakeGenericType(notification.GetType());
 
@@ -48,7 +48,7 @@
             {
                 var validationContext = new ValidationContext(notification);
 
-                var validationResult = validator.Validate(validationContext);
+                var validationResult = await validator.ValidateAsync(validationContext);
 
                 if (validationResult != null && !validationResult.IsValid)
                 {

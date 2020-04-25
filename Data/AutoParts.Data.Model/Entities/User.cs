@@ -13,5 +13,7 @@
         public UserTypeEnum UserTypeId { get; set; }
 
         public virtual UserType UserType { get; set; }
+
+        public virtual SupplierProfile SupplierProfile { get; set; }
     }
 }

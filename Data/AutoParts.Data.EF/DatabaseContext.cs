@@ -31,6 +31,8 @@
 
         public DbSet<SupplierInvitation> SupplierInvitations { get; set; }
 
+        public DbSet<SupplierProfile> SupplierProfiles { get; set; }
+
         public DatabaseContext(DbContextOptions<DatabaseContext> options)
             : base(options)
         {

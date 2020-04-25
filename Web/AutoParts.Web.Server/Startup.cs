@@ -1,6 +1,9 @@
 ﻿namespace AutoParts.Web.Server
 {
+    using AutoMapper;
+
     using System;
+    using System.IO;
     using System.Linq;
     using System.Security.Claims;
 
@@ -13,6 +16,7 @@
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Hosting;
     using Microsoft.IdentityModel.Tokens;
+    using Microsoft.Extensions.FileProviders;
 
     using AutoParts.Core.Implementation;
     using AutoParts.Data.EF.Migrations;
@@ -21,9 +25,8 @@
     using AutoParts.Infrastructure.Web.Options;
     using AutoParts.Web.Server.Services;
     using AutoParts.Core.Constants;
-    using Microsoft.Extensions.FileProviders;
-    using System.IO;
     using AutoParts.Core.Constants.Enums;
+    using AutoParts.Data.EF;
 
     public class Startup
     {
@@ -49,6 +52,8 @@
             services.ConfigureDataAccess(Configuration);
 
             services.ConfigureBusinessLayer(Configuration);
+
+            services.AddAutoMapper(typeof(BusinessLayerConfigurationExtensions).Assembly, typeof(DatabaseContext).Assembly);
 
             services.AddLogging();
 

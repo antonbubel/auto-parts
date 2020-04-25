@@ -2,6 +2,7 @@
 {
     using MediatR;
 
+    using System;
     using System.Threading;
     using System.Threading.Tasks;
 
@@ -22,6 +23,11 @@
 
         public async Task<string> Handle(GetSupplierEmailByInvitationTokenRequest request, CancellationToken cancellationToken)
         {
+            if (request == null)
+            {
+                throw new ArgumentNullException($"{nameof(request)} of type {nameof(GetSupplierEmailByInvitationTokenRequest)} argument cannot be null.");
+            }
+
             var supplierInvitation = await supplierInvitationRepository.GetInvitationByToken(request.Token)
                 .ConfigureAwait(false);
 

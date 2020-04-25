@@ -27,16 +27,10 @@
         {
             var executingAssembly = Assembly.GetExecutingAssembly();
 
-            RegisterAutoMapper(services, executingAssembly);
             RegisterMediatR(services, executingAssembly);
             RegisterValidators(services, executingAssembly);
             RegisterOptions(services, configuration);
             RegisterSendGrid(services, configuration);
-        }
-
-        private static void RegisterAutoMapper(IServiceCollection services, Assembly assembly)
-        {
-            services.AddAutoMapper(assembly);
         }
 
         private static void RegisterMediatR(IServiceCollection services, Assembly assembly)

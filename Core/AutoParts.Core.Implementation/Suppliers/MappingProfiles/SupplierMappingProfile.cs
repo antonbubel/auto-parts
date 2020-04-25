@@ -6,6 +6,7 @@
     using Contracts.Suppliers.Notifications;
 
     using Data.Model.Entities;
+    using Data.Model.Projections;
     using UserTypeEnum = Data.Model.Enums.UserType;
 
     public class SupplierMappingProfile : Profile
@@ -49,6 +50,11 @@
                 .ForMember(profile => profile.SalesEmail, conf => conf.MapFrom(notification => notification.SalesEmail))
                 .ForMember(profile => profile.SalesPhoneNumber, conf => conf.MapFrom(notification => notification.SalesPhoneNumber))
                 .ForMember(profile => profile.Website, conf => conf.MapFrom(notification => notification.Website));
+
+            CreateMap<ShortSupplierProfileProjection, SupplierShortPublicProfileModel>()
+                .ForMember(profile => profile.Id, conf => conf.MapFrom(projection => projection.Id))
+                .ForMember(profile => profile.Name, conf => conf.MapFrom(projection => projection.OrganizationName))
+                .ForMember(profile => profile.LogoUrl, conf => conf.MapFrom(projection => projection.Logo));
         }
     }
 }

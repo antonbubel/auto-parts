@@ -1,3 +1,5 @@
+using AutoMapper;
+using AutoParts.Data.EF;
 using AutoParts.Data.EF.Migrations;
 using AutoParts.Data.Model.Entities;
 using AutoParts.Utilities.Common.Constants;
@@ -51,6 +53,8 @@ namespace AutoParts.Web.IdentityServer
             });
 
             services.ConfigureDataAccess(Configuration);
+
+            services.AddAutoMapper(typeof(DatabaseContext).Assembly);
 
             services.AddMvc();
 

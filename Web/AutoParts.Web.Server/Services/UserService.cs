@@ -38,6 +38,7 @@
             return mapper.Map<GetCurrentUserInfoResponse>(user);
         }
 
+        [AllowAnonymous]
         public override async Task<GetRefreshedTokenResponse> GetRefreshedToken(GetRefreshedTokenRequest request, ServerCallContext context)
         {
             var response = await identityClient.GetRefreshedTokenAsync(request.RefreshToken);

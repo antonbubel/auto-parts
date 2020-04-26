@@ -1,5 +1,7 @@
 ﻿namespace AutoParts.Web.Server.Services
 {
+    using AutoMapper;
+
     using Grpc.Core;
 
     using MediatR;
@@ -7,8 +9,6 @@
     using FluentValidation;
 
     using Microsoft.AspNetCore.Authorization;
-
-    using System.Linq;
 
     using System.Threading.Tasks;
 
@@ -20,10 +20,12 @@
 
     public class CarModificationService : GrpcCarModificationService.GrpcCarModificationServiceBase
     {
+        private readonly IMapper mapper;
         private readonly IMediator mediator;
 
-        public CarModificationService(IMediator mediator)
+        public CarModificationService(IMapper mapper, IMediator mediator)
         {
+            this.mapper = mapper;
             this.mediator = mediator;
         }
 
@@ -39,18 +41,7 @@
 
             var response = new GetCarModificationsResponse();
 
-            var responseCarModifications = carModifications
-                .Select(carModification =>
-                    new CarModification
-                    {
-                        Id = carModification.Id,
-                        Name = carModification.Name,
-                        Description = carModification.Description ?? string.Empty,
-                        Year = carModification.Year
-                    })
-                .ToArray();
-
-            response.CarModifications.AddRange(responseCarModifications);
+            mapper.Map(carModifications, response.CarModifications);
 
             return response;
         }
@@ -58,13 +49,7 @@
         [Authorize(nameof(UserType.Administrator))]
         public override async Task<CreateCarModificationResponse> CreateCarModification(CreateCarModificationRequest request, ServerCallContext context)
         {
-            var notification = new CreateCarModificationNotification
-            {
-                CarModelId = request.CarModelId,
-                Name = request.Name,
-                Description = request.Description,
-                Year = request.Year
-            };
+            var notification = mapper.Map<CreateCarModificationNotification>(request);
 
             try
             {
@@ -96,13 +81,7 @@
         [Authorize(nameof(UserType.Administrator))]
         public override async Task<UpdateCarModificationResponse> UpdateCarModification(UpdateCarModificationRequest request, ServerCallContext context)
         {
-            var notification = new UpdateCarModificationNotification
-            {
-                CarModificationId = request.Id,
-                Name = request.Name,
-                Description = request.Description,
-                Year = request.Year
-            };
+            var notification = mapper.Map<UpdateCarModificationNotification>(request);
 
             try
             {

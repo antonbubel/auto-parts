@@ -20,7 +20,6 @@
     using Core.Contracts.Suppliers.Notifications;
 
     using Infrastructure.Exceptions;
-    using Google.Protobuf.Collections;
 
     public class SupplierService : GrpcSupplierService.GrpcSupplierServiceBase
     {

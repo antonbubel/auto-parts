@@ -29,6 +29,7 @@
             this.mediator = mediator;
         }
 
+        [AllowAnonymous]
         public override async Task<GetCarModificationsResponse> GetCarModifications(GetCarModificationsRequest request, ServerCallContext context)
         {
             var mediatorRequest = new GetCarModificationsByModelRequest

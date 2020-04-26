@@ -1,5 +1,7 @@
 ﻿namespace AutoParts.Web.Server.Services
 {
+    using AutoMapper;
+
     using Grpc.Core;
 
     using MediatR;
@@ -21,62 +23,43 @@
 
     public class CarModelService : GrpcCarModelService.GrpcCarModelServiceBase
     {
+        private readonly IMapper mapper;
         private readonly IMediator mediator;
 
-        public CarModelService(IMediator mediator)
+        public CarModelService(IMapper mapper, IMediator mediator)
         {
+            this.mapper = mapper;
             this.mediator = mediator;
         }
 
+        [AllowAnonymous]
         public override async Task<GetCarModelResponse> GetCarModel(GetCarModelRequest request, ServerCallContext context)
         {
-            CarModelModel carModel;
+            var carModel = await mediator.Send(new GetCarModelByIdRequest { CarModelId = request.Id });
 
-            try
-            {
-                carModel = await mediator.Send(new GetCarModelByIdRequest { CarModelId = request.Id });
-            }
-            catch
+            if (carModel == null)
             {
                 return new GetCarModelResponse
                 {
-                    IsError = true
+                    Status = RequestStatus.NotFound
                 };
             }
 
             return new GetCarModelResponse
             {
-                Model = new CarModel
-                {
-                    Id = carModel.Id,
-                    CarBrandId = carModel.CarBrandId,
-                    CarBrandName = carModel.CarBrandName,
-                    Name = carModel.Name,
-                    ImageUrl = carModel.ImageUrl
-                },
-                IsError = false
+                Model = mapper.Map<CarModel>(carModel),
+                Status = RequestStatus.Ok
             };
         }
 
+        [AllowAnonymous]
         public override async Task<GetCarModelsResponse> GetCarModels(GetCarModelsRequest request, ServerCallContext context)
         {
             var carModels = await mediator.Send(new GetCarModelsByBrandRequest { CarBrandId = request.CarBrandId });
 
             var response = new GetCarModelsResponse();
 
-            var responseCarModels = carModels
-                .Select(carModel =>
-                    new CarModel
-                    {
-                        Id = carModel.Id,
-                        Name = carModel.Name,
-                        ImageUrl = carModel.ImageUrl ?? string.Empty,
-                        CarBrandId = carModel.CarBrandId,
-                        CarBrandName = carModel.CarBrandName
-                    })
-                .ToArray();
-
-            response.CarModels.AddRange(responseCarModels);
+            mapper.Map(carModels, response.CarModels);
 
             return response;
         }
@@ -84,13 +67,7 @@
         [Authorize(nameof(UserType.Administrator))]
         public override async Task<CreateCarModelResponse> CreateCarModel(CreateCarModelRequest request, ServerCallContext context)
         {
-            var notification = new CreateCarModelNotification
-            {
-                CarBrandId = request.CarBrandId,
-                Name = request.Name,
-                ImageFileName = request.ImageName,
-                ImageFileBuffer = request.Image.ToByteArray()
-            };
+            var notification = mapper.Map<CreateCarModelNotification>(request);
 
             try
             {
@@ -122,13 +99,7 @@
         [Authorize(nameof(UserType.Administrator))]
         public override async Task<UpdateCarModelResponse> UpdateCarModel(UpdateCarModelRequest request, ServerCallContext context)
         {
-            var notification = new UpdateCarModelNotification
-            {
-                CarModelId = request.Id,
-                Name = request.Name,
-                ImageFileName = request.ImageName,
-                ImageFileBuffer = request.Image.ToByteArray()
-            };
+            var notification = mapper.Map<UpdateCarModelNotification>(request);
 
             try
             {

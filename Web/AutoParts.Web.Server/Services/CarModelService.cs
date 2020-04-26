@@ -10,13 +10,10 @@
 
     using Microsoft.AspNetCore.Authorization;
 
-    using System.Linq;
-
     using System.Threading.Tasks;
 
     using Protos;
 
-    using Core.Contracts.CarModels.Models;
     using Core.Contracts.CarModels.Requests;
     using Core.Contracts.CarModels.Exceptions;
     using Core.Contracts.CarModels.Notifications;
@@ -41,14 +38,14 @@
             {
                 return new GetCarModelResponse
                 {
-                    Status = RequestStatus.NotFound
+                    Status = ResponseStatus.NotFound
                 };
             }
 
             return new GetCarModelResponse
             {
                 Model = mapper.Map<CarModel>(carModel),
-                Status = RequestStatus.Ok
+                Status = ResponseStatus.Ok
             };
         }
 

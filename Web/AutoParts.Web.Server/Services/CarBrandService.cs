@@ -1,5 +1,7 @@
 ﻿namespace AutoParts.Web.Server.Services
 {
+    using AutoMapper;
+    
     using Grpc.Core;
 
     using MediatR;
@@ -8,12 +10,10 @@
 
     using Microsoft.AspNetCore.Authorization;
 
-    using System.Linq;
     using System.Threading.Tasks;
 
     using Protos;
 
-    using Core.Contracts.CarBrands.Models;
     using Core.Contracts.CarBrands.Requests;
     using Core.Contracts.CarBrands.Exceptions;
     using Core.Contracts.CarBrands.Notifications;
@@ -22,58 +22,43 @@
 
     public class CarBrandService : GrpcCarBrandService.GrpcCarBrandServiceBase
     {
+        private readonly IMapper mapper;
         private readonly IMediator mediator;
 
-        public CarBrandService(IMediator mediator)
+        public CarBrandService(IMapper mapper, IMediator mediator)
         {
+            this.mapper = mapper;
             this.mediator = mediator;
         }
 
+        [AllowAnonymous]
         public override async Task<GetCarBrandResponse> GetCarBrand(GetCarBrandRequest request, ServerCallContext context)
         {
-            CarBrandModel carBrand;
+            var carBrand = await mediator.Send(new GetCarBrandByIdRequest { CarBrandId = request.Id });
 
-            try
-            {
-                carBrand = await mediator.Send(new GetCarBrandByIdRequest { CarBrandId = request.Id });
-            }
-            catch
+            if (carBrand == null)
             {
                 return new GetCarBrandResponse
                 {
-                    IsError = true
+                    Status = ResponseStatus.NotFound
                 };
             }
 
             return new GetCarBrandResponse
             {
-                Model = new CarBrand
-                {
-                    Id = carBrand.Id,
-                    Name = carBrand.Name,
-                    ImageUrl = carBrand.ImageUrl
-                },
-                IsError = false
+                Model = mapper.Map<CarBrand>(carBrand),
+                Status = ResponseStatus.Ok
             };
         }
 
+        [AllowAnonymous]
         public override async Task<GetCarBrandsResponse> GetCarBrands(Protos.GetCarBrandsRequest request, ServerCallContext context)
         {
             var carBrands = await mediator.Send(new GetCarBrandsRequest());
 
             var response = new GetCarBrandsResponse();
 
-            var responseCarBrands = carBrands
-                .Select(carBrand =>
-                    new CarBrand
-                    {
-                        Id = carBrand.Id,
-                        Name = carBrand.Name,
-                        ImageUrl = carBrand.ImageUrl ?? string.Empty
-                    })
-                .ToArray();
-
-            response.CarBrands.AddRange(responseCarBrands);
+            mapper.Map(carBrands, response.CarBrands);
 
             return response;
         }
@@ -81,12 +66,7 @@
         [Authorize(nameof(UserType.Administrator))]
         public override async Task<CreateCarBrandResponse> CreateCarBrand(CreateCarBrandRequest request, ServerCallContext context)
         {
-            var notification = new CreateCarBrandNotification
-            {
-                Name = request.Name,
-                ImageFileName = request.ImageName,
-                ImageFileBuffer = request.Image.ToByteArray()
-            };
+            var notification = mapper.Map<CreateCarBrandNotification>(request);
 
             try
             {
@@ -118,13 +98,7 @@
         [Authorize(nameof(UserType.Administrator))]
         public override async Task<UpdateCarBrandResponse> UpdateCarBrand(UpdateCarBrandRequest request, ServerCallContext context)
         {
-            var notification = new UpdateCarBrandNotification
-            {
-                CarBrandId = request.Id,
-                Name = request.Name,
-                ImageFileName = request.ImageName,
-                ImageFileBuffer = request.Image.ToByteArray()
-            };
+            var notification = mapper.Map<UpdateCarBrandNotification>(request);
 
             try
             {

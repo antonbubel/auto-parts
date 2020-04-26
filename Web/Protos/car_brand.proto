@@ -2,6 +2,8 @@ syntax = "proto3";
 
 option csharp_namespace = "AutoParts.Web.Protos";
 
+import public "common.proto";
+
 package CarBrand;
 
 service GrpcCarBrandService {
@@ -25,7 +27,7 @@ message GetCarBrandRequest {
 
 message GetCarBrandResponse {
   CarBrand model = 1;
-  bool is_error = 2;
+  Common.ResponseStatus status = 2;
 }
 
 message CarBrand {

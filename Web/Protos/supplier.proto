@@ -32,7 +32,7 @@ message GetSupplierEmailFromInvitationRequest {
 
 message GetSupplierEmailFromInvitationResponse {
   string email = 1;
-  Common.RequestStatus status = 2;
+  Common.ResponseStatus status = 2;
 }
 
 message GetCurrentUserSupplierPrivateProfileRequest {
@@ -48,7 +48,7 @@ message GetSupplierPrivateProfileByIdRequest {
 
 message GetSupplierPrivateProfileByIdResponse {
   SupplierPrivateProfile model = 1;
-  Common.RequestStatus status = 2;
+  Common.ResponseStatus status = 2;
 }
 
 message GetSupplierPublicProfileByIdRequest {
@@ -57,7 +57,7 @@ message GetSupplierPublicProfileByIdRequest {
 
 message GetSupplierPublicProfileByIdResponse {
   SupplierPublicProfile model = 1;
-  Common.RequestStatus status = 2;
+  Common.ResponseStatus status = 2;
 }
 
 message GetSuppliersResponse {

@@ -20,7 +20,7 @@ message GetCarModelRequest {
 
 message GetCarModelResponse {
   CarModel model = 1;
-  Common.RequestStatus status = 2;
+  Common.ResponseStatus status = 2;
 }
 
 message GetCarModelsRequest {

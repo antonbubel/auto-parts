@@ -8,9 +8,9 @@
 
     using Converters;
 
-    public class CommonProfile : Profile
+    public class CommonMappingProfile : Profile
     {
-        public CommonProfile()
+        public CommonMappingProfile()
         {
             CreateMap(typeof(IEnumerable<>), typeof(RepeatedField<>))
                 .ConvertUsing(typeof(EnumerableToRepeatedFieldTypeConverter<,>));

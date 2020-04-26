@@ -115,14 +115,14 @@
                 return new GetSupplierEmailFromInvitationResponse
                 {
                     Email = email,
-                    Status = RequestStatus.NotFound
+                    Status = ResponseStatus.NotFound
                 };
             }
 
             return new GetSupplierEmailFromInvitationResponse
             {
                 Email = email,
-                Status = RequestStatus.Ok
+                Status = ResponseStatus.Ok
             };
         }
 
@@ -151,14 +151,14 @@
             {
                 return new GetSupplierPrivateProfileByIdResponse
                 {
-                    Status = RequestStatus.NotFound
+                    Status = ResponseStatus.NotFound
                 };
             }
 
             return new GetSupplierPrivateProfileByIdResponse
             {
                 Model = mapper.Map<SupplierPrivateProfile>(profile),
-                Status = RequestStatus.Ok
+                Status = ResponseStatus.Ok
             };
         }
 
@@ -175,14 +175,14 @@
             {
                 return new GetSupplierPublicProfileByIdResponse
                 {
-                    Status = RequestStatus.NotFound
+                    Status = ResponseStatus.NotFound
                 };
             }
 
             return new GetSupplierPublicProfileByIdResponse
             {
                 Model = mapper.Map<SupplierPublicProfile>(profile),
-                Status = RequestStatus.Ok
+                Status = ResponseStatus.Ok
             };
         }
 

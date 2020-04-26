@@ -7,9 +7,9 @@
     using Core.Contracts.Users.Notifications;
     using Core.Contracts.Suppliers.Notifications;
 
-    public class SignUpProfile : Profile
+    public class SignUpMappingProfile : Profile
     {
-        public SignUpProfile()
+        public SignUpMappingProfile()
         {
             CreateMap<UserSignUpRequest, UserSignUpNotification>()
                 .ForMember(notification => notification.Email, conf => conf.MapFrom(request => request.Email))

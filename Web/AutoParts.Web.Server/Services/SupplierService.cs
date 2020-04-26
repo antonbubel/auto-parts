@@ -20,6 +20,7 @@
     using Core.Contracts.Suppliers.Notifications;
 
     using Infrastructure.Exceptions;
+    using Google.Protobuf.Collections;
 
     public class SupplierService : GrpcSupplierService.GrpcSupplierServiceBase
     {
@@ -190,10 +191,10 @@
         public override async Task<GetSuppliersResponse> GetSuppliers(PaginationFilter request, ServerCallContext context)
         {
             var suppliers = await mediator.Send(new GetSuppliersRequest { PageNumber = request.PageNumber, PageSize = request.PageSize });
-            var models = mapper.Map<SupplierShortPublicProfile[]>(suppliers);
 
             var response = new GetSuppliersResponse();
-            response.Suppliers.AddRange(models);
+
+            mapper.Map(suppliers, response.Suppliers);
 
             return response;
         }

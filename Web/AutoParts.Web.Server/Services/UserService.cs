@@ -1,12 +1,13 @@
 ﻿namespace AutoParts.Web.Server.Services
 {
+    using AutoMapper;
+
     using MediatR;
 
     using Grpc.Core;
 
     using Microsoft.AspNetCore.Authorization;
 
-    using System;
     using System.Threading.Tasks;
 
     using Protos;
@@ -17,11 +18,13 @@
 
     public class UserService : GrpcUserService.GrpcUserServiceBase
     {
+        private readonly IMapper mapper;
         private readonly IMediator mediator;
         private readonly IIdentityClient identityClient;
 
-        public UserService(IMediator mediator, IIdentityClient identityClient)
+        public UserService(IMapper mapper, IMediator mediator, IIdentityClient identityClient)
         {
+            this.mapper = mapper;
             this.mediator = mediator;
             this.identityClient = identityClient;
         }
@@ -30,32 +33,16 @@
         public override async Task<GetCurrentUserInfoResponse> GetCurrentUserInfo(GetCurrentUserInfoRequest request, ServerCallContext context)
         {
             var userId = context.GetLoggedInUserId();
-
             var user = await mediator.Send(new GetUserInfoRequest { UserId = userId.Value });
 
-            return new GetCurrentUserInfoResponse
-            {
-                Id = user.Id,
-                FirstName = user.FirstName,
-                LastName = user.LastName,
-                Email = user.Email,
-                UserType = (UserType)Enum.Parse(typeof(UserType), user.UserType.ToString())
-            };
+            return mapper.Map<GetCurrentUserInfoResponse>(user);
         }
 
         public override async Task<GetRefreshedTokenResponse> GetRefreshedToken(GetRefreshedTokenRequest request, ServerCallContext context)
         {
             var response = await identityClient.GetRefreshedTokenAsync(request.RefreshToken);
 
-            return new GetRefreshedTokenResponse
-            {
-                AccessToken = response.AccessToken ?? string.Empty,
-                RefreshToken = response.RefreshToken ?? string.Empty,
-                TokenType = response.TokenType ?? string.Empty,
-                IsError = response.IsError,
-                Error = response.Error ?? string.Empty,
-                ErrorDescription = response.ErrorDescription ?? string.Empty
-            };
+            return mapper.Map<GetRefreshedTokenResponse>(response);
         }
 
         [Authorize]

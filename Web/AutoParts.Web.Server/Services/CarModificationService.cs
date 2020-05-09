@@ -48,7 +48,7 @@
         }
 
         [Authorize(nameof(UserType.Administrator))]
-        public override async Task<CreateCarModificationResponse> CreateCarModification(CreateCarModificationRequest request, ServerCallContext context)
+        public override async Task<ServiceResponse> CreateCarModification(CreateCarModificationRequest request, ServerCallContext context)
         {
             var notification = mapper.Map<CreateCarModificationNotification>(request);
 
@@ -58,29 +58,18 @@
             }
             catch (ValidationException exception)
             {
-                return new CreateCarModificationResponse
-                {
-                    IsError = true,
-                    Error = exception.Message
-                };
+                return ServiceResponseBuilder.FromValidationException(exception);
             }
             catch (CreateCarModificationException exception)
             {
-                return new CreateCarModificationResponse
-                {
-                    IsError = true,
-                    Error = exception.Message
-                };
+                return ServiceResponseBuilder.FromApiException(exception);
             }
 
-            return new CreateCarModificationResponse
-            {
-                IsError = false
-            };
+            return ServiceResponseBuilder.Ok;
         }
 
         [Authorize(nameof(UserType.Administrator))]
-        public override async Task<UpdateCarModificationResponse> UpdateCarModification(UpdateCarModificationRequest request, ServerCallContext context)
+        public override async Task<ServiceResponse> UpdateCarModification(UpdateCarModificationRequest request, ServerCallContext context)
         {
             var notification = mapper.Map<UpdateCarModificationNotification>(request);
 
@@ -90,29 +79,18 @@
             }
             catch (ValidationException exception)
             {
-                return new UpdateCarModificationResponse
-                {
-                    IsError = true,
-                    Error = exception.Message
-                };
+                return ServiceResponseBuilder.FromValidationException(exception);
             }
             catch (UpdateCarModificationException exception)
             {
-                return new UpdateCarModificationResponse
-                {
-                    IsError = true,
-                    Error = exception.Message
-                };
+                return ServiceResponseBuilder.FromApiException(exception);
             }
 
-            return new UpdateCarModificationResponse
-            {
-                IsError = false
-            };
+            return ServiceResponseBuilder.Ok;
         }
 
         [Authorize(nameof(UserType.Administrator))]
-        public override async Task<DeleteCarModificationResponse> DeleteCarModification(DeleteCarModificationRequest request, ServerCallContext context)
+        public override async Task<ServiceResponse> DeleteCarModification(DeleteCarModificationRequest request, ServerCallContext context)
         {
             var notification = new DeleteCarModificationNotification
             {
@@ -125,17 +103,10 @@
             }
             catch (DeleteCarModificationException exception)
             {
-                return new DeleteCarModificationResponse
-                {
-                    IsError = true,
-                    Error = exception.Message
-                };
+                return ServiceResponseBuilder.FromApiException(exception);
             }
 
-            return new DeleteCarModificationResponse
-            {
-                IsError = false
-            };
+            return ServiceResponseBuilder.Ok;
         }
     }
 }

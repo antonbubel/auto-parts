@@ -29,7 +29,7 @@ namespace AutoParts.Web.Client.Public.User.Services
 
             var response = await signUpServiceClient.UserSignUpAsync(request);
 
-            return !response.IsError;
+            return response.Status == ResponseStatus.Ok;
         }
 
         public async Task<bool> SupplierSignUp(SupplierSignUpFormModel form)
@@ -49,7 +49,7 @@ namespace AutoParts.Web.Client.Public.User.Services
 
             var response = await signUpServiceClient.SupplierSignUpAsync(request);
 
-            return !response.IsError;
+            return response.Status == ResponseStatus.Ok;
         }
 
         public async Task<GetSupplierEmailFromInvitationResponse> GetSupplierEmailFromInvitation(string invitationToken)

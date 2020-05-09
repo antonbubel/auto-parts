@@ -9,9 +9,9 @@ package CarModel;
 service GrpcCarModelService {
   rpc GetCarModel (GetCarModelRequest) returns (GetCarModelResponse);
   rpc GetCarModels (GetCarModelsRequest) returns (GetCarModelsResponse);
-  rpc CreateCarModel (CreateCarModelRequest) returns (CreateCarModelResponse);
-  rpc UpdateCarModel (UpdateCarModelRequest) returns (UpdateCarModelResponse);
-  rpc DeleteCarModel (DeleteCarModelRequest) returns (DeleteCarModelResponse);
+  rpc CreateCarModel (CreateCarModelRequest) returns (Common.ServiceResponse);
+  rpc UpdateCarModel (UpdateCarModelRequest) returns (Common.ServiceResponse);
+  rpc DeleteCarModel (DeleteCarModelRequest) returns (Common.ServiceResponse);
 }
 
 message GetCarModelRequest {
@@ -46,11 +46,6 @@ message CreateCarModelRequest {
   bytes image = 4;
 }
 
-message CreateCarModelResponse {
-  bool is_error = 1;
-  string error = 2;
-}
-
 message UpdateCarModelRequest {
   int64 id = 1;
   string name = 2;
@@ -58,16 +53,6 @@ message UpdateCarModelRequest {
   bytes image = 4;
 }
 
-message UpdateCarModelResponse {
-  bool is_error = 1;
-  string error = 2;
-}
-
 message DeleteCarModelRequest {
   int64 id = 1;
-}
-
-message DeleteCarModelResponse {
-  bool is_error = 1;
-  string error = 2;
 }

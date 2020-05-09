@@ -2,11 +2,13 @@ syntax = "proto3";
 
 option csharp_namespace = "AutoParts.Web.Protos";
 
+import public "common.proto";
+
 package SignUp;
 
 service GrpcSignUpService {
-  rpc UserSignUp (UserSignUpRequest) returns (UserSignUpResponse);
-  rpc SupplierSignUp (SupplierSignUpRequest) returns (SupplierSignUpResponse);
+  rpc UserSignUp (UserSignUpRequest) returns (Common.ServiceResponse);
+  rpc SupplierSignUp (SupplierSignUpRequest) returns (Common.ServiceResponse);
 }
 
 message UserSignUpRequest {
@@ -15,11 +17,6 @@ message UserSignUpRequest {
   string email = 3;
   string password = 4;
   string password_confirmation = 5;
-}
-
-message UserSignUpResponse {
-  bool is_error = 1;
-  string error = 2;
 }
 
 message SupplierSignUpRequest {
@@ -32,9 +29,4 @@ message SupplierSignUpRequest {
   string website = 7;
   string invitation_token = 8;
   string phone_number = 9;
-}
-
-message SupplierSignUpResponse {
-  bool is_error = 1;
-  string error = 2;
 }

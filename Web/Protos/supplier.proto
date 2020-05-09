@@ -7,8 +7,8 @@ import public "common.proto";
 package User;
 
 service GrpcSupplierService {
-  rpc InviteSupplier (InviteSupplierRequest) returns (InviteSupplierResponse);
-  rpc UpdateSupplierProfile (UpdateSupplierProfileRequest) returns (UpdateSupplierProfileResponse);
+  rpc InviteSupplier (InviteSupplierRequest) returns (Common.ServiceResponse);
+  rpc UpdateSupplierProfile (UpdateSupplierProfileRequest) returns (Common.ServiceResponse);
   rpc GetSupplierEmailFromInvitation (GetSupplierEmailFromInvitationRequest) returns (GetSupplierEmailFromInvitationResponse);
   rpc GetCurrentUserSupplierPrivateProfile (GetCurrentUserSupplierPrivateProfileRequest) returns (GetCurrentUserSupplierPrivateProfileResponse);
   rpc GetSupplierPrivateProfileById (GetSupplierPrivateProfileByIdRequest) returns (GetSupplierPrivateProfileByIdResponse);
@@ -19,11 +19,6 @@ service GrpcSupplierService {
 message InviteSupplierRequest {
   string email = 1;
   string name = 2;
-}
-
-message InviteSupplierResponse {
-  bool is_error = 1;
-  string error = 2;
 }
 
 message GetSupplierEmailFromInvitationRequest {
@@ -76,11 +71,6 @@ message UpdateSupplierProfileRequest {
   string phone_number = 9;
   string logo_file_name = 10;
   bytes logo_file_buffer = 11;
-}
-
-message UpdateSupplierProfileResponse {
-  bool is_error = 1;
-  string error = 2;
 }
 
 message SupplierPrivateProfile {

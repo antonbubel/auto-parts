@@ -1,6 +1,7 @@
 ﻿@page "/manage-suppliers"
 
 @using Models
+@using Protos
 
 @inject Services.SuppliersManagerService supplierManagerService
 
@@ -17,10 +18,15 @@
 <div class="collapse mb-3" id="collapseForm">
     <div class="card card-body">
         <EditForm class="col-md-3" Model="@formModel" OnValidSubmit="HandleInviteSupplier">
-            @if (!string.IsNullOrEmpty(ErrorMessage))
+            @if (Errors != null && Errors.Any())
             {
                 <div class="my-3 alert-danger">
-                    @ErrorMessage
+                    <ul>
+                        @foreach (var error in Errors)
+                        {
+                            <li>@error.Message</li>
+                        }
+                    </ul>
                 </div>
             }
 
@@ -44,7 +50,7 @@
     private InviteSupplierFormModel formModel = new InviteSupplierFormModel();
 
     private bool Loading { get; set; } = false;
-    private string ErrorMessage { get; set; }
+    private Error[] Errors { get; set; }
 
     private async Task HandleInviteSupplier()
     {
@@ -52,9 +58,9 @@
 
         var response = await supplierManagerService.InviteSupplier(formModel);
 
-        if (response.IsError)
+        if (response.Status != ResponseStatus.Ok)
         {
-            ErrorMessage = response.Error;
+            Errors = response.Errors.ToArray();
         }
         else
         {

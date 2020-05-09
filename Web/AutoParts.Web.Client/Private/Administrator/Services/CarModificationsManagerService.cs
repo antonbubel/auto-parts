@@ -23,7 +23,7 @@
             this.localStorage = localStorage;
         }
 
-        public async Task<bool> CreateCarModification(CarModificationFormModel formModel)
+        public async Task<ServiceResponse> CreateCarModification(CarModificationFormModel formModel)
         {
             var request = new CreateCarModificationRequest
             {
@@ -35,12 +35,10 @@
 
             var headers = RequestHeadersUtility.GetRequestHeaders(localStorage);
 
-            var response = await carModificationServiceClient.CreateCarModificationAsync(request, headers);
-
-            return !response.IsError;
+            return await carModificationServiceClient.CreateCarModificationAsync(request, headers);
         }
 
-        public async Task<bool> UpdateCarModification(long carModificationId, CarModificationFormModel formModel)
+        public async Task<ServiceResponse> UpdateCarModification(long carModificationId, CarModificationFormModel formModel)
         {
             var request = new UpdateCarModificationRequest
             {
@@ -52,12 +50,10 @@
 
             var headers = RequestHeadersUtility.GetRequestHeaders(localStorage);
 
-            var response = await carModificationServiceClient.UpdateCarModificationAsync(request, headers);
-
-            return !response.IsError;
+            return await carModificationServiceClient.UpdateCarModificationAsync(request, headers);
         }
 
-        public async Task<bool> DeleteCarModification(long carModificationId)
+        public async Task<ServiceResponse> DeleteCarModification(long carModificationId)
         {
             var request = new DeleteCarModificationRequest
             {
@@ -66,9 +62,7 @@
 
             var headers = RequestHeadersUtility.GetRequestHeaders(localStorage);
 
-            var response = await carModificationServiceClient.DeleteCarModificationAsync(request, headers);
-
-            return !response.IsError;
+            return await carModificationServiceClient.DeleteCarModificationAsync(request, headers);
         }
     }
 }

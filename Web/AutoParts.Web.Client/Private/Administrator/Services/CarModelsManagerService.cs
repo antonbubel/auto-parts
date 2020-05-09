@@ -25,7 +25,7 @@
             this.localStorage = localStorage;
         }
 
-        public async Task<bool> CreateCarModel(CarModelFormModel formModel)
+        public async Task<ServiceResponse> CreateCarModel(CarModelFormModel formModel)
         {
             var request = new CreateCarModelRequest
             {
@@ -43,12 +43,10 @@
 
             var headers = RequestHeadersUtility.GetRequestHeaders(localStorage);
 
-            var response = await carModelServiceClient.CreateCarModelAsync(request, headers);
-
-            return !response.IsError;
+            return await carModelServiceClient.CreateCarModelAsync(request, headers);
         }
 
-        public async Task<bool> UpdateCarModel(long carModelId, CarBrandFormModel formModel)
+        public async Task<ServiceResponse> UpdateCarModel(long carModelId, CarBrandFormModel formModel)
         {
             var request = new UpdateCarModelRequest
             {
@@ -66,12 +64,10 @@
 
             var headers = RequestHeadersUtility.GetRequestHeaders(localStorage);
 
-            var response = await carModelServiceClient.UpdateCarModelAsync(request, headers);
-
-            return !response.IsError;
+            return await carModelServiceClient.UpdateCarModelAsync(request, headers);
         }
 
-        public async Task<bool> DeleteCarModel(long carModelId)
+        public async Task<ServiceResponse> DeleteCarModel(long carModelId)
         {
             var request = new DeleteCarModelRequest
             {
@@ -80,9 +76,7 @@
 
             var headers = RequestHeadersUtility.GetRequestHeaders(localStorage);
 
-            var response = await carModelServiceClient.DeleteCarModelAsync(request, headers);
-
-            return !response.IsError;
+            return await carModelServiceClient.DeleteCarModelAsync(request, headers);
         }
     }
 }

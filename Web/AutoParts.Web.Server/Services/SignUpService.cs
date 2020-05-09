@@ -29,7 +29,7 @@
             this.mediator = mediator;
         }
 
-        public override async Task<UserSignUpResponse> UserSignUp(UserSignUpRequest request, ServerCallContext context)
+        public override async Task<ServiceResponse> UserSignUp(UserSignUpRequest request, ServerCallContext context)
         {
             var notification = mapper.Map<UserSignUpNotification>(request);
 
@@ -39,28 +39,17 @@
             }
             catch (ValidationException exception)
             {
-                return new UserSignUpResponse
-                {
-                    IsError = true,
-                    Error = exception.Message
-                };
+                return ServiceResponseBuilder.FromValidationException(exception);
             }
             catch (UserSignUpException exception)
             {
-                return new UserSignUpResponse
-                {
-                    IsError = true,
-                    Error = exception.Message
-                };
+                return ServiceResponseBuilder.FromApiException(exception);
             }
 
-            return new UserSignUpResponse
-            {
-                IsError = false
-            };
+            return ServiceResponseBuilder.Ok;
         }
 
-        public override async Task<SupplierSignUpResponse> SupplierSignUp(SupplierSignUpRequest request, ServerCallContext context)
+        public override async Task<ServiceResponse> SupplierSignUp(SupplierSignUpRequest request, ServerCallContext context)
         {
             var notification = mapper.Map<SupplierSignUpNotification>(request);
 
@@ -70,25 +59,14 @@
             }
             catch (ValidationException exception)
             {
-                return new SupplierSignUpResponse
-                {
-                    IsError = true,
-                    Error = exception.Message
-                };
+                return ServiceResponseBuilder.FromValidationException(exception);
             }
             catch (SupplierSignUpException exception)
             {
-                return new SupplierSignUpResponse
-                {
-                    IsError = true,
-                    Error = exception.Message
-                };
+                return ServiceResponseBuilder.FromApiException(exception);
             }
 
-            return new SupplierSignUpResponse
-            {
-                IsError = false
-            };
+            return ServiceResponseBuilder.Ok;
         }
     }
 }

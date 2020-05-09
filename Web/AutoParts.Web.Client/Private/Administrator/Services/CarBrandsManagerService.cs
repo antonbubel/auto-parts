@@ -25,7 +25,7 @@
             this.localStorage = localStorage;
         }
 
-        public async Task<bool> CreateCarBrand(CarBrandFormModel formModel)
+        public async Task<ServiceResponse> CreateCarBrand(CarBrandFormModel formModel)
         {
             var request = new CreateCarBrandRequest
             {
@@ -42,12 +42,10 @@
 
             var headers = RequestHeadersUtility.GetRequestHeaders(localStorage);
 
-            var response = await carBrandServiceClient.CreateCarBrandAsync(request, headers);
-
-            return !response.IsError;
+            return await carBrandServiceClient.CreateCarBrandAsync(request, headers);
         }
 
-        public async Task<bool> UpdateCarBrand(long carBrandId, CarBrandFormModel formModel)
+        public async Task<ServiceResponse> UpdateCarBrand(long carBrandId, CarBrandFormModel formModel)
         {
             var request = new UpdateCarBrandRequest
             {
@@ -65,12 +63,10 @@
 
             var headers = RequestHeadersUtility.GetRequestHeaders(localStorage);
 
-            var response = await carBrandServiceClient.UpdateCarBrandAsync(request, headers);
-
-            return !response.IsError;
+            return await carBrandServiceClient.UpdateCarBrandAsync(request, headers);
         }
 
-        public async Task<bool> DeleteCarBrand(long carBrandId)
+        public async Task<ServiceResponse> DeleteCarBrand(long carBrandId)
         {
             var request = new DeleteCarBrandRequest
             {
@@ -79,9 +75,7 @@
 
             var headers = RequestHeadersUtility.GetRequestHeaders(localStorage);
 
-            var response = await carBrandServiceClient.DeleteCarBrandAsync(request, headers);
-
-            return !response.IsError;
+            return await carBrandServiceClient.DeleteCarBrandAsync(request, headers);
         }
     }
 }

@@ -33,7 +33,7 @@
         }
 
         [Authorize(nameof(UserType.Administrator))]
-        public override async Task<InviteSupplierResponse> InviteSupplier(InviteSupplierRequest request, ServerCallContext context)
+        public override async Task<ServiceResponse> InviteSupplier(InviteSupplierRequest request, ServerCallContext context)
         {
             var notification = new InviteSupplierNotification
             {
@@ -47,29 +47,18 @@
             }
             catch (ValidationException exception)
             {
-                return new InviteSupplierResponse
-                {
-                    IsError = true,
-                    Error = exception.Message
-                };
+                return ServiceResponseBuilder.FromValidationException(exception);
             }
             catch (InviteSupplierException exception)
             {
-                return new InviteSupplierResponse
-                {
-                    IsError = true,
-                    Error = exception.Message
-                };
+                return ServiceResponseBuilder.FromApiException(exception);
             }
 
-            return new InviteSupplierResponse
-            {
-                IsError = false
-            };
+            return ServiceResponseBuilder.Ok;
         }
 
         [Authorize(nameof(UserType.Supplier))]
-        public override async Task<UpdateSupplierProfileResponse> UpdateSupplierProfile(UpdateSupplierProfileRequest request, ServerCallContext context)
+        public override async Task<ServiceResponse> UpdateSupplierProfile(UpdateSupplierProfileRequest request, ServerCallContext context)
         {
             var notification = mapper.Map<UpdateSupplierProfileNotification>(request);
             notification.UserId = context.GetLoggedInUserId().Value;
@@ -80,25 +69,14 @@
             }
             catch (ValidationException exception)
             {
-                return new UpdateSupplierProfileResponse
-                {
-                    IsError = true,
-                    Error = exception.Message
-                };
+                return ServiceResponseBuilder.FromValidationException(exception);
             }
             catch (UpdateSupplierProfileException exception)
             {
-                return new UpdateSupplierProfileResponse
-                {
-                    IsError = true,
-                    Error = exception.Message
-                };
+                return ServiceResponseBuilder.FromApiException(exception);
             }
 
-            return new UpdateSupplierProfileResponse
-            {
-                IsError = false
-            };
+            return ServiceResponseBuilder.Ok;
         }
 
         [AllowAnonymous]

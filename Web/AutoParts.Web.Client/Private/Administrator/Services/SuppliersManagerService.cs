@@ -23,7 +23,7 @@
             supplierServiceClient = new GrpcSupplierService.GrpcSupplierServiceClient(channel);
         }
 
-        public async Task<InviteSupplierResponse> InviteSupplier(InviteSupplierFormModel form)
+        public async Task<ServiceResponse> InviteSupplier(InviteSupplierFormModel form)
         {
             var headers = RequestHeadersUtility.GetRequestHeaders(localStorage);
 

@@ -64,7 +64,7 @@
         }
 
         [Authorize(nameof(UserType.Administrator))]
-        public override async Task<CreateCarBrandResponse> CreateCarBrand(CreateCarBrandRequest request, ServerCallContext context)
+        public override async Task<ServiceResponse> CreateCarBrand(CreateCarBrandRequest request, ServerCallContext context)
         {
             var notification = mapper.Map<CreateCarBrandNotification>(request);
 
@@ -74,29 +74,18 @@
             }
             catch (ValidationException exception)
             {
-                return new CreateCarBrandResponse
-                {
-                    IsError = true,
-                    Error = exception.Message
-                };
+                return ServiceResponseBuilder.FromValidationException(exception);
             }
             catch (CreateCarBrandException exception)
             {
-                return new CreateCarBrandResponse
-                {
-                    IsError = true,
-                    Error = exception.Message
-                };
+                return ServiceResponseBuilder.FromApiException(exception);
             }
 
-            return new CreateCarBrandResponse
-            {
-                IsError = false
-            };
+            return ServiceResponseBuilder.Ok;
         }
 
         [Authorize(nameof(UserType.Administrator))]
-        public override async Task<UpdateCarBrandResponse> UpdateCarBrand(UpdateCarBrandRequest request, ServerCallContext context)
+        public override async Task<ServiceResponse> UpdateCarBrand(UpdateCarBrandRequest request, ServerCallContext context)
         {
             var notification = mapper.Map<UpdateCarBrandNotification>(request);
 
@@ -106,29 +95,18 @@
             }
             catch (ValidationException exception)
             {
-                return new UpdateCarBrandResponse
-                {
-                    IsError = true,
-                    Error = exception.Message
-                };
+                return ServiceResponseBuilder.FromValidationException(exception);
             }
             catch (UpdateCarBrandException exception)
             {
-                return new UpdateCarBrandResponse
-                {
-                    IsError = true,
-                    Error = exception.Message
-                };
+                return ServiceResponseBuilder.FromApiException(exception);
             }
 
-            return new UpdateCarBrandResponse
-            {
-                IsError = false
-            };
+            return ServiceResponseBuilder.Ok;
         }
 
         [Authorize(nameof(UserType.Administrator))]
-        public override async Task<DeleteCarBrandResponse> DeleteCarBrand(DeleteCarBrandRequest request, ServerCallContext context)
+        public override async Task<ServiceResponse> DeleteCarBrand(DeleteCarBrandRequest request, ServerCallContext context)
         {
             var notification = new DeleteCarBrandNotification
             {
@@ -141,17 +119,10 @@
             }
             catch (DeleteCarBrandException exception)
             {
-                return new DeleteCarBrandResponse
-                {
-                    IsError = true,
-                    Error = exception.Message
-                };
+                return ServiceResponseBuilder.FromApiException(exception);
             }
 
-            return new DeleteCarBrandResponse
-            {
-                IsError = false
-            };
+            return ServiceResponseBuilder.Ok;
         }
     }
 }

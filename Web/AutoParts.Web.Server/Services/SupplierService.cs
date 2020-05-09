@@ -37,7 +37,7 @@
         {
             var notification = new InviteSupplierNotification
             {
-                Email = request.Name,
+                Email = request.Email,
                 Name = request.Name
             };
 

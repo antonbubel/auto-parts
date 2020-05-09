@@ -14,3 +14,8 @@ message PaginationFilter {
   int32 page_number = 1;
   int32 page_size = 2;
 }
+
+message ServiceResponse {
+  bool is_error = 1;
+  string error_message = 2;
+}

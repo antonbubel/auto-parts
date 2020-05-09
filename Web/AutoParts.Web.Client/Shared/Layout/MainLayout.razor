@@ -2,6 +2,10 @@
 
 @inject Services.CurrentUserProvider currentUserProvider
 @inject Services.CurrentUserService currentUserService
+@inject NavigationManager navigationManager
+
+@using Utils;
+@using Protos;
 
 <div class="sidebar">
     <NavMenu />
@@ -32,18 +36,45 @@
     </div>
 
     <div class="content px-4">
-        @Body
+        @if (Loading)
+        {
+            <p class="font-italic">Loading...</p>
+        }
+        else
+        {
+            @Body
+        }
     </div>
 </div>
 
 @code {
+    public bool Loading { get; set; } = true;
+
     protected override async Task OnInitializedAsync()
     {
+        currentUserProvider.AddEventListenerOnLoadedUserInfo(HandleUserInfoLoaded);
+
         await currentUserService.SyncCurrentUserInfo();
     }
 
-    protected async Task SignOut()
+    private async Task SignOut()
     {
         await currentUserService.SignOut();
+    }
+
+    private void HandleUserInfoLoaded()
+    {
+        var currentUserType = currentUserProvider.IsLoggedIn
+            ? (UserType?)currentUserProvider.CurrentUserInfo.UserType
+            : null;
+
+        if (!navigationManager.CanActivateCurrentRoute(currentUserType))
+        {
+            navigationManager.NavigateTo(string.Empty);
+        }
+
+        Loading = false;
+
+        StateHasChanged();
     }
 }

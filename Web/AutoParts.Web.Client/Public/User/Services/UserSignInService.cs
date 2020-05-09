@@ -12,13 +12,13 @@ namespace AutoParts.Web.Client.Public.User.Services
 
     public class UserSignInService
     {
-        private readonly GrpcSignInService.GrpcSignInServiceClient signInClient;
+        private readonly GrpcSignInService.GrpcSignInServiceClient signInServiceClient;
         private readonly ISyncLocalStorageService localStorage;
         private readonly CurrentUserService currentUserService;
 
         public UserSignInService(GrpcChannel channel, ISyncLocalStorageService localStorage, CurrentUserService currentUserService)
         {
-            signInClient = new GrpcSignInService.GrpcSignInServiceClient(channel);
+            signInServiceClient = new GrpcSignInService.GrpcSignInServiceClient(channel);
             this.localStorage = localStorage;
             this.currentUserService = currentUserService;
         }
@@ -31,7 +31,7 @@ namespace AutoParts.Web.Client.Public.User.Services
                 Password = form.Password
             };
 
-            var response = await signInClient.SignInAsync(request);
+            var response = await signInServiceClient.SignInAsync(request);
 
             localStorage.SetAuthorizationTokens(response.TokenType, response.AccessToken, response.RefreshToken);
 

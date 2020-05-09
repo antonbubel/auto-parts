@@ -1,0 +1,66 @@
+﻿@page "/manage-suppliers"
+
+@using Models
+
+@inject Services.SuppliersManagerService supplierManagerService
+
+<div class="d-flex mb-3">
+    <h2 class="flex-grow-1">
+        Suppliers manager
+    </h2>
+
+    <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapseForm" aria-expanded="false" aria-controls="collapseForm">
+        <span class="oi oi-plus" aria-hidden="true"></span> Invite new supplier
+    </button>
+</div>
+
+<div class="collapse mb-3" id="collapseForm">
+    <div class="card card-body">
+        <EditForm class="col-md-3" Model="@formModel" OnValidSubmit="HandleInviteSupplier">
+            @if (!string.IsNullOrEmpty(ErrorMessage))
+            {
+                <div class="my-3 alert-danger">
+                    @ErrorMessage
+                </div>
+            }
+
+            <DataAnnotationsValidator />
+
+            <div class="text-left">
+                <ValidationSummary />
+            </div>
+
+            <InputText id="supplier-email" class="form-control mb-2" placeholder="Supplier email" @bind-Value="formModel.Email" />
+            <InputText id="car-modification-name" class="form-control mb-2" placeholder="Supplier name" @bind-Value="formModel.Name" />
+
+            <button class="btn btn-md btn-primary btn-block mt-3" type="submit" disabled="@Loading">
+                Invite
+            </button>
+        </EditForm>
+    </div>
+</div>
+
+@code {
+    private InviteSupplierFormModel formModel = new InviteSupplierFormModel();
+
+    private bool Loading { get; set; } = false;
+    private string ErrorMessage { get; set; }
+
+    private async Task HandleInviteSupplier()
+    {
+        Loading = true;
+
+        var response = await supplierManagerService.InviteSupplier(formModel);
+
+        if (response.IsError)
+        {
+            ErrorMessage = response.Error;
+        }
+        else
+        {
+            formModel = new InviteSupplierFormModel();
+        }
+
+        Loading = false;
+    }
+}

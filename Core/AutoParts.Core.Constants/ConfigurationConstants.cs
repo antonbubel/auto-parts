@@ -4,7 +4,7 @@
     {
         public const string ApiBaseUrlSectionKey = "ApiBaseUrl";
 
-        public const string ClientSectionKey = "ClientBaseUrl";
+        public const string ClientSectionKey = "Client";
 
         public const string SendGridSectionKey = "SendGrid";
     }

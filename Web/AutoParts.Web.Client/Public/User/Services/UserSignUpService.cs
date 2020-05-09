@@ -7,11 +7,13 @@ namespace AutoParts.Web.Client.Public.User.Services
 {
     public class UserSignUpService
     {
-        private readonly GrpcSignUpService.GrpcSignUpServiceClient signUpClient;
+        private readonly GrpcSignUpService.GrpcSignUpServiceClient signUpServiceClient;
+        private readonly GrpcSupplierService.GrpcSupplierServiceClient supplierServiceClient;
 
         public UserSignUpService(GrpcChannel channel)
         {
-            signUpClient = new GrpcSignUpService.GrpcSignUpServiceClient(channel);
+            signUpServiceClient = new GrpcSignUpService.GrpcSignUpServiceClient(channel);
+            supplierServiceClient = new GrpcSupplierService.GrpcSupplierServiceClient(channel);
         }
 
         public async Task<bool> SignUp(UserSignUpFormModel form)
@@ -25,9 +27,39 @@ namespace AutoParts.Web.Client.Public.User.Services
                 PasswordConfirmation = form.PasswordConfirmation
             };
 
-            var response = await signUpClient.UserSignUpAsync(request);
+            var response = await signUpServiceClient.UserSignUpAsync(request);
 
             return !response.IsError;
+        }
+
+        public async Task<bool> SupplierSignUp(SupplierSignUpFormModel form)
+        {
+            var request = new SupplierSignUpRequest
+            {
+                FirstName = form.FirstName,
+                LastName = form.LastName,
+                InvitationToken = form.InvitationToken,
+                OrganizationName = form.OrganizationName,
+                OrganizationAddress = form.OrganizationAddress,
+                Password = form.Password,
+                PasswordConfirmation = form.PasswordConfirmation,
+                PhoneNumber = form.PhoneNumber,
+                Website = form.Website
+            };
+
+            var response = await signUpServiceClient.SupplierSignUpAsync(request);
+
+            return !response.IsError;
+        }
+
+        public async Task<GetSupplierEmailFromInvitationResponse> GetSupplierEmailFromInvitation(string invitationToken)
+        {
+            var request = new GetSupplierEmailFromInvitationRequest
+            {
+                InvitationToken = invitationToken
+            };
+
+            return await supplierServiceClient.GetSupplierEmailFromInvitationAsync(request);
         }
     }
 }

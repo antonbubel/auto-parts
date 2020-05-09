@@ -28,6 +28,8 @@
             if (!localStorage.HasAccessToken())
             {
                 currentUserProvider.SetUserInfoLoading(false);
+
+                return;
             }
 
             currentUserProvider.SetUserInfoLoading(true);

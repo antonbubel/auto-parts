@@ -1,4 +1,5 @@
 ﻿using AutoParts.Web.Client.Private.Administrator.Services;
+using AutoParts.Web.Client.Private.Supplier.Services;
 using AutoParts.Web.Client.Public.Car.Services;
 using AutoParts.Web.Client.Public.User.Services;
 using AutoParts.Web.Client.Shared.Services;
@@ -50,6 +51,7 @@ namespace AutoParts.Web.Client
             services.AddTransient<CarModificationService>();
             services.AddTransient<CarModificationsManagerService>();
             services.AddTransient<SuppliersManagerService>();
+            services.AddTransient<SupplierService>();
 
             services.AddSingleton<CurrentUserProvider>();
         }

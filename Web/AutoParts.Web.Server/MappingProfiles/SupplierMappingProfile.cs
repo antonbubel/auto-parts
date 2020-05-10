@@ -29,26 +29,26 @@
                 .ForMember(profile => profile.PhoneNumber, conf => conf.MapFrom(model => model.PhoneNumber))
                 .ForMember(profile => profile.Name, conf => conf.MapFrom(model => model.OrganizationName))
                 .ForMember(profile => profile.OrganizationAddress, conf => conf.MapFrom(model => model.OrganizationAddress))
-                .ForMember(profile => profile.OrganizationDescription, conf => conf.MapFrom(model => model.OrganizationDescription))
-                .ForMember(profile => profile.SalesEmail, conf => conf.MapFrom(model => model.SalesEmail))
-                .ForMember(profile => profile.SalesPhoneNumber, conf => conf.MapFrom(model => model.SalesPhoneNumber))
-                .ForMember(profile => profile.Website, conf => conf.MapFrom(model => model.Website))
-                .ForMember(profile => profile.LogoUrl, conf => conf.MapFrom(model => model.LogoUrl));
+                .ForMember(profile => profile.OrganizationDescription, conf => conf.MapFrom(model => model.OrganizationDescription ?? string.Empty))
+                .ForMember(profile => profile.SalesEmail, conf => conf.MapFrom(model => model.SalesEmail ?? string.Empty))
+                .ForMember(profile => profile.SalesPhoneNumber, conf => conf.MapFrom(model => model.SalesPhoneNumber ?? string.Empty))
+                .ForMember(profile => profile.Website, conf => conf.MapFrom(model => model.Website ?? string.Empty))
+                .ForMember(profile => profile.LogoUrl, conf => conf.MapFrom(model => model.LogoUrl ?? string.Empty));
 
             CreateMap<SupplierPublicProfileModel, SupplierPublicProfile>()
                 .ForMember(profile => profile.Id, conf => conf.MapFrom(model => model.Id))
                 .ForMember(profile => profile.Name, conf => conf.MapFrom(model => model.Name))
                 .ForMember(profile => profile.OrganizationAddress, conf => conf.MapFrom(model => model.OrganizationAddress))
-                .ForMember(profile => profile.OrganizationDescription, conf => conf.MapFrom(model => model.OrganizationDescription))
-                .ForMember(profile => profile.SalesEmail, conf => conf.MapFrom(model => model.SalesEmail))
-                .ForMember(profile => profile.SalesPhoneNumber, conf => conf.MapFrom(model => model.SalesPhoneNumber))
-                .ForMember(profile => profile.Website, conf => conf.MapFrom(model => model.Website))
-                .ForMember(profile => profile.LogoUrl, conf => conf.MapFrom(model => model.LogoUrl));
+                .ForMember(profile => profile.OrganizationDescription, conf => conf.MapFrom(model => model.OrganizationDescription ?? string.Empty))
+                .ForMember(profile => profile.SalesEmail, conf => conf.MapFrom(model => model.SalesEmail ?? string.Empty))
+                .ForMember(profile => profile.SalesPhoneNumber, conf => conf.MapFrom(model => model.SalesPhoneNumber ?? string.Empty))
+                .ForMember(profile => profile.Website, conf => conf.MapFrom(model => model.Website ?? string.Empty))
+                .ForMember(profile => profile.LogoUrl, conf => conf.MapFrom(model => model.LogoUrl ?? string.Empty));
 
             CreateMap<SupplierShortPublicProfileModel, SupplierShortPublicProfile>()
                 .ForMember(profile => profile.Id, conf => conf.MapFrom(model => model.Id))
-                .ForMember(profile => profile.Name, conf => conf.MapFrom(model => model.Name))
-                .ForMember(profile => profile.LogoUrl, conf => conf.MapFrom(model => model.LogoUrl));
+                .ForMember(profile => profile.Name, conf => conf.MapFrom(model => model.Name ?? string.Empty))
+                .ForMember(profile => profile.LogoUrl, conf => conf.MapFrom(model => model.LogoUrl ?? string.Empty));
         }
     }
 }

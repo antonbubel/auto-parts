@@ -1,5 +1,220 @@
-﻿<h3>SupplierProfileComponent</h3>
+﻿
+@using Protos;
+@using Models;
+@using Shared.Utils
+@using Blazor.FileReader
 
-@code {
+@inject IFileReaderService fileReaderService
+@inject Services.SupplierService supplierService
 
+<h2 class="flex-grow-1 mb-3">
+    Your profile
+</h2>
+
+@if (Loading)
+{
+    <p class="font-italic">Loading...</p>
+}
+else
+{
+    <EditForm Model="@formModel" OnValidSubmit="HandleUpdateProfile">
+        <div class="row">
+            <div class="col-md-6">
+                <h3 class="h4 mb-3 font-weight-normal">
+                    Personal info
+                </h3>
+
+                <div class="jumbotron py-4">
+                    <label for="first-name">First name</label>
+                    <InputText id="first-name" class="form-control mb-3" disabled placeholder="First name" @bind-Value="formModel.FirstName" />
+
+                    <label for="last-name">Last name</label>
+                    <InputText id="last-name" class="form-control mb-3" disabled placeholder="Last name" @bind-Value="formModel.LastName" />
+
+                    <label for="phone-number">Phone number</label>
+                    <InputText id="phone-number" class="form-control mb-3" disabled placeholder="Phone number" @bind-Value="formModel.PhoneNumber" />
+                </div>
+            </div>
+            <div class="col-md-6">
+                <h3 class="h4 mb-3 font-weight-normal">
+                    Public info
+                </h3>
+
+                <DataAnnotationsValidator />
+                <div class="mb-3 alert-danger">
+                    <ValidationSummary />
+                    @if (Errors != null && Errors.Any())
+                    {
+                        <ul>
+                            @foreach (var error in Errors)
+                            {
+                                <li>@error.Message</li>
+                            }
+                        </ul>
+                    }
+                </div>
+
+                <div class="jumbotron py-4">
+                    <h3 class="h5 mb-3 font-weight-normal">
+                        Your organization
+                    </h3>
+
+                    <label for="organization-name">Organization name</label>
+                    <InputText id="organization-name" class="form-control mb-3" placeholder="Organization name" @bind-Value="formModel.OrganizationName" />
+
+                    <label for="organization-address">Organization address</label>
+                    <InputText id="organization-address" class="form-control mb-3" placeholder="Organization address" @bind-Value="formModel.OrganizationAddress" />
+
+                    <label for="organization-description">Organization description</label>
+                    <InputTextArea id="organization-description" class="form-control mb-3" placeholder="Organization description" @bind-Value="formModel.OrganizationDescription"></InputTextArea>
+
+                    <label for="website">Website</label>
+                    <InputText id="website" class="form-control mb-3" placeholder="Website" @bind-Value="formModel.Website" />
+
+                    <label>
+                        Logo image
+                        @if (!string.IsNullOrEmpty(logoUrl))
+                        {
+                            <a href="@logoUrl" target="_blank">
+                                <span class="oi oi-external-link" aria-hidden="true"></span>
+                            </a>
+                        }
+                    </label>
+                    <div class="custom-file">
+                        <input type="file"
+                               id="inputGroupFile01"
+                               class="custom-file-input"
+                               @ref=dropTargetInput
+                               @onchange="OnInputChange" />
+                        <label class="custom-file-label" for="inputGroupFile01">@GetFileInputLabelText()</label>
+                    </div>
+                </div>
+
+                <div class="jumbotron py-4 mb-0">
+                    <h3 class="h5 mb-3 font-weight-normal">
+                        Your contact information
+                    </h3>
+
+                    <label for="sales-email">Sales email</label>
+                    <InputText id="sales-email" class="form-control mb-2" placeholder="Sales email" @bind-Value="formModel.SalesEmail" />
+
+                    <label for="sales-phone-number">Sales phone number</label>
+                    <InputText id="sales-phone-number" class="form-control mb-2" placeholder="Sales phone number" @bind-Value="formModel.SalesPhoneNumber" />
+                </div>
+            </div>
+        </div>
+
+        <div>
+            <button class="btn btn-primary mt-3 float-right mb-3" type="submit">
+                Update profile
+            </button>
+        </div>
+    </EditForm>
+}
+
+@code
+{
+    public bool Loading { get; set; } = true;
+    public bool UpdatingProfile { get; set; } = false;
+    public Error[] Errors { get; set; }
+    public List<IFileInfo> InputFileList { get; set; } = new List<IFileInfo>();
+
+    private SupplierProfileFormModel formModel;
+    private string logoUrl;
+    private ElementReference dropTargetInput;
+    private IFileReaderRef inputFileReference;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await FetchSupplierProfile();
+    }
+
+    private async Task FetchSupplierProfile()
+    {
+        Loading = true;
+
+        var supplierProfile = await supplierService.GetSupplierProfile();
+
+        formModel = new SupplierProfileFormModel
+        {
+            FirstName = supplierProfile.FirstName,
+            LastName = supplierProfile.LastName,
+            PhoneNumber = supplierProfile.PhoneNumber,
+            Website = supplierProfile.Website,
+            OrganizationName = supplierProfile.Name,
+            OrganizationAddress = supplierProfile.OrganizationAddress,
+            OrganizationDescription = supplierProfile.OrganizationDescription,
+            SalesEmail = supplierProfile.SalesEmail,
+            SalesPhoneNumber = supplierProfile.SalesPhoneNumber
+        };
+
+        logoUrl = supplierProfile.LogoUrl;
+
+        Loading = false;
+
+        StateHasChanged();
+
+        InputFileList.Clear();
+
+        inputFileReference = fileReaderService.CreateReference(dropTargetInput);
+    }
+
+    private async Task HandleUpdateProfile()
+    {
+        if (InputFileList.Any())
+        {
+
+            var files = await FileUtility.ReadFilesAsync(inputFileReference);
+            var file = files.First();
+
+            formModel.LogoFileInfo = file.Key;
+            formModel.LogoBuffer = file.Value;
+        }
+
+        UpdatingProfile = true;
+
+        var response = await supplierService.UpdateSupplierProfile(formModel);
+
+        UpdatingProfile = false;
+
+        if (response.Status != ResponseStatus.Ok)
+        {
+            Errors = response.Errors.ToArray();
+
+            return;
+        }
+
+        await FetchSupplierProfile();
+    }
+
+    private async Task OnInputChange(EventArgs e)
+    {
+        StateHasChanged();
+
+        await RefreshFileList(inputFileReference, InputFileList);
+    }
+
+    private string GetFileInputLabelText()
+    {
+        if (InputFileList.Any())
+        {
+            return InputFileList.First().Name;
+        }
+
+        return "Choose your logo image";
+    }
+
+    private async Task RefreshFileList(IFileReaderRef reader, List<IFileInfo> list)
+    {
+        list.Clear();
+
+        foreach (var file in await reader.EnumerateFilesAsync())
+        {
+            var fileInfo = await file.ReadFileInfoAsync();
+
+            list.Add(fileInfo);
+        }
+
+        StateHasChanged();
+    }
 }

@@ -12,42 +12,42 @@
 }
 else
 {
-<EditForm class="form-signup" Model="@signUpForm" OnValidSubmit="HandleValidSubmit">
-    <h1 class="h3 mb-3 font-weight-normal">
-        Welcome to AutoParts!
-    </h1>
-    <h3 class="h5 mb-3 font-weight-normal">
-        Please fill in the form to sign up
-    </h3>
+    <EditForm class="form-signup" Model="@signUpForm" OnValidSubmit="HandleValidSubmit">
+        <h1 class="h3 mb-3 font-weight-normal">
+            Welcome to AutoParts!
+        </h1>
+        <h3 class="h5 mb-3 font-weight-normal">
+            Please fill in the form to sign up
+        </h3>
 
-    @if (!string.IsNullOrEmpty(ErrorMessage))
-    {
-        <div class="my-3 alert-danger">
-            @ErrorMessage
+        @if (!string.IsNullOrEmpty(ErrorMessage))
+        {
+            <div class="my-3 alert-danger">
+                @ErrorMessage
+            </div>
+        }
+
+        <DataAnnotationsValidator />
+        <div class="text-left">
+            <ValidationSummary />
         </div>
-    }
 
-    <DataAnnotationsValidator />
-    <div class="text-left">
-        <ValidationSummary />
-    </div>
+        <InputText id="email" class="form-control mb-2" disabled placeholder="Email address" @bind-Value="signUpForm.Email" />
+        <InputText id="password" class="form-control mb-2" placeholder="Password" type="password" @bind-Value="signUpForm.Password" />
+        <InputText id="password-confirmation" class="form-control mb-4" placeholder="Confirm password" type="password" @bind-Value="signUpForm.PasswordConfirmation" />
 
-    <InputText id="email" class="form-control mb-2" disabled placeholder="Email address" @bind-Value="signUpForm.Email" />
-    <InputText id="password" class="form-control mb-2" placeholder="Password" type="password" @bind-Value="signUpForm.Password" />
-    <InputText id="password-confirmation" class="form-control mb-4" placeholder="Confirm password" type="password" @bind-Value="signUpForm.PasswordConfirmation" />
+        <InputText id="first-name" class="form-control mb-2" placeholder="First name" @bind-Value="signUpForm.FirstName" />
+        <InputText id="last-name" class="form-control mb-2" placeholder="Last name" @bind-Value="signUpForm.LastName" />
+        <InputText id="phone-number" class="form-control mb-4" placeholder="Phone number" @bind-Value="signUpForm.PhoneNumber" />
 
-    <InputText id="first-name" class="form-control mb-2" placeholder="First name" @bind-Value="signUpForm.FirstName" />
-    <InputText id="last-name" class="form-control mb-2" placeholder="Last name" @bind-Value="signUpForm.LastName" />
-    <InputText id="phone-number" class="form-control mb-4" placeholder="Phone number" @bind-Value="signUpForm.PhoneNumber" />
+        <InputText id="organization-name" class="form-control mb-2" placeholder="Organization name" @bind-Value="signUpForm.OrganizationName" />
+        <InputText id="organization-address" class="form-control mb-2" placeholder="Organization address" @bind-Value="signUpForm.OrganizationAddress" />
+        <InputText id="website" class="form-control mb-2" placeholder="Website" @bind-Value="signUpForm.Website" />
 
-    <InputText id="organization-name" class="form-control mb-2" placeholder="Organization name" @bind-Value="signUpForm.OrganizationName" />
-    <InputText id="organization-address" class="form-control mb-2" placeholder="Organization address" @bind-Value="signUpForm.OrganizationAddress" />
-    <InputText id="website" class="form-control mb-2" placeholder="Website" @bind-Value="signUpForm.Website" />
-
-    <button class="btn btn-lg btn-primary btn-block mt-3" type="submit">
-        Sign Up!
-    </button>
-</EditForm>
+        <button class="btn btn-lg btn-primary btn-block mt-3" type="submit">
+            Sign Up!
+        </button>
+    </EditForm>
 }
 
 @code {

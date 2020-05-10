@@ -66,11 +66,8 @@ message UpdateSupplierProfileRequest {
   string sales_email = 4;
   string sales_phone_number = 5;
   string website = 6;
-  string first_name = 7;
-  string last_name = 8;
-  string phone_number = 9;
-  string logo_file_name = 10;
-  bytes logo_file_buffer = 11;
+  string logo_file_name = 7;
+  bytes logo_file_buffer = 8;
 }
 
 message SupplierPrivateProfile {

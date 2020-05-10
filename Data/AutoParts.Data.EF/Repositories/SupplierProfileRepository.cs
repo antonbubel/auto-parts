@@ -33,6 +33,7 @@
         public async Task<ShortSupplierProfileProjection[]> GetSuppliers(int itemsToSkip, int itemsToTake)
         {
             return await GetQueryable()
+                .OrderBy(supplier => supplier.Id)
                 .Skip(itemsToSkip)
                 .Take(itemsToTake)
                 .ProjectTo<ShortSupplierProfileProjection>(mapper.ConfigurationProvider)

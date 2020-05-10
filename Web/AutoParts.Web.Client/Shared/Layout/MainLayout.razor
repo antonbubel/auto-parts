@@ -33,6 +33,12 @@
                     <NavLink class="dropdown-item" href="profile">
                         Your profile
                     </NavLink>
+                    @if (currentUserProvider.CurrentUserInfo.UserType == UserType.Supplier)
+                    {
+                        <NavLink class="dropdown-item" href="@CurrentUserSupplierProfileLink">
+                            Your public supplier profile
+                        </NavLink>
+                    }
                     <div class="dropdown-divider"></div>
                     <NavLink class="dropdown-item" href="help">
                         Help
@@ -68,6 +74,7 @@
 
 @code {
     public bool Loading { get; set; } = true;
+    public string CurrentUserSupplierProfileLink => $"supplier/{currentUserProvider.CurrentUserInfo.Id}";
 
     protected override async Task OnInitializedAsync()
     {

@@ -4,6 +4,8 @@
 
     using Grpc.Net.Client;
 
+    using Google.Protobuf;
+
     using System.Threading.Tasks;
 
     using Protos;
@@ -11,14 +13,13 @@
     using Models;
 
     using Shared.Utils;
-    using Google.Protobuf;
 
-    public class SupplierService
+    public class PrivateSupplierService
     {
         private readonly ISyncLocalStorageService localStorage;
         private readonly GrpcSupplierService.GrpcSupplierServiceClient supplierServiceClient;
 
-        public SupplierService(GrpcChannel channel, ISyncLocalStorageService localStorage)
+        public PrivateSupplierService(GrpcChannel channel, ISyncLocalStorageService localStorage)
         {
             supplierServiceClient = new GrpcSupplierService.GrpcSupplierServiceClient(channel);
             this.localStorage = localStorage;
@@ -40,7 +41,7 @@
                 Name = formModel.OrganizationName,
                 OrganizationAddress = formModel.OrganizationAddress,
                 OrganizationDescription = formModel.OrganizationDescription,
-                Website = formModel.OrganizationDescription,
+                Website = formModel.Website,
                 SalesEmail = formModel.SalesEmail,
                 SalesPhoneNumber = formModel.SalesPhoneNumber,
                 LogoFileName = string.Empty,

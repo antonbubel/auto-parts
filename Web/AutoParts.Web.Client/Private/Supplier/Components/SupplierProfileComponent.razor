@@ -5,7 +5,8 @@
 @using Blazor.FileReader
 
 @inject IFileReaderService fileReaderService
-@inject Services.SupplierService supplierService
+@inject Services.PrivateSupplierService supplierService
+@inject Shared.Services.CurrentUserProvider currentUserProvider
 
 <h2 class="flex-grow-1 mb-3">
     Your profile
@@ -108,6 +109,9 @@ else
             <button class="btn btn-primary mt-3 float-right mb-3" type="submit">
                 Update profile
             </button>
+            <a class="btn btn-outline-primary mt-3 float-right mb-3 mr-2" href="@SupplierPublicProfileLink" target="_blank">
+                View your public supplier profile
+            </a>
         </div>
     </EditForm>
 }
@@ -118,6 +122,8 @@ else
     public bool UpdatingProfile { get; set; } = false;
     public Error[] Errors { get; set; }
     public List<IFileInfo> InputFileList { get; set; } = new List<IFileInfo>();
+
+    public string SupplierPublicProfileLink => $"supplier/{currentUserProvider.CurrentUserInfo.Id}";
 
     private SupplierProfileFormModel formModel;
     private string logoUrl;

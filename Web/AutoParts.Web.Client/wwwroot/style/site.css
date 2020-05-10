@@ -209,6 +209,20 @@ app {
     width: 24rem;
 }
 
+.supplier-logo {
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+    height: 20rem;
+    width: 20rem;
+    border-radius: .3rem;
+}
+
+.supplier-info {
+    width: 20rem;
+}
+
 .car-model-wrapper {
     height: 16rem;
     cursor: pointer;

@@ -1,0 +1,95 @@
+﻿@page "/supplier/{SupplierId:long}"
+
+@using Protos;
+
+@inject NavigationManager navigationManager
+@inject Services.PublicSupplierService supplierService
+@inject Shared.Services.CurrentUserProvider currentUserProvider
+
+@if (Loading)
+{
+    <p class="font-italic">Loading...</p>
+}
+else
+{
+    <div class="row">
+        <div class="col-md-3">
+            <div class="jumbotron py-5">
+                @if (!string.IsNullOrEmpty(SupplierProfile.LogoUrl))
+                {
+                    <div class="supplier-logo mx-auto" style="background-image: url('@SupplierProfile.LogoUrl');"></div>
+                }
+
+                <div class="supplier-info mx-auto mt-4">
+                    <h3 class="mb-3">@SupplierProfile.Name</h3>
+
+                    @if (!string.IsNullOrEmpty(SupplierProfile.Website))
+                    {
+                        <p class="mb-2">
+                            <b>Website:</b> <a href="@SupplierProfile.Website" target="_blank">@SupplierProfile.Website</a>
+                        </p>
+                    }
+
+                    @if (!string.IsNullOrEmpty(SupplierProfile.SalesEmail))
+                    {
+                        <p class="mb-2">
+                            <b>Email:</b> <a href="@SupplierEmailLink">@SupplierProfile.SalesEmail</a>
+                        </p>
+                    }
+
+                    
+                    @if (!string.IsNullOrEmpty(SupplierProfile.SalesEmail))
+                    {
+                        <p class="mb-2">
+                            <b>Phone number:</b> <a href="@SupplierPhoneLink">@SupplierProfile.SalesPhoneNumber</a>
+                        </p>
+                    }
+
+                    @if (!string.IsNullOrEmpty(SupplierProfile.OrganizationAddress))
+                    {
+                        <p class="mb-4">
+                            <b>Address:</b> @SupplierProfile.OrganizationAddress
+                        </p>
+                    }
+
+                    @if (currentUserProvider.IsLoggedIn && currentUserProvider.CurrentUserInfo.Id == SupplierProfile.Id)
+                    {
+                        <a class="btn btn-outline-secondary btn-sm btn-block" href="profile">
+                            Edit profile
+                        </a>
+                    }
+                </div>
+
+            </div>
+        </div>
+        <div class="col-md-9">
+            <div class="jumbotron py-5">
+                @SupplierProfile.OrganizationDescription
+            </div>
+        </div>
+    </div>
+}
+
+@code {
+    [Parameter]
+    public long SupplierId { get; set; }
+
+    public bool Loading { get; set; } = true;
+    public SupplierPublicProfile SupplierProfile { get; set; }
+
+    public string SupplierEmailLink => $"mailto:{SupplierProfile.SalesEmail}";
+    public string SupplierPhoneLink => $"tel:{SupplierProfile.SalesPhoneNumber}";
+
+    protected override async Task OnInitializedAsync()
+    {
+        var response = await supplierService.GetSupplierProfile(SupplierId);
+
+        if (response.Status != ResponseStatus.Ok || response.Model == null)
+        {
+            navigationManager.NavigateTo(string.Empty);
+        }
+
+        SupplierProfile = response.Model;
+        Loading = false;
+    }
+}

@@ -21,7 +21,7 @@
         [MaxLength(ValidationConstants.OrganizationAddressMaxLength, ErrorMessage = "Organization address must be less than 200 characters.")]
         public string OrganizationAddress { get; set; }
 
-        [MaxLength(ValidationConstants.OrganizationAddressMaxLength, ErrorMessage = "Organization description must be less than 500 characters.")]
+        [MaxLength(ValidationConstants.OrganizationDescriptionMaxLength, ErrorMessage = "Organization description must be less than 200 characters.")]
         public string OrganizationDescription { get; set; }
 
         [Required(ErrorMessage = "Email is required.")]

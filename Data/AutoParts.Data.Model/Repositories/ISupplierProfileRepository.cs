@@ -8,6 +8,8 @@
 
     public interface ISupplierProfileRepository : IRepository<long, SupplierProfile>
     {
+        Task<int> GetTotalNumberOfSuppliers();
+
         Task<ShortSupplierProfileProjection[]> GetSuppliers(int itemsToSkip, int itemsToTake);
     }
 }

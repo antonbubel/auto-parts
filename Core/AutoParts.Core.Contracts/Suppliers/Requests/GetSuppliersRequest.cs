@@ -5,7 +5,7 @@
     using Models;
     using Common.Models;
 
-    public class GetSuppliersRequest : PaginationFilterModel, IRequest<SupplierShortPublicProfileModel[]>
+    public class GetSuppliersRequest : PaginationFilterModel, IRequest<PageModel<SupplierShortPublicProfileModel>>
     {
     }
 }

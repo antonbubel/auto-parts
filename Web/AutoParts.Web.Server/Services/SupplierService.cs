@@ -167,11 +167,14 @@
         [AllowAnonymous]
         public override async Task<GetSuppliersResponse> GetSuppliers(PaginationFilter request, ServerCallContext context)
         {
-            var suppliers = await mediator.Send(new GetSuppliersRequest { PageNumber = request.PageNumber, PageSize = request.PageSize });
+            var pageModel = await mediator.Send(new GetSuppliersRequest { PageNumber = request.PageNumber, PageSize = request.PageSize });
 
-            var response = new GetSuppliersResponse();
+            var response = new GetSuppliersResponse()
+            {
+                TotalNumberOfItems = pageModel.TotalNumberOfItems
+            };
 
-            mapper.Map(suppliers, response.Suppliers);
+            mapper.Map(pageModel.Items, response.Suppliers);
 
             return response;
         }

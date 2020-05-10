@@ -30,6 +30,12 @@
                 .FirstOrDefaultAsync(supplierProfile => supplierProfile.Id == key);
         }
 
+        public async Task<int> GetTotalNumberOfSuppliers()
+        {
+            return await GetQueryable()
+                .CountAsync();
+        }
+
         public async Task<ShortSupplierProfileProjection[]> GetSuppliers(int itemsToSkip, int itemsToTake)
         {
             return await GetQueryable()

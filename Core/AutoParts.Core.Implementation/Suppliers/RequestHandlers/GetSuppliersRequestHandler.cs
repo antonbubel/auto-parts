@@ -10,6 +10,7 @@
 
     using Common.Extensions;
 
+    using Contracts.Common.Models;
     using Contracts.Suppliers.Models;
     using Contracts.Suppliers.Requests;
 
@@ -17,7 +18,7 @@
 
     using Data.Model.Repositories;
 
-    public class GetSuppliersRequestHandler : IRequestHandler<GetSuppliersRequest, SupplierShortPublicProfileModel[]>
+    public class GetSuppliersRequestHandler : IRequestHandler<GetSuppliersRequest, PageModel<SupplierShortPublicProfileModel>>
     {
         private readonly IMapper mapper;
         private readonly IMediator mediator;
@@ -30,7 +31,7 @@
             this.supplierProfileRepository = supplierProfileRepository;
         }
 
-        public async Task<SupplierShortPublicProfileModel[]> Handle(GetSuppliersRequest request, CancellationToken cancellationToken)
+        public async Task<PageModel<SupplierShortPublicProfileModel>> Handle(GetSuppliersRequest request, CancellationToken cancellationToken)
         {
             if (request == null)
             {
@@ -43,6 +44,9 @@
             var suppliers = await supplierProfileRepository.GetSuppliers(itemsToSkip, itemsToTake)
                 .ConfigureAwait(false);
 
+            var totalNumberOfSuppliers = await supplierProfileRepository.GetTotalNumberOfSuppliers()
+                .ConfigureAwait(false);
+
             var models = mapper.Map<SupplierShortPublicProfileModel[]>(suppliers);
 
             foreach (var supplier in models)
@@ -53,7 +57,11 @@
                 }
             }
 
-            return models;
+            return new PageModel<SupplierShortPublicProfileModel>
+            {
+                TotalNumberOfItems = totalNumberOfSuppliers,
+                Items = models
+            };
         }
     }
 }

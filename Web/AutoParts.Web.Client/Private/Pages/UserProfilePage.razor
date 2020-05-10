@@ -1,0 +1,18 @@
+﻿@page "/profile"
+
+@using Protos;
+
+@inject Shared.Services.CurrentUserProvider currentUserProvider
+
+@if (currentUserProvider.CurrentUserInfo.UserType == UserType.User)
+{
+    <AutoParts.Web.Client.Private.User.Components.UserProfileComponent></AutoParts.Web.Client.Private.User.Components.UserProfileComponent>
+}
+
+@if (currentUserProvider.CurrentUserInfo.UserType == UserType.Supplier)
+{
+    <AutoParts.Web.Client.Private.Supplier.Components.SupplierProfileComponent></AutoParts.Web.Client.Private.Supplier.Components.SupplierProfileComponent>
+}
+
+@code {
+}

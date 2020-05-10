@@ -1,8 +1,8 @@
-﻿namespace AutoParts.Web.Client.Public.User
+﻿namespace AutoParts.Web.Client.Public
 {
     using System.ComponentModel;
 
-    public enum UnauthorizedUserRoutes
+    public enum UnauthorizedRoutes
     {
         [Description("sign-in")]
         SignIn,

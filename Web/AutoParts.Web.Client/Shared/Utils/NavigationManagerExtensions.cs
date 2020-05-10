@@ -1,14 +1,20 @@
 ﻿namespace AutoParts.Web.Client.Shared.Utils
 {
-    using AutoParts.Web.Client.Private.Administrator;
-    using AutoParts.Web.Protos;
     using Microsoft.AspNetCore.Components;
+
     using System;
     using System.Linq;
     using System.ComponentModel;
     using System.Text.RegularExpressions;
-    using AutoParts.Web.Client.Private.Supplier;
-    using AutoParts.Web.Client.Public.User;
+
+    using Protos;
+
+    using Private;
+    using Private.User;
+    using Private.Supplier;
+    using Private.Administrator;
+
+    using Public;
 
     public static class NavigationManagerExtensions
     {
@@ -26,7 +32,17 @@
                 return userType.HasValue && userType.Value == UserType.Supplier;
             }
 
-            if (IsUserSpecificPath<UnauthorizedUserRoutes>(relativePath))
+            if (IsUserSpecificPath<UserRoutes>(relativePath))
+            {
+                return userType.HasValue && userType.Value == UserType.User;
+            }
+
+            if (IsUserSpecificPath<AuthorizedRoutes>(relativePath))
+            {
+                return userType.HasValue;
+            }
+
+            if (IsUserSpecificPath<UnauthorizedRoutes>(relativePath))
             {
                 return !userType.HasValue;
             }

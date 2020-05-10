@@ -217,6 +217,20 @@ app {
     height: 20rem;
     width: 20rem;
     border-radius: .3rem;
+    position: relative;
+}
+
+.supplier-logo > div {
+    position: absolute;
+    width: 100%;
+    bottom: 0;
+    background-image: linear-gradient(to bottom, transparent, black);
+    border-radius: .3rem;
+}
+
+.supplier-logo-list-item {
+    width: auto;
+    height: 12rem;
 }
 
 .supplier-info {

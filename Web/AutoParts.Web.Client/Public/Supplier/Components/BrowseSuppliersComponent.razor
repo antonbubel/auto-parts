@@ -1,0 +1,85 @@
+﻿
+@using Protos;
+
+@inject Services.PublicSupplierService supplierService
+
+<div class="my-4 mx-0 py-5 jumbotron row">
+    <div class="col-md-12 mb-4 d-flex">
+        <h2 class="flex-grow-1">Autoparts suppliers</h2>
+    </div>
+
+    @if (Loading)
+    {
+        <p class="font-italic">Loading...</p>
+    }
+    else
+    {
+        @foreach (var supplier in Suppliers)
+        {
+            <div class="car-brand-wrapper col-md-3 mb-4">
+                <a href="@GetSupplierProfileLink(supplier)">
+                    <div class="border rounded shadow-sm bg-white py-2 supplier-logo supplier-logo-list-item" style="background-image: url('@supplier.LogoUrl');">
+                        <div class="d-block mt-auto">
+                            <h3 class="text-center text-white">
+                                @supplier.Name
+                            </h3>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        }
+        <div class="col-md-12 mt-2">
+            @if (Suppliers.Count < TotalNumberOfSuppliers && !LoadingPage)
+            {
+                <button class="btn btn-outline-dark float-right" @onclick="FetchNextPage">
+                    <span class="oi oi-arrow-bottom" aria-hidden="true"></span> More suppliers
+                </button>
+            }
+        </div>
+    }
+</div>
+
+@code {
+    [Parameter]
+    public int PageNumber { get; set; } = 1;
+
+    [Parameter]
+    public int PageSize { get; set; } = 4;
+
+    public bool Loading { get; set; } = true;
+    public bool LoadingPage { get; set; } = false;
+
+    private List<SupplierShortPublicProfile> Suppliers { get; set; } = new List<SupplierShortPublicProfile>();
+    private int TotalNumberOfSuppliers { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        await FetchPage();
+
+        Loading = false;
+    }
+
+    private async Task FetchNextPage()
+    {
+        PageNumber++;
+
+        await FetchPage();
+    }
+
+    private async Task FetchPage()
+    {
+        LoadingPage = true;
+
+        var response = await supplierService.GetSuppliers(PageNumber, PageSize);
+
+        Suppliers.AddRange(response.Suppliers.ToArray());
+        TotalNumberOfSuppliers = response.TotalNumberOfItems;
+
+        LoadingPage = false;
+    }
+
+    private string GetSupplierProfileLink(SupplierShortPublicProfile supplier)
+    {
+        return $"supplier/{supplier.Id}";
+    }
+}

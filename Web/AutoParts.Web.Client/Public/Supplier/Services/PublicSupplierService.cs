@@ -24,5 +24,16 @@
 
             return await supplierServiceClient.GetSupplierPublicProfileByIdAsync(request);
         }
+
+        public async Task<GetSuppliersResponse> GetSuppliers(int pageNumber, int pageSize)
+        {
+            var request = new PaginationFilter
+            {
+                PageNumber = pageNumber,
+                PageSize = pageSize
+            };
+
+            return await supplierServiceClient.GetSuppliersAsync(request);
+        }
     }
 }

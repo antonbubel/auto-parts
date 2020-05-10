@@ -19,10 +19,29 @@
         }
         else if (currentUserProvider.IsLoggedIn)
         {
-            <p class="mb-0">Hello, <b>@currentUserProvider.CurrentUserInfo.FirstName @currentUserProvider.CurrentUserInfo.LastName!</b></p>
-            <NavLink class="ml-4" @onclick="SignOut">
-                Sign Out
-            </NavLink>
+            <div class="btn-group">
+                <button type="button" class="btn dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <span class="oi oi-person mr-2" aria-hidden="true"></span>
+                    @currentUserProvider.CurrentUserInfo.FirstName @currentUserProvider.CurrentUserInfo.LastName
+                </button>
+                <div class="dropdown-menu dropdown-menu-right">
+                    <p class="dropdown-item">
+                        Signed in as <br />
+                        <em>@currentUserProvider.CurrentUserInfo.Email</em>
+                    </p>
+                    <div class="dropdown-divider"></div>
+                    <NavLink class="dropdown-item" href="profile">
+                        Your profile
+                    </NavLink>
+                    <div class="dropdown-divider"></div>
+                    <NavLink class="dropdown-item" href="help">
+                        Help
+                    </NavLink>
+                    <NavLink class="dropdown-item" href="#" @onclick="SignOut">
+                        Sign out
+                    </NavLink>
+                </div>
+            </div>
         }
         else
         {

@@ -30,15 +30,31 @@
                         <em>@currentUserProvider.CurrentUserInfo.Email</em>
                     </p>
                     <div class="dropdown-divider"></div>
-                    <NavLink class="dropdown-item" href="profile">
-                        Your profile
-                    </NavLink>
+
+                    @if (currentUserProvider.CurrentUserInfo.UserType != UserType.Administrator)
+                    {
+                        <NavLink class="dropdown-item" href="profile">
+                            Your profile
+                        </NavLink>
+                    }
+
+                    @if (currentUserProvider.CurrentUserInfo.UserType == UserType.Administrator)
+                    {
+                        <NavLink class="dropdown-item" href="manage-suppliers">
+                            Manage suppliers
+                        </NavLink>
+                        <NavLink class="dropdown-item" href="manage-car-brands">
+                            Manage car brands
+                        </NavLink>
+                    }
+
                     @if (currentUserProvider.CurrentUserInfo.UserType == UserType.Supplier)
                     {
                         <NavLink class="dropdown-item" href="@CurrentUserSupplierProfileLink">
                             Your public supplier profile
                         </NavLink>
                     }
+
                     <div class="dropdown-divider"></div>
                     <NavLink class="dropdown-item" href="help">
                         Help

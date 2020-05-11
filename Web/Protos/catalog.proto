@@ -1,0 +1,48 @@
+syntax = "proto3";
+
+option csharp_namespace = "AutoParts.Web.Protos";
+
+import public "common.proto";
+
+package Catalog;
+
+service GrpcCatalogService {
+  rpc GetCatalogs (GetAutoPartsCatalogsRequest) returns (GetAutoPartsCatalogsResponse);
+  rpc GetSubCatalogs (GetAutoPartsSubCatalogsRequest) returns (GetAutoPartsSubCatalogsResponse);
+  rpc GetSubCatalog (GetAutoPartsSubCatalogRequest) returns (GetAutoPartsSubCatalogResponse);
+}
+
+message Catalog {
+  int64 id = 1;
+  string name = 2;
+}
+
+message SubCatalog {
+  int64 id = 1;
+  string name = 2;
+  Catalog base_catalog = 3;
+}
+
+message GetAutoPartsCatalogsRequest {
+}
+
+message GetAutoPartsCatalogsResponse {
+  repeated Catalog catalogs = 1;
+}
+
+message GetAutoPartsSubCatalogsRequest {
+  int64 catalog_id = 1;
+}
+
+message GetAutoPartsSubCatalogsResponse {
+  repeated Catalog catalogs = 1;
+}
+
+message GetAutoPartsSubCatalogRequest {
+  int64 sub_catalog_id = 1;
+}
+
+message GetAutoPartsSubCatalogResponse {
+  SubCatalog model = 1;
+  Common.ResponseStatus status = 2;
+}

@@ -53,6 +53,8 @@
 
             services.ConfigureBusinessLayer(Configuration);
 
+            services.SeedData();
+
             services.AddAutoMapper(
                 typeof(BusinessLayerConfigurationExtensions).Assembly,
                 typeof(DatabaseContext).Assembly,

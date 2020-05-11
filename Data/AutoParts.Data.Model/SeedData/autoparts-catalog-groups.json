@@ -1,0 +1,29 @@
+﻿[
+  {
+    "Name": "Engine",
+    "AutoPartsCatalogSubGroups":
+    [
+      {
+        "Name": "Air filter with connecting parts"
+      },
+      {
+        "Name": "Base engine"
+      },
+      {
+        "Name": "Camshaft, valves"
+      },
+      {
+        "Name": "Coolant cooling system"
+      },
+      {
+        "Name": "Coolant pump"
+      },
+      {
+        "Name": "Coolant regulator and thermo- switch"
+      },
+      {
+        "Name": "Cooler for coolant"
+      }
+    ]
+  }
+]

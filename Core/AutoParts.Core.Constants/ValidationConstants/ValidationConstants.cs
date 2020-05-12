@@ -11,5 +11,7 @@
         public const int SupplierOrganizationAddressMaxLength = 200;
 
         public const int SupplierOrganizationDescriptionMaxLength = 200;
+
+        public const int ManufacturerDescriptionMaxLength = 200;
     }
 }

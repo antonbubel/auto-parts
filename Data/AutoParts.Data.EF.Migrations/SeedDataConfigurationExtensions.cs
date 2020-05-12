@@ -6,7 +6,6 @@
 
     using Newtonsoft.Json;
 
-    using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
 
     using Data.Model.SeedData;
@@ -44,6 +43,23 @@
             }
 
             context.AutoPartsCatalogGroups.AddRange(entities);
+        }
+
+        public static void SeedCountries(DatabaseContext context, string[] seedFiles)
+        {
+            if (context.Countries.Any())
+            {
+                return;
+            }
+
+            var entities = ReadSeedDataFromFile<Country>(seedFiles, SeedDataConstants.CountriesFileName);
+
+            if (entities == null || !entities.Any())
+            {
+                return;
+            }
+
+            context.Countries.AddRange(entities);
         }
 
         private static TEntity[] ReadSeedDataFromFile<TEntity>(string[] seedFiles, string fileName)

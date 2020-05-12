@@ -23,6 +23,14 @@
             this.mapper = mapper;
         }
 
+        public async Task<bool> ManufacturerExistsByName(string name)
+        {
+            var normalizedName = name.ToUpperInvariant();
+
+            return await GetQueryable()
+                .AnyAsync(manufacturer => manufacturer.NormalizedName == normalizedName);
+        }
+
         public async Task<ManufacturerProjection[]> GetManufacturersByCountry(long countryId)
         {
             return await GetQueryable()

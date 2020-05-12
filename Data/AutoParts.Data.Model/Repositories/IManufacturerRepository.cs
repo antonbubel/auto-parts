@@ -8,6 +8,8 @@
 
     public interface IManufacturerRepository : IRepository<long, Manufacturer>
     {
+        Task<bool> ManufacturerExistsByName(string name);
+
         Task<ManufacturerProjection[]> GetManufacturersByCountry(long countryId);
     }
 }

@@ -1,0 +1,22 @@
+syntax = "proto3";
+
+option csharp_namespace = "AutoParts.Web.Protos";
+
+package Country;
+
+service GrpcCountryService {
+  rpc GetCountries (GetCountriesRequest) returns (GetCountriesResponse);
+}
+
+message GetCountriesRequest {
+}
+
+message GetCountriesResponse {
+  repeated Country countries = 1;
+}
+
+message Country {
+  int64 id = 1;
+  string name = 2;
+}
+

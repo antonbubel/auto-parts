@@ -148,21 +148,32 @@
 
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapGrpcService<SignUpService>().EnableGrpcWeb();
+                endpoints.MapGrpcService<SignUpService>()
+                    .EnableGrpcWeb();
 
-                endpoints.MapGrpcService<SignInService>().EnableGrpcWeb();
+                endpoints.MapGrpcService<SignInService>()
+                    .EnableGrpcWeb();
                 
-                endpoints.MapGrpcService<CarBrandService>().EnableGrpcWeb();
+                endpoints.MapGrpcService<CarBrandService>()
+                    .EnableGrpcWeb();
                 
-                endpoints.MapGrpcService<CarModelService>().EnableGrpcWeb();
+                endpoints.MapGrpcService<CarModelService>()
+                    .EnableGrpcWeb();
 
-                endpoints.MapGrpcService<CarModificationService>().EnableGrpcWeb();
+                endpoints.MapGrpcService<CarModificationService>()
+                    .EnableGrpcWeb();
 
-                endpoints.MapGrpcService<UserService>().EnableGrpcWeb();
+                endpoints.MapGrpcService<UserService>()
+                    .EnableGrpcWeb();
 
-                endpoints.MapGrpcService<SupplierService>().EnableGrpcWeb();
+                endpoints.MapGrpcService<SupplierService>()
+                    .EnableGrpcWeb();
 
-                endpoints.MapGrpcService<CatalogService>().EnableGrpcWeb();
+                endpoints.MapGrpcService<CatalogService>()
+                    .EnableGrpcWeb();
+
+                endpoints.MapGrpcService<CountryService>()
+                    .EnableGrpcWeb();
 
                 endpoints.MapGet("/", async context =>
                 {

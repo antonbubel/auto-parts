@@ -4,9 +4,10 @@
 
     using Base;
     using Entities;
+    using Projections;
 
     public interface IManufacturerRepository : IRepository<long, Manufacturer>
     {
-        Task<Manufacturer[]> GetManufacturersByCountry(long countryId);
+        Task<ManufacturerProjection[]> GetManufacturersByCountry(long countryId);
     }
 }

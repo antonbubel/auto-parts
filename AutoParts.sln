@@ -47,6 +47,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Protos", "Protos", "{351C8B
 		Web\Protos\catalog.proto = Web\Protos\catalog.proto
 		Web\Protos\common.proto = Web\Protos\common.proto
 		Web\Protos\country.proto = Web\Protos\country.proto
+		Web\Protos\manufacturer.proto = Web\Protos\manufacturer.proto
 		Web\Protos\sign_in.proto = Web\Protos\sign_in.proto
 		Web\Protos\sign_up.proto = Web\Protos\sign_up.proto
 		Web\Protos\supplier.proto = Web\Protos\supplier.proto

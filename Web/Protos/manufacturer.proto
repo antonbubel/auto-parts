@@ -1,0 +1,52 @@
+syntax = "proto3";
+
+option csharp_namespace = "AutoParts.Web.Protos";
+
+import public "common.proto";
+
+package Manufacturer;
+
+service GrpcManufacturerService {
+  rpc GetManufacturers (GetManufacturersRequest) returns (GetManufacturersResponse);
+  rpc CreateManufacturer (CreateManufacturerRequest) returns (Common.ServiceResponse);
+  rpc UpdateManufacturer (UpdateManufacturerRequest) returns (Common.ServiceResponse);
+  rpc DeleteManufacturer (DeleteManufacturerRequest) returns (Common.ServiceResponse);
+}
+
+message GetManufacturersRequest {
+  int64 country_id = 1;
+}
+
+message GetManufacturersResponse {
+  repeated Manufacturer manufacturers = 1;
+}
+
+message CreateManufacturerRequest {
+  string name = 1;
+  string description = 2;
+  int64 country_id = 3;
+  string image_file_name = 4;
+  bytes image_file_buffer = 5;
+}
+
+message UpdateManufacturerRequest {
+  int64 id = 1;
+  string name = 2;
+  string description = 3;
+  int64 country_id = 4;
+  string image_file_name = 5;
+  bytes image_file_buffer = 6;
+}
+
+message DeleteManufacturerRequest {
+  int64 id = 1;
+}
+
+message Manufacturer {
+  int64 id = 1;
+  string name = 2;
+  string description = 3;
+  string image_url = 4;
+  int64 country_id = 5;
+  string country_name = 6;
+}

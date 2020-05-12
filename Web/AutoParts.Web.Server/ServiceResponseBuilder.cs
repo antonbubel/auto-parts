@@ -15,6 +15,11 @@
             Status = ResponseStatus.Ok
         };
 
+        public static ServiceResponse NotFound => new ServiceResponse
+        {
+            Status = ResponseStatus.NotFound
+        };
+
         public static ServiceResponse FromApiException(ApiException exception)
         {
             var response = new ServiceResponse

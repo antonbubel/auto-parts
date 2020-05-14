@@ -33,5 +33,9 @@
         public long CarModificationId { get; set; }
 
         public CarModification CarModification { get; set; }
+
+        public long AutoPartsCatalogSubGroupId { get; set; }
+
+        public AutoPartsCatalogSubGroup AutoPartsCatalogSubGroup { get; set; }
     }
 }

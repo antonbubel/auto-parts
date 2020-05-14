@@ -27,5 +27,9 @@
         public long SupplierId { get; set; }
 
         public string SupplierName { get; set; }
+
+        public long AutoPartsCatalogSubGroupId { get; set; }
+
+        public string AutoPartsCatalogSubGroupName { get; set; }
     }
 }

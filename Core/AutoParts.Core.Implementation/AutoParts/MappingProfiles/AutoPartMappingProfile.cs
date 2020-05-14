@@ -29,7 +29,9 @@
                 .ForMember(model => model.ManufacturerId, conf => conf.MapFrom(projection => projection.ManufacturerId))
                 .ForMember(model => model.ManufacturerName, conf => conf.MapFrom(projection => projection.ManufacturerName))
                 .ForMember(model => model.SupplierId, conf => conf.MapFrom(projection => projection.SupplierId))
-                .ForMember(model => model.SupplierName, conf => conf.MapFrom(projection => projection.SupplierName));
+                .ForMember(model => model.SupplierName, conf => conf.MapFrom(projection => projection.SupplierName))
+                .ForMember(model => model.SubCatalogId, conf => conf.MapFrom(projection => projection.AutoPartsCatalogSubGroupId))
+                .ForMember(model => model.SubCatalogName, conf => conf.MapFrom(projection => projection.AutoPartsCatalogSubGroupName));
 
             CreateMap<GetAutoPartsRequest, AutoPartsFilter>()
                 .ForMember(filter => filter.ItemsToSkip, conf => conf.MapFrom(request => request.GetItemsToSkip()))
@@ -39,6 +41,7 @@
                 .ForMember(filter => filter.ManufacturerId, conf => conf.MapFrom(request => request.ManufacturerId))
                 .ForMember(filter => filter.CountryId, conf => conf.MapFrom(request => request.CountryId))
                 .ForMember(filter => filter.SupplierId, conf => conf.MapFrom(request => request.SupplierId))
+                .ForMember(filter => filter.AutoPartsCatalogSubGroupId, conf => conf.MapFrom(request => request.SubCatalogId))
                 .ForMember(filter => filter.AvailableOnly, conf => conf.MapFrom(request => request.AvailableOnly));
 
             CreateMap<CreateAutoPartNotification, AutoPart>()
@@ -53,7 +56,8 @@
                 .ForMember(autoPart => autoPart.CarModificationId, conf => conf.MapFrom(notification => notification.CarModificationId))
                 .ForMember(autoPart => autoPart.ManufacturerId, conf => conf.MapFrom(notification => notification.ManufacturerId))
                 .ForMember(autoPart => autoPart.SupplierId, conf => conf.MapFrom(notification => notification.SupplierId))
-                .ForMember(autoPart => autoPart.CountryId, conf => conf.MapFrom(notification => notification.CountryId));
+                .ForMember(autoPart => autoPart.CountryId, conf => conf.MapFrom(notification => notification.CountryId))
+                .ForMember(autoPart => autoPart.AutoPartsCatalogSubGroupId, conf => conf.MapFrom(notification => notification.SubCatalogId));
 
             CreateMap<UpdateAutoPartNotification, AutoPart>()
                 .ForMember(autoPart => autoPart.Id, conf => conf.MapFrom(notification => notification.AutoPartId))

@@ -27,5 +27,7 @@
         public long SupplierId { get; set; }
 
         public long CarModificationId { get; set; }
+
+        public long SubCatalogId { get; set; }
     }
 }

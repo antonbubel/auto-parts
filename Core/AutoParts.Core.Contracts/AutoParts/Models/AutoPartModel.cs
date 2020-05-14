@@ -27,5 +27,9 @@
         public long SupplierId { get; set; }
 
         public string SupplierName { get; set; }
+
+        public long SubCatalogId { get; set; }
+
+        public string SubCatalogName { get; set; }
     }
 }

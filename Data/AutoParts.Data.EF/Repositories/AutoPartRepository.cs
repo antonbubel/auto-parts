@@ -83,6 +83,11 @@
                 query = query.Where(autoPart => autoPart.CarModificationId == filter.CarModificationId.Value);
             }
 
+            if (filter.AutoPartsCatalogSubGroupId.HasValue)
+            {
+                query = query.Where(autoPart => autoPart.AutoPartsCatalogSubGroupId == filter.AutoPartsCatalogSubGroupId.Value);
+            }
+
             if (filter.ManufacturerId.HasValue)
             {
                 query = query.Where(autoPart => autoPart.ManufacturerId == filter.ManufacturerId.Value);

@@ -19,6 +19,8 @@
 
         public long? SupplierId { get; set; }
 
+        public long? SubCatalogId { get; set; }
+
         public bool AvailableOnly { get; set; }
 
         public AutoPartsSortingType SortBy { get; set; }

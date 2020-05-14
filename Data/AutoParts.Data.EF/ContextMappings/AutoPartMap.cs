@@ -35,6 +35,18 @@
                 .WithMany(supplier => supplier.AutoParts)
                 .HasForeignKey(autoPart => autoPart.SupplierId)
                 .OnDelete(DeleteBehavior.Cascade);
+
+            builder
+                .HasOne(autoPart => autoPart.CarModification)
+                .WithMany(carModification => carModification.AutoParts)
+                .HasForeignKey(autoPart => autoPart.CarModificationId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            builder
+                .HasOne(autoPart => autoPart.AutoPartsCatalogSubGroup)
+                .WithMany(autoPartsCatalogSubGroup => autoPartsCatalogSubGroup.AutoParts)
+                .HasForeignKey(autoPart => autoPart.AutoPartsCatalogSubGroupId)
+                .OnDelete(DeleteBehavior.Restrict);
         }
     }
 }

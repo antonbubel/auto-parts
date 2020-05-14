@@ -20,7 +20,9 @@
                 .ForMember(projection => projection.ManufacturerId, conf => conf.MapFrom(model => model.ManufacturerId))
                 .ForMember(projection => projection.ManufacturerName, conf => conf.MapFrom(model => model.Manufacturer.Name))
                 .ForMember(projection => projection.SupplierId, conf => conf.MapFrom(model => model.SupplierId))
-                .ForMember(projection => projection.SupplierName, conf => conf.MapFrom(model => model.Supplier.OrganizationName));
+                .ForMember(projection => projection.SupplierName, conf => conf.MapFrom(model => model.Supplier.OrganizationName))
+                .ForMember(projection => projection.AutoPartsCatalogSubGroupId, conf => conf.MapFrom(model => model.AutoPartsCatalogSubGroupId))
+                .ForMember(projection => projection.AutoPartsCatalogSubGroupName, conf => conf.MapFrom(model => model.AutoPartsCatalogSubGroup.Name));
         }
     }
 }

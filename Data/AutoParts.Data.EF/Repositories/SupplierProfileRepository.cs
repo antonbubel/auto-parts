@@ -10,6 +10,7 @@
 
     using Base;
 
+    using Model.Results;
     using Model.Entities;
     using Model.Projections;
     using Model.Repositories;
@@ -30,19 +31,22 @@
                 .FirstOrDefaultAsync(supplierProfile => supplierProfile.Id == key);
         }
 
-        public async Task<int> GetTotalNumberOfSuppliers()
+        public async Task<PaginatedResult<ShortSupplierProfileProjection>> GetSuppliers(int itemsToSkip, int itemsToTake)
         {
-            return await GetQueryable()
-                .CountAsync();
-        }
-
-        public async Task<ShortSupplierProfileProjection[]> GetSuppliers(int itemsToSkip, int itemsToTake)
-        {
-            return await GetQueryable()
+            var items = await GetQueryable()
                 .OrderBy(supplier => supplier.Id)
                 .GetPartition(itemsToSkip, itemsToTake)
                 .ProjectTo<ShortSupplierProfileProjection>(mapper.ConfigurationProvider)
                 .ToArrayAsync();
+
+            var totalNumberOfItems = await GetQueryable()
+                .CountAsync();
+
+            return new PaginatedResult<ShortSupplierProfileProjection>
+            {
+                Items = items,
+                TotalNumberOfItems = totalNumberOfItems
+            };
         }
     }
 }

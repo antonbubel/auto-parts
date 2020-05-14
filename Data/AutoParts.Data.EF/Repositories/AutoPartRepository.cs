@@ -15,6 +15,7 @@
 
     using Model.Enums;
     using Model.Filters;
+    using Model.Results;
     using Model.Entities;
     using Model.Projections;
     using Model.Repositories;
@@ -44,7 +45,7 @@
             this.mapper = mapper;
         }
 
-        public async Task<AutoPartProjection[]> GetAutoParts(
+        public async Task<PaginatedResult<AutoPartProjection>> GetAutoParts(
             AutoPartsFilter filter,
             AutoPartsSortingOption sorting = AutoPartsSortingOption.Name,
             SortingDirection direction = SortingDirection.Ascending)
@@ -54,6 +55,26 @@
                 throw new ArgumentNullException($"Parameter {nameof(filter)} of type {nameof(AutoPartsFilter)} cannot be null.");
             }
 
+            var query = PrepareGetAutoPartsQuery(filter);
+
+            var items = await query
+                .ApplyOrderByExpressionFromDictionary(autoPartsSortingExpressions, sorting, direction)
+                .GetPartition(filter.ItemsToSkip, filter.ItemsToTake)
+                .ProjectTo<AutoPartProjection>(mapper.ConfigurationProvider)
+                .ToArrayAsync();
+
+            var totalNumberOfItems = await query
+                .CountAsync();
+
+            return new PaginatedResult<AutoPartProjection>
+            {
+                Items = items,
+                TotalNumberOfItems = totalNumberOfItems
+            };
+        }
+
+        private IQueryable<AutoPart> PrepareGetAutoPartsQuery(AutoPartsFilter filter)
+        {
             var query = GetQueryable();
 
             if (filter.CarModificationId.HasValue)
@@ -83,11 +104,7 @@
                 query = query.Where(autoPart => autoPart.NormalizedName.Contains(normalizedSearchText));
             }
 
-            return await query
-                .ApplyOrderByExpressionFromDictionary(autoPartsSortingExpressions, sorting, direction)
-                .GetPartition(filter.ItemsToSkip, filter.ItemsToTake)
-                .ProjectTo<AutoPartProjection>(mapper.ConfigurationProvider)
-                .ToArrayAsync();
+            return query;
         }
     }
 }

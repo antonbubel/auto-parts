@@ -41,13 +41,10 @@
             var itemsToSkip = request.GetItemsToSkip();
             var itemsToTake = request.GetItemsToTake();
 
-            var suppliers = await supplierProfileRepository.GetSuppliers(itemsToSkip, itemsToTake)
+            var result = await supplierProfileRepository.GetSuppliers(itemsToSkip, itemsToTake)
                 .ConfigureAwait(false);
 
-            var totalNumberOfSuppliers = await supplierProfileRepository.GetTotalNumberOfSuppliers()
-                .ConfigureAwait(false);
-
-            var models = mapper.Map<SupplierShortPublicProfileModel[]>(suppliers);
+            var models = mapper.Map<SupplierShortPublicProfileModel[]>(result.Items);
 
             foreach (var supplier in models)
             {
@@ -59,7 +56,7 @@
 
             return new PageModel<SupplierShortPublicProfileModel>
             {
-                TotalNumberOfItems = totalNumberOfSuppliers,
+                TotalNumberOfItems = result.TotalNumberOfItems,
                 Items = models
             };
         }

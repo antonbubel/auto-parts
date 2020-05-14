@@ -93,6 +93,11 @@
                 query = query.Where(autoPart => autoPart.CountryId == filter.CountryId.Value);
             }
 
+            if (filter.SupplierId.HasValue)
+            {
+                query = query.Where(autoPart => autoPart.SupplierId == filter.SupplierId.Value);
+            }
+
             if (filter.AvailableOnly)
             {
                 query = query.Where(autoPart => autoPart.IsAvailable);

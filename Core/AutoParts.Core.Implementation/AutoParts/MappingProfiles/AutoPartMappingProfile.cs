@@ -38,6 +38,7 @@
                 .ForMember(filter => filter.CarModificationId, conf => conf.MapFrom(request => request.CarModificationId))
                 .ForMember(filter => filter.ManufacturerId, conf => conf.MapFrom(request => request.ManufacturerId))
                 .ForMember(filter => filter.CountryId, conf => conf.MapFrom(request => request.CountryId))
+                .ForMember(filter => filter.SupplierId, conf => conf.MapFrom(request => request.SupplierId))
                 .ForMember(filter => filter.AvailableOnly, conf => conf.MapFrom(request => request.AvailableOnly));
 
             CreateMap<CreateAutoPartNotification, AutoPart>()

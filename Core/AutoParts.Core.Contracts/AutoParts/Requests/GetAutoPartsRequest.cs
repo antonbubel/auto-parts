@@ -17,6 +17,8 @@
 
         public long? CountryId { get; set; }
 
+        public long? SupplierId { get; set; }
+
         public bool AvailableOnly { get; set; }
 
         public AutoPartsSortingType SortBy { get; set; }

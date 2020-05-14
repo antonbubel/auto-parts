@@ -40,8 +40,7 @@
         {
             return await GetQueryable()
                 .OrderBy(supplier => supplier.Id)
-                .Skip(itemsToSkip)
-                .Take(itemsToTake)
+                .GetPartition(itemsToSkip, itemsToTake)
                 .ProjectTo<ShortSupplierProfileProjection>(mapper.ConfigurationProvider)
                 .ToArrayAsync();
         }

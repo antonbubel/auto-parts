@@ -1,28 +1,849 @@
 ﻿[
   {
     "Name": "Engine",
-    "AutoPartsCatalogSubGroups":
-    [
+    "AutoPartsCatalogSubGroups": [
       {
-        "Name": "Air filter with connecting parts"
+        "Name": "Camshaft Camshaft"
       },
       {
-        "Name": "Base engine"
+        "Name": "Connecting rod / Connecting rod bearing"
       },
       {
-        "Name": "Camshaft, valves"
+        "Name": "Crankshaft attaching parts"
       },
       {
-        "Name": "Coolant cooling system"
+        "Name": "Crankshaft/flywheel"
       },
       {
-        "Name": "Coolant pump"
+        "Name": "Cylinder head"
       },
       {
-        "Name": "Coolant regulator and thermo- switch"
+        "Name": "Cylinder head / Cover / Gaskets"
       },
       {
-        "Name": "Cooler for coolant"
+        "Name": "Dipstick"
+      },
+      {
+        "Name": "Engine Suspension"
+      },
+      {
+        "Name": "Engine housing"
+      },
+      {
+        "Name": "Engine housing mounting parts"
+      },
+      {
+        "Name": "Exch-crankshaft with bearing shells"
+      },
+      {
+        "Name": "Exhaust manifold"
+      },
+      {
+        "Name": "Intake manifold"
+      },
+      {
+        "Name": "Lubrication system/Oil pump with drive"
+      },
+      {
+        "Name": "Oil filter"
+      },
+      {
+        "Name": "Piston ring"
+      },
+      {
+        "Name": "Short Engine"
+      },
+      {
+        "Name": "Timing gear - Intake valve/exhaust valve"
+      },
+      {
+        "Name": "Water pump"
+      },
+      {
+        "Name": "Wheel casing"
+      }
+    ]
+  },
+  {
+    "Name": "Bodywork",
+    "AutoPartsCatalogSubGroups": [
+      {
+        "Name": "Body-side frane-side member/columns"
+      },
+      {
+        "Name": "Engine hood/mounting parts"
+      },
+      {
+        "Name": "Floorpan assembly"
+      },
+      {
+        "Name": "Front body parts"
+      },
+      {
+        "Name": "Front door-hinge/door brake"
+      },
+      {
+        "Name": "Rear door - hinge/door brake"
+      },
+      {
+        "Name": "Real side panel"
+      },
+      {
+        "Name": "Rear wheelhouse/floor parts"
+      },
+      {
+        "Name": "Side panel, front"
+      },
+      {
+        "Name": "Trunk lid, hinge, latch"
+      }
+    ]
+  },
+  {
+    "Name": "Brakes",
+    "AutoPartsCatalogSubGroups": [
+      {
+        "Name": "Brake master cylinder"
+      },
+      {
+        "Name": "Brake pipe rear"
+      },
+      {
+        "Name": "Brake pipe,front"
+      },
+      {
+        "Name": "Brake pipe-straight version"
+      },
+      {
+        "Name": "Expansion tank"
+      },
+      {
+        "Name": "Front-wheel brake"
+      },
+      {
+        "Name": "Front-wheel brake, single-circuit"
+      },
+      {
+        "Name": "Parking brake/control"
+      },
+      {
+        "Name": "Real wheel brake"
+      },
+      {
+        "Name": "Real wheel brake,drum brake"
+      }
+    ]
+  },
+  {
+    "Name": "Clutch",
+    "AutoPartsCatalogSubGroups": [
+      {
+        "Name": "Clutch"
+      },
+      {
+        "Name": "Clutch slave cylinder"
+      },
+      {
+        "Name": "Input cylinder clutch"
+      }
+    ]
+  },
+  {
+    "Name": "Drive Shaft",
+    "AutoPartsCatalogSubGroups": [
+      {
+        "Name": "Drive Shaft"
+      },
+      {
+        "Name": "Drive shaft, univ.joint/centre mounting"
+      }
+    ]
+  },
+  {
+    "Name": "Engine Electric System",
+    "AutoPartsCatalogSubGroups": [
+      {
+        "Name": "Alternator"
+      },
+      {
+        "Name": "Alternatormounting parts"
+      },
+      {
+        "Name": "Cable harness fixing"
+      },
+      {
+        "Name": "Cable holder"
+      },
+      {
+        "Name": "Control unit transitorized ignition"
+      },
+      {
+        "Name": "Distributor"
+      },
+      {
+        "Name": "Distributor flange"
+      },
+      {
+        "Name": "Distributor-single parts"
+      },
+      {
+        "Name": "Engine wiring harness"
+      },
+      {
+        "Name": "Fan belt"
+      },
+      {
+        "Name": "Generator,individual parts"
+      },
+      {
+        "Name": "Ignition coil"
+      },
+      {
+        "Name": "Ignition wiring"
+      },
+      {
+        "Name": "Petrol pump relay"
+      },
+      {
+        "Name": "Relay motor"
+      },
+      {
+        "Name": "Spark plug"
+      },
+      {
+        "Name": "Starter"
+      },
+      {
+        "Name": "Starter mounting parts"
+      },
+      {
+        "Name": "Starter parts"
+      }
+    ]
+  },
+  {
+    "Name": "Equipment Parts",
+    "AutoPartsCatalogSubGroups": [
+      {
+        "Name": "Bulb/fuse"
+      },
+      {
+        "Name": "Label outer paint metallic"
+      },
+      {
+        "Name": "Label outer paint plain colour"
+      },
+      {
+        "Name": "Tool box large"
+      },
+      {
+        "Name": "Tool kit/Lifting jack"
+      },
+      {
+        "Name": "Towing hitch, detachable"
+      },
+      {
+        "Name": "Trailer coupling with fixed ball head"
+      }
+    ]
+  },
+  {
+    "Name": "Exhaust system",
+    "AutoPartsCatalogSubGroups": [
+      {
+        "Name": "Exhaust pipe front"
+      },
+      {
+        "Name": "Exhaust system"
+      },
+      {
+        "Name": "Suspension parts exhaust"
+      }
+    ]
+  },
+  {
+    "Name": "Front Axle",
+    "AutoPartsCatalogSubGroups": [
+      {
+        "Name": "Coil spring"
+      },
+      {
+        "Name": "Front axle support/wishbone"
+      },
+      {
+        "Name": "Front spring strut/shock absorber"
+      },
+      {
+        "Name": "Guide support/spring pad/attaching parts"
+      },
+      {
+        "Name": "Stabilizer,front"
+      },
+      {
+        "Name": "Wheel bearings"
+      }
+    ]
+  },
+  {
+    "Name": "Fuel Preparation System",
+    "AutoPartsCatalogSubGroups": [
+      {
+        "Name": "Accelerator pedal"
+      },
+      {
+        "Name": "Automatic choke"
+      },
+      {
+        "Name": "Carburetor mounting parts"
+      },
+      {
+        "Name": "Carburettor 1b2"
+      },
+      {
+        "Name": "Fuel supply/pump/filter"
+      },
+      {
+        "Name": "Intake silencer / Filter cartridge"
+      },
+      {
+        "Name": "Zyklon pre separator"
+      }
+    ]
+  },
+  {
+    "Name": "Fuel Supply",
+    "AutoPartsCatalogSubGroups": [
+      {
+        "Name": "Expansion tanl/tubing"
+      },
+      {
+        "Name": "Fuel supply/tubing"
+      },
+      {
+        "Name": "Fuel tank/attaching parts"
+      }
+    ]
+  },
+  {
+    "Name": "Heater and Air Conditioning",
+    "AutoPartsCatalogSubGroups": [
+      {
+        "Name": "Air channel"
+      },
+      {
+        "Name": "Air condit.compressor mounting parts"
+      },
+      {
+        "Name": "Air conditioning system mounting parts"
+      },
+      {
+        "Name": "Air conditioning unit parts"
+      },
+      {
+        "Name": "Climate capacitor/additional blower"
+      },
+      {
+        "Name": "Defroster nozzle"
+      },
+      {
+        "Name": "Drying container/small parts"
+      },
+      {
+        "Name": "Fan belt"
+      },
+      {
+        "Name": "Fresh air grille"
+      },
+      {
+        "Name": "Heater"
+      },
+      {
+        "Name": "Heater closing panel"
+      },
+      {
+        "Name": "Heater control"
+      },
+      {
+        "Name": "Heater radiator/housing sofica"
+      },
+      {
+        "Name": "Heater radiator/mounting parts"
+      },
+      {
+        "Name": "Housing parts, heater Behr"
+      },
+      {
+        "Name": "Magnetic clutch"
+      },
+      {
+        "Name": "Pressure hose assy"
+      },
+      {
+        "Name": "RP air conditioning compressor"
+      },
+      {
+        "Name": "Single components heater"
+      },
+      {
+        "Name": "Suction pipe/pressure hose assy"
+      },
+      {
+        "Name": "Switch air conditioning"
+      },
+      {
+        "Name": "Tubing-attaching parts"
+      },
+      {
+        "Name": "Water valve"
+      },
+      {
+        "Name": "Water valve/Water hose"
+      }
+    ]
+  },
+  {
+    "Name": "Instruments, Measuring systems",
+    "AutoPartsCatalogSubGroups": [
+      {
+        "Name": "Instruments combinat-single components"
+      },
+      {
+        "Name": "Speedo cable attaching parts"
+      },
+      {
+        "Name": "Speedometer"
+      },
+      {
+        "Name": "Tachometer/clock"
+      }
+    ]
+  },
+  {
+    "Name": "Lighting",
+    "AutoPartsCatalogSubGroups": [
+      {
+        "Name": "Fog lights"
+      },
+      {
+        "Name": "Headlight"
+      },
+      {
+        "Name": "Installing set engine room light"
+      },
+      {
+        "Name": "Installing set hand lamp"
+      },
+      {
+        "Name": "Installing set trunk light"
+      },
+      {
+        "Name": "Rear light"
+      },
+      {
+        "Name": "Single components for headlight"
+      },
+      {
+        "Name": "Turn indicator"
+      },
+      {
+        "Name": "Various lamps"
+      }
+    ]
+  },
+  {
+    "Name": "Transmission",
+    "AutoPartsCatalogSubGroups": [
+      {
+        "Name": "Auto"
+      },
+      {
+        "Name": "Manual"
+      }
+    ]
+  },
+  {
+    "Name": "Pedals",
+    "AutoPartsCatalogSubGroups": [
+      {
+        "Name": "Accelerator"
+      },
+      {
+        "Name": "Foot brake"
+      },
+      {
+        "Name": "Clutch"
+      }
+    ]
+  },
+  {
+    "Name": "Radiator",
+    "AutoPartsCatalogSubGroups": [
+      {
+        "Name": "Radiator"
+      }
+    ]
+  },
+  {
+    "Name": "Real Axle",
+    "AutoPartsCatalogSubGroups": [
+      {
+        "Name": "Drive flange suspension/gasket"
+      },
+      {
+        "Name": "Drive flange suspension/gasket ring"
+      },
+      {
+        "Name": "Final drive housing cover/suspension"
+      },
+      {
+        "Name": "Guide support/spring pad/attaching parts"
+      },
+      {
+        "Name": "HD-suspension"
+      },
+      {
+        "Name": "Limit.slip diff.unit-drive flange/susp."
+      },
+      {
+        "Name": "Limit.slip diff.unit 25%-single parts"
+      },
+      {
+        "Name": "Output shaft"
+      },
+      {
+        "Name": "Rear axle carrier"
+      },
+      {
+        "Name": "Real axle support/wheel suspension"
+      },
+      {
+        "Name": "Rear-axle-drive"
+      },
+      {
+        "Name": "Shock absorber/coil spring/attach.parts"
+      },
+      {
+        "Name": "Side shaft/wheel bearings"
+      },
+      {
+        "Name": "Sports suspension"
+      },
+      {
+        "Name": "Stabilizer"
+      },
+      {
+        "Name": "Suspension for trailer hitch"
+      }
+    ]
+  },
+  {
+    "Name": "Retrofitting / conversion / accessories",
+    "AutoPartsCatalogSubGroups": [
+      {
+        "Name": "Registr.plate mounting f trailer hitch"
+      },
+      {
+        "Name": "Towing hitch,detachable"
+      },
+      {
+        "Name": "Wiring set trailer coupling"
+      }
+    ]
+  },
+  {
+    "Name": "Seats",
+    "AutoPartsCatalogSubGroups": [
+      {
+        "Name": "Cover,running metre"
+      },
+      {
+        "Name": "Fitting f reclining front seat"
+      },
+      {
+        "Name": "Front seat backrest unlocking"
+      },
+      {
+        "Name": "Front seat rail"
+      },
+      {
+        "Name": "Front seat, low"
+      },
+      {
+        "Name": "Front seat-head rest support retainer"
+      },
+      {
+        "Name": "Head rest front mech./el.adjustable"
+      },
+      {
+        "Name": "Headrest,rear"
+      },
+      {
+        "Name": "Lower seat parts"
+      },
+      {
+        "Name": "Rear panel"
+      },
+      {
+        "Name": "Recaro sports seat"
+      },
+      {
+        "Name": "Seat cover front"
+      },
+      {
+        "Name": "Seat cover rear"
+      },
+      {
+        "Name": "Seat front seat coverings"
+      }
+    ]
+  },
+  {
+    "Name": "Sliding Roof / Folding Top",
+    "AutoPartsCatalogSubGroups": [
+      {
+        "Name": "Single parts for sliding lifting roof"
+      },
+      {
+        "Name": "Slid.lift.roof-cover/ceiling frame"
+      },
+      {
+        "Name": "Sliding lifting roof-manul operation"
+      },
+      {
+        "Name": "Slipstream deflector"
+      },
+      {
+        "Name": "Trim sliding lifting roof"
+      }
+    ]
+  },
+  {
+    "Name": "Steering",
+    "AutoPartsCatalogSubGroups": [
+      {
+        "Name": "Hydro steering-oil pipes"
+      },
+      {
+        "Name": "Hydro steering pipe steering box"
+      },
+      {
+        "Name": "Hydro steering-vane pump/bearing support"
+      },
+      {
+        "Name": "Hydro steering-vane pump/single parts"
+      },
+      {
+        "Name": "Mechanical steering"
+      },
+      {
+        "Name": "Oil carrier / Single parts"
+      },
+      {
+        "Name": "Power steering"
+      },
+      {
+        "Name": "Sports steering wheel"
+      },
+      {
+        "Name": "Steering wheel"
+      }
+    ]
+  },
+  {
+    "Name": "Technical Literature",
+    "AutoPartsCatalogSubGroups": [
+      {
+        "Name": "Owner's handbook"
+      },
+      {
+        "Name": "Repair manual"
+      }
+    ]
+  },
+  {
+    "Name": "Vehicle electrical system",
+    "AutoPartsCatalogSubGroups": [
+      {
+        "Name": "Battery"
+      },
+      {
+        "Name": "Battery cable/earth cable"
+      },
+      {
+        "Name": "Cable"
+      },
+      {
+        "Name": "Cable clamps/cable holder"
+      },
+      {
+        "Name": "Control unitrelais connections"
+      },
+      {
+        "Name": "Fuse box"
+      },
+      {
+        "Name": "Horn"
+      },
+      {
+        "Name": "Main wiring harness"
+      },
+      {
+        "Name": "Plug housing"
+      },
+      {
+        "Name": "Relay"
+      },
+      {
+        "Name": "Retrofit kit, headlight cleaning system"
+      },
+      {
+        "Name": "Single parts for head lamp cleaning"
+      },
+      {
+        "Name": "Single parts for windshield cleaning"
+      },
+      {
+        "Name": "Single wiper parts"
+      },
+      {
+        "Name": "Steering column switch"
+      },
+      {
+        "Name": "Switch hand brake control"
+      },
+      {
+        "Name": "Various additional wiring sets"
+      },
+      {
+        "Name": "Wiper arm/wiper blade"
+      },
+      {
+        "Name": "Wiring connections"
+      },
+      {
+        "Name": "Wiring set mirror/interior light"
+      }
+    ]
+  },
+  {
+    "Name": "Vehicle trim",
+    "AutoPartsCatalogSubGroups": [
+      {
+        "Name": "Armrest,front"
+      },
+      {
+        "Name": "Armrest,rear"
+      },
+      {
+        "Name": "Armrest-single parts"
+      },
+      {
+        "Name": "Bumper rear"
+      },
+      {
+        "Name": "Bumper,front"
+      },
+      {
+        "Name": "Cover,entrance"
+      },
+      {
+        "Name": "Cover,running metre"
+      },
+      {
+        "Name": "Door pocket"
+      },
+      {
+        "Name": "Door trim panel"
+      },
+      {
+        "Name": "Door window lifting mechanism front"
+      },
+      {
+        "Name": "Electr.exterior mirror"
+      },
+      {
+        "Name": "Emblems / letterings"
+      },
+      {
+        "Name": "Floor covering"
+      },
+      {
+        "Name": "Floor covering/running metre"
+      },
+      {
+        "Name": "Front bumper mounting parts"
+      },
+      {
+        "Name": "Glazing"
+      },
+      {
+        "Name": "Glazing,mounting parts"
+      },
+      {
+        "Name": "Glove box"
+      },
+      {
+        "Name": "Glove box lock"
+      },
+      {
+        "Name": "Grille"
+      },
+      {
+        "Name": "Information plate"
+      },
+      {
+        "Name": "Installing set spoiler front"
+      },
+      {
+        "Name": "Interior rear-view mirror"
+      },
+      {
+        "Name": "Lateral trim panel parts"
+      },
+      {
+        "Name": "Lateral trim panel rear"
+      },
+      {
+        "Name": "Mould.rock.panel-fender/door/covering"
+      },
+      {
+        "Name": "Moulding drip moulding"
+      },
+      {
+        "Name": "Ornamental strips"
+      },
+      {
+        "Name": "Package shelf/trunk mat"
+      },
+      {
+        "Name": "Roof trim-headlining/handle"
+      },
+      {
+        "Name": "Sealing cap/bug"
+      },
+      {
+        "Name": "Sound insulation"
+      },
+      {
+        "Name": "Storing partition-ashtray front"
+      },
+      {
+        "Name": "Sun visor"
+      },
+      {
+        "Name": "Switch electr.exterior mirror"
+      },
+      {
+        "Name": "Trim panel dashboard"
+      },
+      {
+        "Name": "trim panel dashboard LOWER"
+      },
+      {
+        "Name": "Vent"
+      },
+      {
+        "Name": "exterior trim / grille"
       }
     ]
   }

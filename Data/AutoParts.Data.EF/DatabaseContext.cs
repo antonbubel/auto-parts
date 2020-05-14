@@ -37,6 +37,8 @@
 
         public DbSet<Manufacturer> Manufacturers { get; set; }
 
+        public DbSet<AutoPart> AutoParts { get; set; }
+
         public DatabaseContext(DbContextOptions<DatabaseContext> options)
             : base(options)
         {

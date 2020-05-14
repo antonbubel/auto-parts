@@ -7,5 +7,7 @@
     public class Country : LookupEntity<long>
     {
         public virtual ICollection<Manufacturer> Manufacturers { get; set; }
+
+        public virtual ICollection<AutoPart> AutoParts { get; set; }
     }
 }

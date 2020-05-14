@@ -1,5 +1,7 @@
 ﻿namespace AutoParts.Data.Model.Entities
 {
+    using System.Collections.Generic;
+
     using Base;
 
     public class SupplierProfile : BaseEntity<long>
@@ -19,6 +21,8 @@
         public string Logo { get; set; }
 
         public User User { get; set; }
+
+        public virtual ICollection<AutoPart> AutoParts { get; set; }
     }
 }
 

@@ -1,5 +1,7 @@
 ﻿namespace AutoParts.Data.Model.Entities
 {
+    using System.Collections.Generic;
+
     using Base;
 
     public class Manufacturer : BaseEntity<long>
@@ -15,5 +17,7 @@
         public long CountryId { get; set; }
 
         public Country Country { get; }
+
+        public virtual ICollection<AutoPart> AutoParts { get; set; }
     }
 }

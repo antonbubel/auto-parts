@@ -23,5 +23,9 @@
         public long ManufacturerId { get; set; }
 
         public string ManufacturerName { get; set; }
+
+        public long SupplierId { get; set; }
+
+        public string SupplierName { get; set; }
     }
 }

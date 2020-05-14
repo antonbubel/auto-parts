@@ -18,7 +18,9 @@
                 .ForMember(projection => projection.IsAvailable, conf => conf.MapFrom(model => model.IsAvailable))
                 .ForMember(projection => projection.CountryId, conf => conf.MapFrom(model => model.CountryId))
                 .ForMember(projection => projection.ManufacturerId, conf => conf.MapFrom(model => model.ManufacturerId))
-                .ForMember(projection => projection.ManufacturerName, conf => conf.MapFrom(model => model.Manufacturer.Name));
+                .ForMember(projection => projection.ManufacturerName, conf => conf.MapFrom(model => model.Manufacturer.Name))
+                .ForMember(projection => projection.SupplierId, conf => conf.MapFrom(model => model.SupplierId))
+                .ForMember(projection => projection.SupplierName, conf => conf.MapFrom(model => model.Supplier.OrganizationName));
         }
     }
 }

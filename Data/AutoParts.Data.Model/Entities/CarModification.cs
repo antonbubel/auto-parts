@@ -1,5 +1,7 @@
 ﻿namespace AutoParts.Data.Model.Entities
 {
+    using System.Collections.Generic;
+
     using Base;
 
     public class CarModification : BaseEntity<long>
@@ -13,5 +15,7 @@
         public int Year { get; set; }
 
         public virtual CarModel CarModel { get; set; }
+
+        public virtual ICollection<AutoPart> AutoParts { get; set; }
     }
 }

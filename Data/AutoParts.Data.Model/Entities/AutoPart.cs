@@ -8,6 +8,8 @@
 
         public string Description { get; set; }
 
+        public string Image { get; set; }
+
         public decimal Price { get; set; }
 
         public int Quantity { get; set; }
@@ -25,5 +27,9 @@
         public long SupplierId { get; set; }
 
         public SupplierProfile Supplier { get; set; }
+
+        public long CarModificationId { get; set; }
+
+        public CarModification CarModification { get; set; }
     }
 }

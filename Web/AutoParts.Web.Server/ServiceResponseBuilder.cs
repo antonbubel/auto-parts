@@ -15,6 +15,11 @@
             Status = ResponseStatus.Ok
         };
 
+        public static ServiceResponse Forbidden => new ServiceResponse
+        {
+            Status = ResponseStatus.Forbidden
+        };
+
         public static ServiceResponse NotFound => new ServiceResponse
         {
             Status = ResponseStatus.NotFound

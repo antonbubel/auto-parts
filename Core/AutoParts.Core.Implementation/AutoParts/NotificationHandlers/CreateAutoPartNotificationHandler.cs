@@ -36,17 +36,7 @@
         {
             var entity = mapper.Map<AutoPart>(notification);
 
-            if (!string.IsNullOrEmpty(notification.ImageFileName) && !notification.ImageFileBuffer.IsEmpty)
-            {
-                var saveFileRequest = new SaveFileRequest
-                {
-                    FileName = notification.ImageFileName,
-                    Buffer = notification.ImageFileBuffer
-                };
-
-                entity.Image = await mediator.Send(saveFileRequest)
-                    .ConfigureAwait(false);
-            }
+            entity.Image = await SaveAutoPartImageFromNotification(notification);
 
             var operationResult = await autoPartRepository.CreateAsync(entity)
                 .ConfigureAwait(false);
@@ -55,6 +45,23 @@
             {
                 throw new CreateAutoPartException(operationResult);
             }
+        }
+
+        private async Task<string> SaveAutoPartImageFromNotification(CreateAutoPartNotification notification)
+        {
+            if (!string.IsNullOrEmpty(notification.ImageFileName) && !notification.ImageFileBuffer.IsEmpty)
+            {
+                var saveFileRequest = new SaveFileRequest
+                {
+                    FileName = notification.ImageFileName,
+                    Buffer = notification.ImageFileBuffer
+                };
+
+                return await mediator.Send(saveFileRequest)
+                    .ConfigureAwait(false);
+            }
+
+            return null;
         }
     }
 }

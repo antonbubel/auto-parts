@@ -11,7 +11,7 @@
 
     using Microsoft.EntityFrameworkCore;
 
-    using Base;
+    using AutoParts.Data.EF.Repositories.Base;
 
     using Model.Enums;
     using Model.Filters;
@@ -44,6 +44,12 @@
         public AutoPartRepository(IDatabaseContext context, IMapper mapper) : base(context)
         {
             this.mapper = mapper;
+        }
+
+        public override Task<AutoPart> FindAsync(long key)
+        {
+            return GetQueryable()
+                .FirstOrDefaultAsync(autoPart => autoPart.Id == key);
         }
 
         public async Task<PaginatedResult<AutoPartProjection>> GetAutoParts(

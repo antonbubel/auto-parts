@@ -41,6 +41,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AutoParts.Infrastructure.Ex
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Protos", "Protos", "{351C8B0E-85F1-4FF0-AFCA-DDDDE282BEAB}"
 	ProjectSection(SolutionItems) = preProject
+		Web\Protos\auto_part.proto = Web\Protos\auto_part.proto
 		Web\Protos\car_brand.proto = Web\Protos\car_brand.proto
 		Web\Protos\car_model.proto = Web\Protos\car_model.proto
 		Web\Protos\car_modification.proto = Web\Protos\car_modification.proto

@@ -20,9 +20,4 @@
     <ProjectReference Include="..\AutoParts.Core.Contracts\AutoParts.Core.Contracts.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="AutoParts\NotificationValidators\" />
-    <Folder Include="AutoParts\NotificationHandlers\" />
-  </ItemGroup>
-
 </Project>

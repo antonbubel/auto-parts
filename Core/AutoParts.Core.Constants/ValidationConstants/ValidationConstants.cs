@@ -13,5 +13,7 @@
         public const int SupplierOrganizationDescriptionMaxLength = 200;
 
         public const int ManufacturerDescriptionMaxLength = 200;
+
+        public const int AutoPartDescriptionMaxLength = 200;
     }
 }

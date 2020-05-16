@@ -12,7 +12,7 @@
     <None Update="SeedData\autoparts-catalog-groups.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="SeedData\countires.json">
+    <None Update="SeedData\countries.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>

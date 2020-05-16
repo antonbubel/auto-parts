@@ -24,6 +24,7 @@
             var seedFiles = Directory.GetFiles(seedFolder);
 
             SeedAutoPartsCatalogs(context, seedFiles);
+            SeedCountries(context, seedFiles);
 
             context.SaveChanges();
         }

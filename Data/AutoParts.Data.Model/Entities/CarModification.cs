@@ -17,5 +17,7 @@
         public virtual CarModel CarModel { get; set; }
 
         public virtual ICollection<AutoPart> AutoParts { get; set; }
+
+        public virtual ICollection<UserProfile> UserProfiles { get; set; }
     }
 }

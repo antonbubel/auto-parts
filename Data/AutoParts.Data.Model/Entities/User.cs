@@ -16,6 +16,8 @@
 
         public virtual UserType UserType { get; set; }
 
+        public virtual UserProfile UserProfile { get; set; }
+
         public virtual SupplierProfile SupplierProfile { get; set; }
 
         public virtual ICollection<Order> Orders { get; set; }

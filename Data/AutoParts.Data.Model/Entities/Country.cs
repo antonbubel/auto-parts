@@ -13,5 +13,7 @@
         public virtual ICollection<AutoPart> AutoParts { get; set; }
 
         public virtual ICollection<Order> Orders { get; set; }
+
+        public virtual ICollection<UserShippingInfo> UserShippingInfos { get; set; }
     }
 }

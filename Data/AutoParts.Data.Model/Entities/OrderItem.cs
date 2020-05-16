@@ -1,7 +1,5 @@
 ﻿namespace AutoParts.Data.Model.Entities
 {
-    using System.Collections.Generic;
-
     using Base;
 
     public class OrderItem : BaseEntity<long>

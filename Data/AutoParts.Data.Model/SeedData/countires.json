@@ -1,17 +1,26 @@
 ﻿[
 	{
-		"Name": "United Kingdom"
+		"Name": "United Kingdom",
+		"IsShippingCountry": false
 	},
 	{
-		"Name": "United States"
+		"Name": "United States",
+		"IsShippingCountry": false
 	},
 	{
-		"Name": "Finland"
+		"Name": "Finland",
+		"IsShippingCountry": false
 	},
 	{
-		"Name": "France"
+		"Name": "France",
+		"IsShippingCountry": false
 	},
 	{
-		"Name": "Germany"
+		"Name": "Germany",
+		"IsShippingCountry": false
+	},
+	{
+		"Name": "Belarus",
+		"IsShippingCountry": true
 	}
 ]

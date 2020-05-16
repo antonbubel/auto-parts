@@ -45,6 +45,10 @@
 
         public DbSet<OrderItem> OrderItems { get; set; }
 
+        public DbSet<UserProfile> UserProfiles { get; set; }
+
+        public DbSet<UserShippingInfo> UserShippingInfos { get; set; }
+
         public DatabaseContext(DbContextOptions<DatabaseContext> options)
             : base(options)
         {

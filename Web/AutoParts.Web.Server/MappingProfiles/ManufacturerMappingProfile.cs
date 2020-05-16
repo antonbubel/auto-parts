@@ -15,7 +15,7 @@
                 .ForMember(manufacturer => manufacturer.Id, conf => conf.MapFrom(model => model.Id))
                 .ForMember(manufacturer => manufacturer.Name, conf => conf.MapFrom(model => model.Name))
                 .ForMember(manufacturer => manufacturer.Description, conf => conf.MapFrom(model => model.Description))
-                .ForMember(manufacturer => manufacturer.ImageUrl, conf => conf.MapFrom(model => model.ImageUrl))
+                .ForMember(manufacturer => manufacturer.ImageUrl, conf => conf.MapFrom(model => model.ImageUrl ?? string.Empty))
                 .ForMember(manufacturer => manufacturer.CountryId, conf => conf.MapFrom(model => model.CountryId))
                 .ForMember(manufacturer => manufacturer.CountryName, conf => conf.MapFrom(model => model.CountryName));
 

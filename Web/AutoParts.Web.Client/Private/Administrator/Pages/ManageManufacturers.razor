@@ -1,0 +1,260 @@
+﻿@page "/manage-manufacturers"
+
+@using Protos;
+@using Models;
+@using Shared.Utils
+@using Blazor.FileReader
+
+@inject IFileReaderService fileReaderService
+@inject Public.Services.CountryService countryService
+@inject Public.Services.ManufacturerService manufacturerService
+@inject Services.ManufacturerManagerService manufacturerManagerService
+
+<div class="d-flex mb-3">
+    <h2 class="flex-grow-1">
+        Manufacturers manager
+    </h2>
+
+    @if (Loading)
+    {
+        <p class="font-italic">Loading...</p>
+    }
+    else
+    {
+        <select type="search" class="form-control select-country-input mr-2" value="@SelectedCountryId" @oninput="HandleCountryChosen">
+            @foreach (var country in Countries)
+            {
+                <option value="@country.Id">@country.Name</option>
+            }
+        </select>
+        <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapseForm" aria-expanded="false" aria-controls="collapseForm">
+            <span class="oi oi-plus" aria-hidden="true"></span> Create new manufacturer
+        </button>
+    }
+</div>
+
+<div class="collapse mb-3" id="collapseForm">
+    <div class="card card-body">
+        <EditForm class="col-md-3" Model="@formModel" OnValidSubmit="HandleCreateManufacturer">
+            @if (Errors != null && Errors.Any())
+            {
+                <div class="my-3 alert-danger">
+                    <ul>
+                        @foreach (var error in Errors)
+                        {
+                            <li>@error.Message</li>
+                        }
+                    </ul>
+                </div>
+            }
+
+            <DataAnnotationsValidator />
+
+            <div class="text-left">
+                <ValidationSummary />
+            </div>
+
+            <InputText id="manufacturer-name" class="form-control mb-2" placeholder="Manufacturer name" @bind-Value="formModel.Name" />
+            <InputTextArea id="manufacturer-description" class="form-control mb-2" placeholder="Manufacturer description" @bind-Value="formModel.Description" />
+            <div class="custom-file">
+                <input type="file"
+                       id="inputGroupFile01"
+                       class="custom-file-input"
+                       @ref=dropTargetInput
+                       @onchange="OnInputChange" />
+                <label class="custom-file-label" for="inputGroupFile01">@GetFileInputLabelText()</label>
+            </div>
+
+            <button class="btn btn-md btn-primary btn-block mt-3" type="submit" disabled="@CreatingManufacturer">
+                Create
+            </button>
+        </EditForm>
+    </div>
+</div>
+
+@if (LoadingManufacturers)
+{
+    <p class="font-italic">Loading...</p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Manufacturer name</th>
+                <th scope="col">Manufacturer description</th>
+                <th scope="col">Manufacturer image</th>
+                <th scope="col">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var manufacturer in Manufacturers)
+            {
+                <tr>
+                    <th scope="row">
+                        @manufacturer.Id
+                    </th>
+                    <td>
+                        @manufacturer.Name
+                    </td>
+                    <td>
+                        @manufacturer.Description
+                    </td>
+                    <td>
+                        @if (!string.IsNullOrEmpty(manufacturer.ImageUrl))
+                        {
+                            <a class="btn btn-info" href="@manufacturer.ImageUrl" target="_blank">
+                                <span class="oi oi-external-link" aria-hidden="true"></span> Show image
+                            </a>
+                        }
+                    </td>
+                    <td>
+                        <button class="btn btn-primary">
+                            <span class="oi oi-pencil" aria-hidden="true"></span> Edit
+                        </button>
+                        <button class="btn btn-danger" @onclick="() => HandleDeleteManufacturer(manufacturer.Id)">
+                            <span class="oi oi-trash" aria-hidden="true"></span> Delete
+                        </button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    public bool Loading { get; set; } = true;
+    public bool LoadingManufacturers { get; set; } = true;
+    public bool CreatingManufacturer { get; set; } = false;
+
+    private long SelectedCountryId { get; set; }
+    private Country[] Countries { get; set; }
+    private Manufacturer[] Manufacturers { get; set; }
+    private Error[] Errors { get; set; }
+    private List<IFileInfo> InputFileList { get; set; } = new List<IFileInfo>();
+
+    private ElementReference dropTargetInput;
+    private IFileReaderRef inputFileReference;
+    private ManufacturerFormModel formModel = new ManufacturerFormModel();
+
+    protected override async Task OnInitializedAsync()
+    {
+        Loading = true;
+
+        Countries = await countryService.GetCountries();
+        SelectedCountryId = Countries.First().Id;
+
+        Loading = false;
+
+        UpdateFileInputReference();
+
+        await FetchManufacturers();
+    }
+
+    private async Task FetchManufacturers()
+    {
+        LoadingManufacturers = true;
+
+        Manufacturers = await manufacturerService.GetManufactuers(SelectedCountryId);
+
+        LoadingManufacturers = false;
+    }
+
+    private async Task HandleCountryChosen(ChangeEventArgs eventArgs)
+    {
+        var currentCountryId = SelectedCountryId;
+        var selectedCountryId = (string)eventArgs.Value;
+
+        if (int.TryParse(selectedCountryId, out var countryId))
+        {
+            SelectedCountryId = countryId;
+        }
+
+        if (currentCountryId != SelectedCountryId)
+        {
+            await FetchManufacturers();
+        }
+    }
+
+    private async Task HandleCreateManufacturer()
+    {
+        if (InputFileList.Any())
+        {
+
+            var files = await FileUtility.ReadFilesAsync(inputFileReference);
+            var file = files.First();
+
+            formModel.ImageFileInfo = file.Key;
+            formModel.ImageBuffer = file.Value;
+        }
+
+        formModel.CountryId = SelectedCountryId;
+
+        CreatingManufacturer = true;
+
+        var response = await manufacturerManagerService.CreateManufacturer(formModel);
+
+        CreatingManufacturer = false;
+
+        if (response.Status != ResponseStatus.Ok)
+        {
+            Errors = response.Errors.ToArray();
+
+            return;
+        }
+
+        formModel = new ManufacturerFormModel();
+
+        UpdateFileInputReference();
+
+        await FetchManufacturers();
+    }
+
+    private async Task HandleDeleteManufacturer(long manufacturerId)
+    {
+        await manufacturerManagerService.DeleteManufacturer(manufacturerId);
+
+        await FetchManufacturers();
+    }
+
+    private void UpdateFileInputReference()
+    {
+        StateHasChanged();
+
+        InputFileList.Clear();
+
+        inputFileReference = fileReaderService.CreateReference(dropTargetInput);
+    }
+
+    private async Task OnInputChange(EventArgs e)
+    {
+        StateHasChanged();
+
+        await RefreshFileList(inputFileReference, InputFileList);
+    }
+
+    private string GetFileInputLabelText()
+    {
+        if (InputFileList.Any())
+        {
+            return InputFileList.First().Name;
+        }
+
+        return "Choose manufacturer image";
+    }
+
+    private async Task RefreshFileList(IFileReaderRef reader, List<IFileInfo> list)
+    {
+        list.Clear();
+
+        foreach (var file in await reader.EnumerateFilesAsync())
+        {
+            var fileInfo = await file.ReadFileInfoAsync();
+
+            list.Add(fileInfo);
+        }
+
+        StateHasChanged();
+    }
+}

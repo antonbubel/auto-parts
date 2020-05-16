@@ -80,7 +80,7 @@ else
     public string SupplierEmailLink => $"mailto:{SupplierProfile.SalesEmail}";
     public string SupplierPhoneLink => $"tel:{SupplierProfile.SalesPhoneNumber}";
 
-    protected override async Task OnInitializedAsync()
+    protected override async Task OnParametersSetAsync()
     {
         var response = await supplierService.GetSupplierProfile(SupplierId);
 

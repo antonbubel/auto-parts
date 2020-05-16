@@ -14,6 +14,9 @@
         ManageCarModificationsPage,
 
         [Description("manage-suppliers")]
-        ManageSuppliersPage
+        ManageSuppliersPage,
+
+        [Description("manage-manufacturers")]
+        ManageManufacturers
     }
 }

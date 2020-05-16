@@ -149,7 +149,7 @@ else
         await carBrandsManagerService.CreateCarBrand(formModel);
 
         formModel = new CarBrandFormModel();
-        InputFileList = new List<IFileInfo>();
+        UpdateFileInputReference();
 
         await LoadCarBrands();
 
@@ -169,6 +169,15 @@ else
         CarBrands = await carBrandService.GetCarBrands();
 
         Loading = false;
+    }
+
+    private void UpdateFileInputReference()
+    {
+        StateHasChanged();
+
+        InputFileList.Clear();
+
+        inputFileReference = fileReaderService.CreateReference(dropTargetInput);
     }
 
     public async Task OnInputChange(EventArgs e)

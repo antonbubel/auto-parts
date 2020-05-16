@@ -159,7 +159,7 @@ else
         await carModelsManagerService.CreateCarModel(formModel);
 
         formModel = new CarModelFormModel();
-        InputFileList = new List<IFileInfo>();
+        UpdateFileInputReference();
 
         await LoadCarModels();
     }
@@ -178,6 +178,15 @@ else
         CarModels = await carModelService.GetCarModels(CarBrandId);
 
         Loading = false;
+    }
+
+    private void UpdateFileInputReference()
+    {
+        StateHasChanged();
+
+        InputFileList.Clear();
+
+        inputFileReference = fileReaderService.CreateReference(dropTargetInput);
     }
 
     private string GetFileInputLabelText()

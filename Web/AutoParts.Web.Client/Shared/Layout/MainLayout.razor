@@ -34,6 +34,11 @@
                     </p>
                     <div class="dropdown-divider"></div>
 
+                    <NavLink class="dropdown-item" href="./#">
+                        Home
+                    </NavLink>
+                    <div class="dropdown-divider"></div>
+
                     @if (currentUserProvider.CurrentUserInfo.UserType != UserType.Administrator)
                     {
                         <NavLink class="dropdown-item" href="profile">
@@ -65,7 +70,7 @@
                     <NavLink class="dropdown-item" href="help">
                         Help
                     </NavLink>
-                    <NavLink class="dropdown-item" href="#" @onclick="SignOut">
+                    <NavLink class="dropdown-item" href="##" @onclick="SignOut">
                         Sign out
                     </NavLink>
                 </div>

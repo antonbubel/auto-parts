@@ -43,6 +43,8 @@
 
         public DbSet<OrderStatus> OrderStatuses { get; set; }
 
+        public DbSet<OrderItem> OrderItems { get; set; }
+
         public DatabaseContext(DbContextOptions<DatabaseContext> options)
             : base(options)
         {

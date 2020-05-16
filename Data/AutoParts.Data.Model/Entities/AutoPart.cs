@@ -39,5 +39,7 @@
         public long AutoPartsCatalogSubGroupId { get; set; }
 
         public AutoPartsCatalogSubGroup AutoPartsCatalogSubGroup { get; set; }
+
+        public virtual ICollection<OrderItem> OrderItems { get; set; }
     }
 }

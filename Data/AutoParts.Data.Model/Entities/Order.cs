@@ -1,7 +1,8 @@
 ﻿namespace AutoParts.Data.Model.Entities
 {
-    using Base;
+    using System.Collections.Generic;
 
+    using Base;
     using OrderStatusEnum = Enums.OrderStatus;
 
     public class Order : BaseEntity<long>
@@ -27,5 +28,7 @@
         public OrderStatusEnum OrderStatusId { get; set; }
 
         public OrderStatus OrderStatus { get; set; }
+
+        public virtual ICollection<OrderItem> OrderItems { get; set; }
     }
 }

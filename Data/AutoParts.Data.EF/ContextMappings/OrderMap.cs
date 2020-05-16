@@ -19,6 +19,10 @@
                 .HasMaxLength(200);
 
             builder
+                .Property(order => order.Comment)
+                .HasMaxLength(200);
+
+            builder
                 .Property(order => order.City)
                 .HasMaxLength(50)
                 .IsRequired();

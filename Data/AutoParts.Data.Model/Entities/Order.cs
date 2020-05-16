@@ -17,6 +17,8 @@
 
         public string ZipCode { get; set; }
 
+        public string Comment { get; set; }
+
         public long CountryId { get; set; }
 
         public Country Country { get; set; }

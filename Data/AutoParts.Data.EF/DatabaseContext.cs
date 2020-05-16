@@ -39,6 +39,10 @@
 
         public DbSet<AutoPart> AutoParts { get; set; }
 
+        public DbSet<Order> Orders { get; set; }
+
+        public DbSet<OrderStatus> OrderStatuses { get; set; }
+
         public DatabaseContext(DbContextOptions<DatabaseContext> options)
             : base(options)
         {

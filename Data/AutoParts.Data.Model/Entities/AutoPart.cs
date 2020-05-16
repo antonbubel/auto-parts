@@ -1,5 +1,7 @@
 ﻿namespace AutoParts.Data.Model.Entities
 {
+    using System.Collections.Generic;
+
     using Base;
 
     public class AutoPart : BaseEntity<long>

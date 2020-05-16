@@ -168,6 +168,15 @@ app {
     height: 32rem !important;
 }
 
+.select-country-input {
+    height: 46px;
+    width: 20rem;
+}
+
+.logo-text {
+    font-size: 1rem !important;
+}
+
 .carousel-first-image {
     background: url(../images/autoparts-1.jpg) no-repeat center center fixed;
     -webkit-background-size: cover;

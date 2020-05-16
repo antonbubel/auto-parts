@@ -7,12 +7,15 @@
 @using Utils;
 @using Protos;
 
-<div class="sidebar">
-    <NavMenu />
-</div>
-
 <div class="main">
     <div class="top-row px-4">
+        <div class="flex-fill h-100">
+            <a class="btn h-100" href="/">
+                <img class="h-100" src="/images/logo.png" />
+                <h5 class="d-inline-block logo-text">AUTOPARTS</h5>
+            </a>
+        </div>
+
         @if (currentUserProvider.LoadingUserInfo)
         {
             <p class="mb-0 font-italic">Loading...</p>
@@ -42,6 +45,9 @@
                     {
                         <NavLink class="dropdown-item" href="manage-suppliers">
                             Manage suppliers
+                        </NavLink>
+                        <NavLink class="dropdown-item" href="manage-manufacturers">
+                            Manage manufacturers
                         </NavLink>
                         <NavLink class="dropdown-item" href="manage-car-brands">
                             Manage car brands
@@ -76,7 +82,7 @@
         }
     </div>
 
-    <div class="content px-4">
+    <div class="content container-fluid px-4">
         @if (Loading)
         {
             <p class="font-italic">Loading...</p>

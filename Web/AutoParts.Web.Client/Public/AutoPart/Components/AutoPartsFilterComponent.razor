@@ -29,6 +29,14 @@
     </div>
 
     <div class="mb-4">
+        <h5 class="mb-2">Availability:</h5>
+        <div class="custom-control custom-checkbox">
+            <input type="checkbox" class="custom-control-input" id="available-only" checked="@Filter.AvailableOnly" @onchange="HandleAvailableOnlyFilterChanged">
+            <label class="custom-control-label" for="available-only">Show available only</label>
+        </div>
+    </div>
+
+    <div class="mb-4">
         <h5 class="mb-2">Category:</h5>
         <SelectAutoPartsCatalogComponent SelectedSubCatalogId="Filter.SubCatalogId" OnItemChosen="HandleAutoPartCatalogChosen"></SelectAutoPartsCatalogComponent>
     </div>
@@ -84,6 +92,12 @@
         {
             Filter.CountryId = country.Id;
         }
+    }
+
+    private void HandleAvailableOnlyFilterChanged(ChangeEventArgs eventArgs)
+    {
+        var showAvailableOnly = (bool)eventArgs.Value;
+        Filter.AvailableOnly = showAvailableOnly;
     }
 
     private void ApplyFilter()

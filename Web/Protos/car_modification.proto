@@ -8,6 +8,7 @@ package CarModification;
 
 service GrpcCarModificationService {
   rpc GetCarModifications (GetCarModificationsRequest) returns (GetCarModificationsResponse);
+  rpc GetCarModification (GetCarModificationRequest) returns (GetCarModificationResponse);
   rpc CreateCarModification (CreateCarModificationRequest) returns (Common.ServiceResponse);
   rpc UpdateCarModification (UpdateCarModificationRequest) returns (Common.ServiceResponse);
   rpc DeleteCarModification (DeleteCarModificationRequest) returns (Common.ServiceResponse);
@@ -22,11 +23,21 @@ message GetCarModificationsResponse {
   repeated CarModification car_modifications = 1;
 }
 
+message GetCarModificationRequest {
+  int64 car_modification_id = 1;
+}
+
+message GetCarModificationResponse {
+  CarModification car_modification = 1;
+  Common.ResponseStatus status = 2;
+}
+
 message CarModification {
   int64 id = 1;
   string name = 2;
   string description = 3;
   int32 year = 4;
+  int64 car_model_id = 5;
 }
 
 message CreateCarModificationRequest {

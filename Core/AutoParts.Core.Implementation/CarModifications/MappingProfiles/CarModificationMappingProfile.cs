@@ -15,7 +15,8 @@
                 .ForMember(carModificationModel => carModificationModel.Id, conf => conf.MapFrom(carModification => carModification.Id))
                 .ForMember(carModificationModel => carModificationModel.Name, conf => conf.MapFrom(carModification => carModification.Name))
                 .ForMember(carModificationModel => carModificationModel.Description, conf => conf.MapFrom(carModification => carModification.Description))
-                .ForMember(carModificationModel => carModificationModel.Year, conf => conf.MapFrom(carModification => carModification.Year));
+                .ForMember(carModificationModel => carModificationModel.Year, conf => conf.MapFrom(carModification => carModification.Year))
+                .ForMember(carModificationModel => carModificationModel.CarModelId, conf => conf.MapFrom(carModification => carModification.CarModelId));
 
             CreateMap<CreateCarModificationNotification, CarModification>()
                 .ForMember(carModification => carModification.Id, conf => conf.Ignore())

@@ -14,9 +14,12 @@
 
     using Protos;
 
+    using Core.Contracts.CarModifications.Models;
     using Core.Contracts.CarModifications.Requests;
     using Core.Contracts.CarModifications.Exceptions;
     using Core.Contracts.CarModifications.Notifications;
+    
+    using Infrastructure.Exceptions;
 
     public class CarModificationService : GrpcCarModificationService.GrpcCarModificationServiceBase
     {
@@ -47,7 +50,35 @@
             return response;
         }
 
-        [Authorize(nameof(UserType.Administrator))]
+        public override async Task<GetCarModificationResponse> GetCarModification(GetCarModificationRequest request, ServerCallContext context)
+        {
+            var getCarModificationByIdRequest = new GetCarModificationByIdRequest
+            {
+                CarModificationId = request.CarModificationId
+            };
+
+            CarModificationModel carModification;
+
+            try
+            {
+                carModification = await mediator.Send(getCarModificationByIdRequest);
+            }
+            catch (NotFoundException)
+            {
+                return new GetCarModificationResponse
+                {
+                    Status = ResponseStatus.NotFound
+                };
+            }
+
+            return new GetCarModificationResponse
+            {
+                CarModification = mapper.Map<CarModification>(carModification),
+                Status = ResponseStatus.Ok
+            };
+        }
+
+        [Authorize(nameof(Protos.UserType.Administrator))]
         public override async Task<ServiceResponse> CreateCarModification(CreateCarModificationRequest request, ServerCallContext context)
         {
             var notification = mapper.Map<CreateCarModificationNotification>(request);

@@ -8,6 +8,8 @@
 
         public string Description { get; set; }
 
+        public long CarModelId { get; set; }
+
         public int Year { get; set; }
     }
 }

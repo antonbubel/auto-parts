@@ -1,8 +1,11 @@
 ﻿@inject Services.CarBrandService carBrandService
 @inject Services.CarModelService carModelService
 @inject Services.CarModificationService carModificationService
+@inject NavigationManager navigationManager
 
 @using Protos;
+@using Shared.Utils;
+@using Public.AutoPart.Models;
 
 <div class="my-4 mx-0 py-5 jumbotron row">
     @if (Loading)
@@ -27,7 +30,7 @@
             <span class="oi oi-arrow-left" aria-hidden="true"></span> Back to the car models list
         </button>
 
-        <SelectCarModificationComponent CarModel="SelectedCarModel" CarModifications="SelectedCarModelModifications" OnItemChosen="HandleCarModificationChosen" ></SelectCarModificationComponent>
+        <SelectCarModificationComponent CarModel="SelectedCarModel" CarModifications="SelectedCarModelModifications" OnItemChosen="HandleCarModificationChosen"></SelectCarModificationComponent>
     }
     else
     {
@@ -36,9 +39,9 @@
         </button>
 
         <div class="col-md-12">
-            <h2 class="d-block">
-                @SelectedCarBrand.Name @SelectedCarModel.Name @SelectedCarModification.Name @SelectedCarModification.Year
-            </h2>
+            <button class="btn btn-lg btn-outline-primary mx-auto d-block my-5" @onclick="NavigateToAutoPartsPage">
+                View available auto parts for the @SelectedCarBrand.Name @SelectedCarModel.Name @SelectedCarModification.Name @SelectedCarModification.Year
+            </button>
         </div>
     }
 </div>
@@ -88,5 +91,17 @@
     private void HandleCarModificationChosen(CarModification carModification)
     {
         SelectedCarModification = carModification;
+    }
+
+    private void NavigateToAutoPartsPage()
+    {
+        var autoPartFilter = new AutoPartsFilter
+        {
+            CarModificationId = SelectedCarModification.Id
+        };
+
+        var query = QueryBuilderUtility.CreateQueryFromFilter("auto-parts", autoPartFilter);
+
+        navigationManager.NavigateTo(query);
     }
 }

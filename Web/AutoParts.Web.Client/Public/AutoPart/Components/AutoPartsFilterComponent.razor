@@ -14,6 +14,11 @@
     </div>
 
     <div class="mb-4">
+        <h5 class="mb-2">Sort by:</h5>
+        <SelectAutoPartsSortingComponent SelectedSortingOption="Filter.Sorting" OnItemChosen="HandleAutoPartSortingChosen"></SelectAutoPartsSortingComponent>
+    </div>
+
+    <div class="mb-4">
         <h5 class="mb-2">Origin country:</h5>
         <SelectAutoPartsCountry SelectedCountryId="Filter.CountryId" OnItemChosen="HandleAutoPartCountryChosen"></SelectAutoPartsCountry>
     </div>
@@ -33,6 +38,11 @@
     {
         var uri = navigationManager.ToAbsoluteUri(navigationManager.Uri);
         Filter = QueryParsingUtility.ParseFilterFromUri<AutoPartsFilter>(uri);
+    }
+
+    private void HandleAutoPartSortingChosen(AutoPartsSortingOption option)
+    {
+        Filter.Sorting = option;
     }
 
     private void HandleAutoPartCatalogChosen(Catalog catalog)

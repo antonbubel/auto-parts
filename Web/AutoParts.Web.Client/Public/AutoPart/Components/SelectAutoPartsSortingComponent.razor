@@ -1,0 +1,29 @@
+﻿@using Protos;
+
+<select type="search" class="form-control flex-fill" value="@SelectedSortingOption" @oninput="HandleSortingChosen">
+    <option value="@AutoPartsSortingOption.NameAscending">Name: a-z</option>
+    <option value="@AutoPartsSortingOption.NameDescending">Name: z-a</option>
+    <option value="@AutoPartsSortingOption.PriceAscending">Price: lowest to highest</option>
+    <option value="@AutoPartsSortingOption.PriceDescending">Price: highest to lowest</option>
+    <option value="@AutoPartsSortingOption.QuantityDescending">Quantity: max quantity to low</option>
+    <option value="@AutoPartsSortingOption.QuantityAscending">Quantity: low quantity to max</option>
+</select>
+
+@code {
+    [Parameter]
+    public AutoPartsSortingOption SelectedSortingOption { get; set; }
+
+    [Parameter]
+    public EventCallback<AutoPartsSortingOption> OnItemChosen { get; set; }
+
+    private async Task HandleSortingChosen(ChangeEventArgs eventArgs)
+    {
+        var selectedSortingOption = (string)eventArgs.Value;
+        
+        if (Enum.TryParse(typeof(AutoPartsSortingOption), selectedSortingOption, out var option))
+        {
+            SelectedSortingOption = (AutoPartsSortingOption)option;
+            await OnItemChosen.InvokeAsync(SelectedSortingOption);
+        }
+    }
+}

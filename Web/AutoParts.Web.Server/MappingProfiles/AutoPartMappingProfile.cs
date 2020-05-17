@@ -4,6 +4,7 @@
 
     using Protos;
 
+    using Core.Contracts.AutoParts.Models;
     using Core.Contracts.AutoParts.Notifications;
     using GetAutoPartsRequestBL = Core.Contracts.AutoParts.Requests.GetAutoPartsRequest;
 
@@ -11,6 +12,22 @@
     {
         public AutoPartMappingProfile()
         {
+            CreateMap<AutoPartModel, AutoPart>()
+                .ForMember(autoPart => autoPart.Id, conf => conf.MapFrom(model => model.Id))
+                .ForMember(autoPart => autoPart.Name, conf => conf.MapFrom(model => model.Name))
+                .ForMember(autoPart => autoPart.Description, conf => conf.MapFrom(model => model.Description ?? string.Empty))
+                .ForMember(autoPart => autoPart.ImageUrl, conf => conf.MapFrom(model => model.ImageUrl))
+                .ForMember(autoPart => autoPart.Price, conf => conf.MapFrom(model => model.Price))
+                .ForMember(autoPart => autoPart.Quantity, conf => conf.MapFrom(model => model.Quantity))
+                .ForMember(autoPart => autoPart.IsAvailable, conf => conf.MapFrom(model => model.IsAvailable))
+                .ForMember(autoPart => autoPart.CountryId, conf => conf.MapFrom(model => model.CountryId))
+                .ForMember(autoPart => autoPart.CountryName, conf => conf.MapFrom(model => model.CountryName))
+                .ForMember(autoPart => autoPart.ManufacturerId, conf => conf.MapFrom(model => model.ManufacturerId))
+                .ForMember(autoPart => autoPart.ManufacturerName, conf => conf.MapFrom(model => model.ManufacturerName))
+                .ForMember(autoPart => autoPart.SupplierId, conf => conf.MapFrom(model => model.SupplierId))
+                .ForMember(autoPart => autoPart.SubCatalogId, conf => conf.MapFrom(model => model.SubCatalogId))
+                .ForMember(autoPart => autoPart.SubCatalogName, conf => conf.MapFrom(model => model.SubCatalogName));
+
             CreateMap<GetAutoPartsRequest, GetAutoPartsRequestBL>()
                 .ForMember(requestBL => requestBL.PageNumber, conf => conf.MapFrom(request => request.PageNumber))
                 .ForMember(requestBL => requestBL.PageSize, conf => conf.MapFrom(request => request.PageSize))

@@ -1,5 +1,6 @@
 ﻿using AutoParts.Web.Client.Private.Administrator.Services;
 using AutoParts.Web.Client.Private.Supplier.Services;
+using AutoParts.Web.Client.Public.AutoPart.Services;
 using AutoParts.Web.Client.Public.Car.Services;
 using AutoParts.Web.Client.Public.Services;
 using AutoParts.Web.Client.Public.Supplier.Services;
@@ -60,6 +61,7 @@ namespace AutoParts.Web.Client
             services.AddTransient<ManufacturerManagerService>();
             services.AddTransient<CatalogService>();
             services.AddTransient<AutoPartManagerService>();
+            services.AddTransient<AutoPartService>();
 
             services.AddSingleton<CurrentUserProvider>();
         }

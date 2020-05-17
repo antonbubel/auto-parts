@@ -11,7 +11,8 @@
         {
             CreateMap<AutoPart, AutoPartProjection>()
                 .ForMember(projection => projection.Id, conf => conf.MapFrom(model => model.Id))
-                .ForMember(projection => projection.Name, conf => conf.MapFrom(model => model.Description))
+                .ForMember(projection => projection.Name, conf => conf.MapFrom(model => model.Name))
+                .ForMember(projection => projection.Description, conf => conf.MapFrom(model => model.Description))
                 .ForMember(projection => projection.Image, conf => conf.MapFrom(model => model.Image))
                 .ForMember(projection => projection.Quantity, conf => conf.MapFrom(model => model.Quantity))
                 .ForMember(projection => projection.Price, conf => conf.MapFrom(model => model.Price))

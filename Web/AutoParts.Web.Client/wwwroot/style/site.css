@@ -229,6 +229,17 @@ app {
     position: relative;
 }
 
+.auto-part-image {
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+    height: 16rem;
+    width: 16rem;
+    border-radius: .3rem;
+    position: relative;
+}
+
 .supplier-logo > div {
     position: absolute;
     width: 100%;
@@ -276,4 +287,8 @@ app {
 .dropdown-menu-right {
     right: 0 !important;
     left: auto !important;
+}
+
+.auto-part-description > p {
+    word-break: break-all;
 }

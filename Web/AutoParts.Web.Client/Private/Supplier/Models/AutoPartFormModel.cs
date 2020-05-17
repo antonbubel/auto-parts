@@ -12,7 +12,7 @@
         [MaxLength(ValidationConstants.DefaultMaxLength, ErrorMessage = "Auto part name must be less than 50 characters.")]
         public string Name { get; set; }
 
-        [MaxLength(ValidationConstants.DefaultMaxLength, ErrorMessage = "Auto part description must be less than 200 characters.")]
+        [MaxLength(ValidationConstants.AutoPartDescriptionMaxLength, ErrorMessage = "Auto part description must be less than 200 characters.")]
         public string Description { get; set; }
 
         public IFileInfo ImageFileInfo { get; set; }

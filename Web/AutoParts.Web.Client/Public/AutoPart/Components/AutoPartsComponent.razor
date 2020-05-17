@@ -1,0 +1,78 @@
+﻿@using Models
+@using Services
+@using Shared.Utils
+
+@implements IDisposable
+@inject NavigationManager navigationManager
+@inject AutoPartService autoPartService
+
+@if (Loading)
+{
+    <p class="font-italic">Loading...</p>
+}
+else
+{
+    @foreach (var autoPart in AutoParts)
+    {
+        <AutoPartComponent AutoPart="autoPart"></AutoPartComponent>
+    }
+}
+
+@code {
+    [Parameter]
+    public int PageSize { get; set; } = 20;
+
+    [Parameter]
+    public long SupplierId { get; set; }
+
+    private bool Loading { get; set; } = true;
+    private AutoPartsFilter Filter { get; set; }
+    private Protos.AutoPart[] AutoParts { get; set; }
+    private int TotalNumberOfItems { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        navigationManager.LocationChanged += HandleLocationChanged;
+
+        await FetchAutoParst();
+    }
+
+    private void HandleLocationChanged(object sender, LocationChangedEventArgs e)
+    {
+        Task.Run(() => FetchAutoParst());
+
+        StateHasChanged();
+    }
+
+    public void Dispose()
+    {
+        navigationManager.LocationChanged -= HandleLocationChanged;
+    }
+
+    private async Task FetchAutoParst()
+    {
+        Loading = true;
+
+        UpdateAutoPartsFilter();
+
+        var response = await autoPartService.GetAutoParts(PageSize, Filter);
+
+        AutoParts = response.AutoParts.ToArray();
+        TotalNumberOfItems = response.TotalNumberOfItems;
+
+        Loading = false;
+
+        StateHasChanged();
+    }
+
+    private void UpdateAutoPartsFilter()
+    {
+        var uri = navigationManager.ToAbsoluteUri(navigationManager.Uri);
+        Filter = QueryParsingUtility.ParseFilterFromUri<AutoPartsFilter>(uri);
+
+        if (SupplierId != default)
+        {
+            Filter.SupplierId = SupplierId;
+        }
+    }
+}

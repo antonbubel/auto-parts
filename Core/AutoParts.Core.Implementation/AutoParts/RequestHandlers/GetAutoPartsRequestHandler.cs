@@ -12,6 +12,8 @@
     using Contracts.AutoParts.Models;
     using Contracts.AutoParts.Requests;
 
+    using Contracts.Files.Requests;
+
     using Contracts.Common.Models;
 
     using Constants.Enums;
@@ -83,10 +85,20 @@
             var result = await autoPartRepository.GetAutoParts(filter, sorting.Key, sorting.Value)
                 .ConfigureAwait(false);
 
+            var items = mapper.Map<AutoPartModel[]>(result.Items);
+
+            foreach (var item in items)
+            {
+                if (!string.IsNullOrEmpty(item.ImageUrl))
+                {
+                    item.ImageUrl = await mediator.Send(new GetFileUrlRequest { FileName = item.ImageUrl });
+                }
+            }
+
             return new PageModel<AutoPartModel>
             {
                 TotalNumberOfItems = result.TotalNumberOfItems,
-                Items = mapper.Map<AutoPartModel[]>(result.Items)
+                Items = items
             };
         }
     }

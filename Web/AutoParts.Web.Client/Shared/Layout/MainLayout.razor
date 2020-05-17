@@ -6,14 +6,26 @@
 
 @using Utils;
 @using Protos;
+@using Public.AutoPart.Models;
 
 <div class="main">
     <div class="top-row px-4">
-        <div class="flex-fill h-100">
+        <div class="h-100">
             <a class="btn h-100" href="/">
                 <img class="h-100" src="/images/logo.png" />
                 <h5 class="d-inline-block logo-text">AUTOPARTS</h5>
             </a>
+        </div>
+
+        <div class="flex-fill px-5 mx-5">
+            <div class="input-group">
+                <input type="text" class="form-control" placeholder="Search..." aria-label="Search..." aria-describedby="basic-addon2" value="@SearchText" @oninput="UpdateSearchText">
+                <div class="input-group-append">
+                    <button class="btn btn-outline-secondary" type="button" disabled="@string.IsNullOrEmpty(SearchText)" @onclick="SearchForAutoPart">
+                        <span class="oi oi-magnifying-glass" aria-hidden="true"></span>
+                    </button>
+                </div>
+            </div>
         </div>
 
         @if (currentUserProvider.LoadingUserInfo)
@@ -108,6 +120,7 @@
 @code {
     public bool Loading { get; set; } = true;
     public string CurrentUserSupplierProfileLink => $"supplier/{currentUserProvider.CurrentUserInfo.Id}";
+    private string SearchText { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
@@ -119,6 +132,23 @@
     private async Task SignOut()
     {
         await currentUserService.SignOut();
+    }
+
+    private void UpdateSearchText(ChangeEventArgs eventArgs)
+    {
+        SearchText = (string)eventArgs.Value;
+    }
+
+    private void SearchForAutoPart()
+    {
+        var uri = navigationManager.ToAbsoluteUri(navigationManager.Uri);
+        var autoPartFilter = QueryParsingUtility.ParseFilterFromUri<AutoPartsFilter>(uri);
+
+        autoPartFilter.SearchText = SearchText;
+
+        var query = QueryBuilderUtility.CreateQueryFromFilter("auto-parts", autoPartFilter);
+
+        navigationManager.NavigateTo(query);
     }
 
     private void HandleUserInfoLoaded()

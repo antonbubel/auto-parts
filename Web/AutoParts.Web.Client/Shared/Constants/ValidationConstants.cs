@@ -10,6 +10,8 @@ namespace AutoParts.Web.Client.Shared.Constants
 
         public const int OrganizationDescriptionMaxLength = 200;
 
+        public const int AutoPartDescriptionMaxLength = 200;
+
         public const int CarModificationDescriptionMaxLength = 200;
 
         public const int CarModificationMinYear = 1990;

@@ -1,0 +1,53 @@
+﻿@using Protos;
+
+<div class="jumbotron py-4 d-flex">
+    @if (!string.IsNullOrEmpty(AutoPart.ImageUrl))
+    {
+        <div class="auto-part-image mr-4" style="background-image: url('@AutoPart.ImageUrl')"></div>
+    }
+    <div class="flex-fill auto-part-description">
+        <div class="d-flex mb-2">
+            <h4 class="mb-0 flex-fill">
+                @AutoPart.Name
+            </h4>
+            @if (AutoPart.IsAvailable)
+            {
+                <p class="text-primary my-auto">
+                    <span class="oi oi-circle-check mr-2" aria-hidden="true"></span> In stock
+                </p>
+            }
+            else
+            {
+                <p class="text-danger my-auto">
+                    <span class="oi oi-circle-x mr-2" aria-hidden="true"></span> Out of stock
+                </p>
+            }
+        </div>
+        <p>
+            @AutoPart.Description
+        </p>
+
+        <div class="dropdown-divider"></div>
+
+        <h5 class="mb-2">
+            <strong>Price: </strong>@AutoPart.Price$
+        </h5>
+        <p class="mb-2">
+            <strong>Catalog name: </strong>@AutoPart.SubCatalogName
+        </p>
+        <p class="mb-2">
+            <strong>Origin: </strong>@AutoPart.CountryName
+        </p>
+        <p class="mb-2">
+            <strong>Manufacturer: </strong>@AutoPart.ManufacturerName
+        </p>
+        <p class="mb-2">
+            <strong>Supplied by: </strong><a href="supplier/@AutoPart.SupplierId">@AutoPart.SupplierName</a>
+        </p>
+    </div>
+</div>
+
+@code {
+    [Parameter]
+    public Protos.AutoPart AutoPart { get; set; }
+}

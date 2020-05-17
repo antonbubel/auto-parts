@@ -1,0 +1,68 @@
+﻿@using Protos;
+
+@inject Public.Services.CountryService countryService
+
+@if (!Loading)
+{
+    <div class="d-flex">
+        <select type="search" class="form-control flex-fill" value="@SelectedCountryId" @oninput="HandleCountryChosen">
+            <option value="0">Select a country</option>
+            @foreach (var country in Countries)
+            {
+                <option value="@country.Id">@country.Name</option>
+            }
+        </select>
+        <button class="btn btn-outline-secondary d-flex" disabled="@ResetDisabled()" @onclick="ResetCountry">
+            Reset
+        </button>
+    </div>
+}
+
+@code {
+    [Parameter]
+    public long SelectedCountryId { get; set; }
+
+    [Parameter]
+    public EventCallback<Country> OnItemChosen { get; set; }
+
+    private bool Loading { get; set; }
+    private Country[] Countries { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        Loading = true;
+
+        Countries = await countryService.GetCountries();
+
+        Loading = false;
+    }
+
+    private bool ResetDisabled()
+    {
+        return SelectedCountryId == default;
+    }
+
+    private async Task HandleCountryChosen(ChangeEventArgs eventArgs)
+    {
+        var selectedCountryId = (string)eventArgs.Value;
+
+        if (long.TryParse(selectedCountryId, out var countryId))
+        {
+            SelectedCountryId = countryId;
+        }
+        else
+        {
+            SelectedCountryId = default;
+        }
+
+        var selectedCountry = Countries.FirstOrDefault(country => country.Id == SelectedCountryId);
+
+        await OnItemChosen.InvokeAsync(selectedCountry);
+    }
+
+    private async Task ResetCountry()
+    {
+        SelectedCountryId = default;
+        await OnItemChosen.InvokeAsync(null);
+    }
+}

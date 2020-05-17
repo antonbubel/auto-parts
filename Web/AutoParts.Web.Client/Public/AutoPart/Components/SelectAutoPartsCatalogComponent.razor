@@ -18,7 +18,7 @@ else if (!DisplaySubCatalogs)
 else
 {
     <div class="btn-group-vertical w-100" role="group">
-        <button type="button" class="btn btn-secondary text-left" @onclick="() => DisplaySubCatalogs = false">
+        <button type="button" class="btn btn-secondary text-left" @onclick="() => ResetSelectedSubCatalog()">
             <span class="oi oi-arrow-left mr-2" aria-hidden="true"></span> Back
         </button>
         @foreach (var catalog in SubCatalogs)
@@ -76,6 +76,13 @@ else
         LoadingSubCatalogs = false;
 
         StateHasChanged();
+    }
+
+    private async Task ResetSelectedSubCatalog()
+    {
+        SelectedSubCatalogId = default;
+        DisplaySubCatalogs = false;
+        await OnItemChosen.InvokeAsync(null);
     }
 
     private async Task HandleSubCatalogChosen(Catalog catalog)

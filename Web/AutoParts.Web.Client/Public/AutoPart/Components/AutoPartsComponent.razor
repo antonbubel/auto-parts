@@ -16,6 +16,12 @@ else
     {
         <AutoPartComponent AutoPart="autoPart"></AutoPartComponent>
     }
+
+    @if (TotalNumberOfItems == 0)
+    {
+        <h4 class="text-center">We haven't found anything :(</h4>
+        <h5 class="text-center">Try reseting the filters</h5>
+    }
 }
 
 @code {

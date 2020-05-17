@@ -13,10 +13,17 @@
         <button class="btn btn-outline-primary" @onclick="ApplyFilter">Apply filter</button>
     </div>
 
-    <h5 class="mb-2">Category:</h5>
-    <SelectAutoPartsCatalogComponent SelectedSubCatalogId="Filter.SubCatalogId" OnItemChosen="HandleAutoPartCatalogChosen"></SelectAutoPartsCatalogComponent>
+    <div class="mb-4">
+        <h5 class="mb-2">Origin country:</h5>
+        <SelectAutoPartsCountry SelectedCountryId="Filter.CountryId" OnItemChosen="HandleAutoPartCountryChosen"></SelectAutoPartsCountry>
+    </div>
 
-    <button class="btn btn-outline-primary btn-block mt-4" @onclick="ApplyFilter">Apply filter</button>
+    <div class="mb-4">
+        <h5 class="mb-2">Category:</h5>
+        <SelectAutoPartsCatalogComponent SelectedSubCatalogId="Filter.SubCatalogId" OnItemChosen="HandleAutoPartCatalogChosen"></SelectAutoPartsCatalogComponent>
+    </div>
+
+    <button class="btn btn-outline-primary btn-block" @onclick="ApplyFilter">Apply filter</button>
 </div>
 
 @code {
@@ -30,7 +37,26 @@
 
     private void HandleAutoPartCatalogChosen(Catalog catalog)
     {
-        Filter.SubCatalogId = catalog.Id;
+        if (catalog == null)
+        {
+            Filter.SubCatalogId = default;
+        }
+        else
+        {
+            Filter.SubCatalogId = catalog.Id;
+        }
+    }
+
+    private void HandleAutoPartCountryChosen(Country country)
+    {
+        if (country == null)
+        {
+            Filter.CountryId = default;
+        }
+        else
+        {
+            Filter.CountryId = country.Id;
+        }
     }
 
     private void ApplyFilter()

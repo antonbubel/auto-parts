@@ -21,7 +21,7 @@
             <div class="input-group">
                 <input type="text" class="form-control" placeholder="Search..." aria-label="Search..." aria-describedby="basic-addon2" value="@SearchText" @oninput="UpdateSearchText">
                 <div class="input-group-append">
-                    <button class="btn btn-outline-secondary" type="button" disabled="@string.IsNullOrEmpty(SearchText)" @onclick="SearchForAutoPart">
+                    <button class="btn btn-outline-secondary" type="button" @onclick="SearchForAutoPart">
                         <span class="oi oi-magnifying-glass" aria-hidden="true"></span>
                     </button>
                 </div>
@@ -127,6 +127,11 @@
         currentUserProvider.AddEventListenerOnLoadedUserInfo(HandleUserInfoLoaded);
 
         await currentUserService.SyncCurrentUserInfo();
+
+        var uri = navigationManager.ToAbsoluteUri(navigationManager.Uri);
+        var autoPartFilter = QueryParsingUtility.ParseFilterFromUri<AutoPartsFilter>(uri);
+
+        SearchText = autoPartFilter.SearchText;
     }
 
     private async Task SignOut()

@@ -50,6 +50,7 @@
             return response;
         }
 
+        [AllowAnonymous]
         public override async Task<GetCarModificationResponse> GetCarModification(GetCarModificationRequest request, ServerCallContext context)
         {
             var getCarModificationByIdRequest = new GetCarModificationByIdRequest

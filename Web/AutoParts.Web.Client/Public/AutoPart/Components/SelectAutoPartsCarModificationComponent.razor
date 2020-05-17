@@ -1,0 +1,182 @@
+﻿
+@using Protos;
+
+@inject Public.Car.Services.CarBrandService carBrandService
+@inject Public.Car.Services.CarModelService carModelService
+@inject Public.Car.Services.CarModificationService carModificationService
+
+@if (!Loading)
+{
+    <div class="d-flex mb-2">
+        <select type="search" class="form-control flex-fill" value="@SelectedCarBrandId" @oninput="HandleCarBrandChosen">
+            <option value="0">Select a car brand</option>
+            @foreach (var carBrand in CarBrands)
+            {
+                <option value="@carBrand.Id">@carBrand.Name</option>
+            }
+        </select>
+        <button class="btn btn-outline-secondary d-flex" disabled="@IsResetCarBrandDisabled()" @onclick="ResetCarBrand">
+            Reset
+        </button>
+    </div>
+    @if (SelectedCarBrandCarModels != null && SelectedCarBrandCarModels.Any())
+    {
+
+        <div class="d-flex mb-2">
+            <select type="search" class="form-control flex-fill" value="@SelectedCarModelId" @oninput="HandleCarModelChosen">
+                <option value="0">Select a car model</option>
+                @foreach (var carModel in SelectedCarBrandCarModels)
+                {
+                    <option value="@carModel.Id">@carModel.Name</option>
+                }
+            </select>
+            <button class="btn btn-outline-secondary d-flex" disabled="@IsResetCarModelDisabled()" @onclick="ResetCarModel">
+                Reset
+            </button>
+        </div>
+    }
+    @if (SelectedCarModelCarModifications != null && SelectedCarModelCarModifications.Any())
+    {
+        <div class="d-flex mb-2">
+            <select type="search" class="form-control flex-fill" value="@SelectedCarModificationId" @oninput="HandleCarModificationChosen">
+                <option value="0">Select a car modification</option>
+                @foreach (var carModification in SelectedCarModelCarModifications)
+                {
+                    <option value="@carModification.Id">@carModification.Name @carModification.Year</option>
+                }
+            </select>
+            <button class="btn btn-outline-secondary d-flex" disabled="@IsResetCarModificationDisabled()" @onclick="ResetCarModification">
+                Reset
+            </button>
+        </div>
+    }
+}
+
+@code {
+    [Parameter]
+    public long SelectedCarModificationId { get; set; }
+
+    [Parameter]
+    public EventCallback<CarModification> OnItemChosen { get; set; }
+
+    private bool Loading { get; set; }
+
+    private long SelectedCarBrandId { get; set; }
+    private long SelectedCarModelId { get; set; }
+    private CarBrand[] CarBrands { get; set; }
+    private CarModel[] SelectedCarBrandCarModels { get; set; }
+    private CarModification[] SelectedCarModelCarModifications { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        Loading = true;
+
+        CarBrands = await carBrandService.GetCarBrands();
+
+        if (SelectedCarModificationId != default)
+        {
+            var carModification = await carModificationService.GetCarModification(SelectedCarModificationId);
+
+            if (carModification != null)
+            {
+                var carModel = await carModelService.GetCarModel(carModification.CarModelId);
+
+                SelectedCarBrandId = carModel.CarBrandId;
+                SelectedCarModelId = carModel.Id;
+
+                SelectedCarBrandCarModels = await carModelService.GetCarModels(SelectedCarBrandId);
+                SelectedCarModelCarModifications = await carModificationService.GetCarModifications(SelectedCarModelId);
+            }
+        }
+
+        Loading = false;
+    }
+
+    private async Task HandleCarBrandChosen(ChangeEventArgs eventArgs)
+    {
+        var selectedCarBrandId = (string)eventArgs.Value;
+
+        await ResetCarBrand();
+
+        if (long.TryParse(selectedCarBrandId, out var carBrandId))
+        {
+            SelectedCarBrandId = carBrandId;
+            SelectedCarBrandCarModels = await carModelService.GetCarModels(carBrandId);
+        }
+    }
+
+    private bool IsResetCarBrandDisabled()
+    {
+        return SelectedCarBrandId == default;
+    }
+
+    private async Task ResetCarBrand()
+    {
+        SelectedCarBrandCarModels = null;
+        SelectedCarModelCarModifications = null;
+
+        SelectedCarBrandId = default;
+        SelectedCarModelId = default;
+        SelectedCarModificationId = default;
+
+        await OnItemChosen.InvokeAsync(null);
+    }
+
+    private async Task HandleCarModelChosen(ChangeEventArgs eventArgs)
+    {
+        var selectedCarModelId = (string)eventArgs.Value;
+
+        await ResetCarModel();
+
+        if (long.TryParse(selectedCarModelId, out var carModelId))
+        {
+            SelectedCarModelId = carModelId;
+            SelectedCarModelCarModifications = await carModificationService.GetCarModifications(carModelId);
+        }
+    }
+
+    private bool IsResetCarModelDisabled()
+    {
+        return SelectedCarModelId == default;
+    }
+
+    private async Task ResetCarModel()
+    {
+        SelectedCarModelCarModifications = null;
+
+        SelectedCarModelId = default;
+        SelectedCarModificationId = default;
+
+        await OnItemChosen.InvokeAsync(null);
+    }
+
+    private async Task HandleCarModificationChosen(ChangeEventArgs eventArgs)
+    {
+        var selectedCarModificationId = (string)eventArgs.Value;
+
+        if (long.TryParse(selectedCarModificationId, out var carModificationId))
+        {
+            SelectedCarModificationId = carModificationId;
+        }
+        else
+        {
+            SelectedCarModificationId = default;
+        }
+
+        var carModification = SelectedCarModelCarModifications.FirstOrDefault(modification => modification.Id == SelectedCarModificationId);
+
+        await OnItemChosen.InvokeAsync(carModification);
+    }
+
+    private bool IsResetCarModificationDisabled()
+    {
+        return SelectedCarModificationId == default;
+    }
+
+    private async Task ResetCarModification()
+    {
+        SelectedCarModificationId = default;
+
+        await OnItemChosen.InvokeAsync(null);
+    }
+}

@@ -22,5 +22,12 @@
 
             return response.CarModifications.ToArray();
         }
+
+        public async Task<CarModification> GetCarModification(long carModificationId)
+        {
+            var response = await carModificationServiceClient.GetCarModificationAsync(new GetCarModificationRequest() { CarModificationId = carModificationId });
+
+            return response.CarModification;
+        }
     }
 }

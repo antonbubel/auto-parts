@@ -10,12 +10,17 @@
             Filters
         </h4>
 
-        <button class="btn btn-outline-primary" @onclick="ApplyFilter">Apply filter</button>
+        <button class="btn btn-outline-primary" @onclick="ApplyFilter">Apply filters</button>
     </div>
 
     <div class="mb-4">
         <h5 class="mb-2">Sort by:</h5>
         <SelectAutoPartsSortingComponent SelectedSortingOption="Filter.Sorting" OnItemChosen="HandleAutoPartSortingChosen"></SelectAutoPartsSortingComponent>
+    </div>
+
+    <div class="mb-4">
+        <h5 class="mb-2">Car modification:</h5>
+        <SelectAutoPartsCarModificationComponent SelectedCarModificationId="Filter.CarModificationId" OnItemChosen="HandleAutoPartCarModificationChosen"></SelectAutoPartsCarModificationComponent>
     </div>
 
     <div class="mb-4">
@@ -28,13 +33,13 @@
         <SelectAutoPartsCatalogComponent SelectedSubCatalogId="Filter.SubCatalogId" OnItemChosen="HandleAutoPartCatalogChosen"></SelectAutoPartsCatalogComponent>
     </div>
 
-    <button class="btn btn-outline-primary btn-block" @onclick="ApplyFilter">Apply filter</button>
+    <button class="btn btn-outline-primary btn-block" @onclick="ApplyFilter">Apply filters</button>
 </div>
 
 @code {
     protected AutoPartsFilter Filter { get; set; }
 
-    protected override async Task OnInitializedAsync()
+    protected override void OnInitialized()
     {
         var uri = navigationManager.ToAbsoluteUri(navigationManager.Uri);
         Filter = QueryParsingUtility.ParseFilterFromUri<AutoPartsFilter>(uri);
@@ -43,6 +48,18 @@
     private void HandleAutoPartSortingChosen(AutoPartsSortingOption option)
     {
         Filter.Sorting = option;
+    }
+
+    private void HandleAutoPartCarModificationChosen(CarModification carModification)
+    {
+        if (carModification == null)
+        {
+            Filter.CarModificationId = default;
+        }
+        else
+        {
+            Filter.CarModificationId = carModification.Id;
+        }
     }
 
     private void HandleAutoPartCatalogChosen(Catalog catalog)

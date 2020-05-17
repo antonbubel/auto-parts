@@ -292,3 +292,7 @@ app {
 .auto-part-description > p {
     word-break: break-all;
 }
+
+.page-link {
+    cursor: pointer;
+}

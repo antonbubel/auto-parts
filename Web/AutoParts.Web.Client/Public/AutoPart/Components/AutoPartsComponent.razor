@@ -22,11 +22,45 @@ else
         <h4 class="text-center">We haven't found anything :(</h4>
         <h5 class="text-center">Try reseting the filters</h5>
     }
+
+    @if (TotalNumberOfItems > PageSize)
+    {
+        <nav>
+            <ul class="pagination justify-content-end">
+                @if (Filter.PageNumber != 1)
+                {
+                    <li class="page-item">
+                        <a class="page-link" aria-label="Previous" @onclick="() => NavigateToPage(Filter.PageNumber - 1)">
+                            <span aria-hidden="true">&laquo;</span>
+                            <span class="sr-only">Previous</span>
+                        </a>
+                    </li>
+                }
+
+                @foreach (var pageNumber in GetPages())
+                {
+                    <li class="page-item @GetActivePageClass(pageNumber)">
+                        <a class="page-link" @onclick="() => NavigateToPage(pageNumber)">@pageNumber</a>
+                    </li>
+                }
+
+                @if (Filter.PageNumber != TotalNumberOfPages)
+                {
+                    <li class="page-item">
+                        <a class="page-link" aria-label="Next" @onclick="() => NavigateToPage(Filter.PageNumber + 1)">
+                            <span aria-hidden="true">&raquo;</span>
+                            <span class="sr-only">Next</span>
+                        </a>
+                    </li>
+                }
+            </ul>
+        </nav>
+    }
 }
 
 @code {
     [Parameter]
-    public int PageSize { get; set; } = 20;
+    public int PageSize { get; set; } = 10;
 
     [Parameter]
     public long SupplierId { get; set; }
@@ -35,6 +69,27 @@ else
     private AutoPartsFilter Filter { get; set; }
     private Protos.AutoPart[] AutoParts { get; set; }
     private int TotalNumberOfItems { get; set; }
+
+    private int TotalNumberOfPages => (int)Math.Ceiling(((double)TotalNumberOfItems) / PageSize);
+
+    private int[] GetPages()
+    {
+        var pages = new List<int>();
+
+        for (int pageNumber = 1; pageNumber <= TotalNumberOfPages; pageNumber++)
+        {
+            pages.Add(pageNumber);
+        }
+
+        return pages.ToArray();
+    }
+
+    private string GetActivePageClass(int pageNumber)
+    {
+        return pageNumber == Filter.PageNumber
+            ? "active"
+            : string.Empty;
+    }
 
     protected override async Task OnInitializedAsync()
     {
@@ -80,5 +135,16 @@ else
         {
             Filter.SupplierId = SupplierId;
         }
+    }
+
+    private void NavigateToPage(int pageNumber)
+    {
+        Filter.PageNumber = pageNumber;
+
+        Console.WriteLine(pageNumber);
+
+        var query = QueryBuilderUtility.CreateQueryFromFilter("auto-parts", Filter);
+
+        navigationManager.NavigateTo(query);
     }
 }

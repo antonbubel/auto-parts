@@ -40,7 +40,7 @@
         /// <param name="sortingDirection">Enum value which represents order of sorting options</param>
         public static IQueryable<TSource> ApplyOrderByExpressionFromDictionary<TSource, TSortingEnum>(
             this IQueryable<TSource> source,
-            IReadOnlyDictionary<TSortingEnum, Expression<Func<TSource, IComparable>>> sortingExpressions,
+            IReadOnlyDictionary<TSortingEnum, Expression<Func<TSource, object>>> sortingExpressions,
             TSortingEnum sorting,
             SortingDirection sortingDirection = SortingDirection.Descending
         )
@@ -58,12 +58,16 @@
                 return source;
             }
 
+            var sortingExpression = sortingExpressions[sorting];
+
             if (sortingDirection == SortingDirection.Ascending)
             {
-                return source.OrderBy(sortingExpressions[sorting]).AsQueryable();
+                return source.OrderBy(sortingExpression)
+                    .AsQueryable();
             }
 
-            return source.OrderByDescending(sortingExpressions[sorting]).AsQueryable();
+            return source.OrderByDescending(sortingExpression)
+                .AsQueryable();
         }
     }
 }

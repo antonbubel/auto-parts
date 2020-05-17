@@ -49,7 +49,7 @@
                 },
                 {
                     AutoPartsSortingType.QuantityAscending,
-                    new KeyValuePair<AutoPartsSortingOption, SortingDirection>(AutoPartsSortingOption.Name, SortingDirection.Ascending)
+                    new KeyValuePair<AutoPartsSortingOption, SortingDirection>(AutoPartsSortingOption.Quantity, SortingDirection.Ascending)
                 },
                 {
                     AutoPartsSortingType.QuantityDescending,

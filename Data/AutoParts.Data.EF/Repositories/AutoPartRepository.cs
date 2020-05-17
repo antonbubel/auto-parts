@@ -24,8 +24,8 @@
     {
         private readonly IMapper mapper;
 
-        private readonly IReadOnlyDictionary<AutoPartsSortingOption, Expression<Func<AutoPart, IComparable>>> autoPartsSortingExpressions =
-            new Dictionary<AutoPartsSortingOption, Expression<Func<AutoPart, IComparable>>>
+        private readonly IReadOnlyDictionary<AutoPartsSortingOption, Expression<Func<AutoPart, object>>> autoPartsSortingExpressions =
+            new Dictionary<AutoPartsSortingOption, Expression<Func<AutoPart, object>>>
             {
                 {
                     AutoPartsSortingOption.Name,

@@ -1,0 +1,47 @@
+﻿@using Protos;
+@using Models;
+@using Shared.Utils; 
+
+@inject NavigationManager navigationManager
+
+<div class="jumbotron py-4">
+    <div class="mb-4 d-flex">
+        <h4 class="mb-0 flex-fill">
+            Filters
+        </h4>
+
+        <button class="btn btn-outline-primary" @onclick="ApplyFilter">Apply filter</button>
+    </div>
+
+    <h5 class="mb-2">Category:</h5>
+    <SelectAutoPartsCatalogComponent SelectedSubCatalogId="Filter.SubCatalogId" OnItemChosen="HandleAutoPartCatalogChosen"></SelectAutoPartsCatalogComponent>
+
+    <button class="btn btn-outline-primary btn-block mt-4" @onclick="ApplyFilter">Apply filter</button>
+</div>
+
+@code {
+    protected AutoPartsFilter Filter { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        var uri = navigationManager.ToAbsoluteUri(navigationManager.Uri);
+        Filter = QueryParsingUtility.ParseFilterFromUri<AutoPartsFilter>(uri);
+    }
+
+    private void HandleAutoPartCatalogChosen(Catalog catalog)
+    {
+        Filter.SubCatalogId = catalog.Id;
+    }
+
+    private void ApplyFilter()
+    {
+        var uri = navigationManager.ToAbsoluteUri(navigationManager.Uri);
+        var currentFilter = QueryParsingUtility.ParseFilterFromUri<AutoPartsFilter>(uri);
+
+        Filter.SearchText = currentFilter.SearchText;
+
+        var query = QueryBuilderUtility.CreateQueryFromFilter("auto-parts", Filter);
+
+        navigationManager.NavigateTo(query);
+    }
+}

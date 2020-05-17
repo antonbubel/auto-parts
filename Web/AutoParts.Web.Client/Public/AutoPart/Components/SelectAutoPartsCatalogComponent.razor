@@ -1,0 +1,86 @@
+﻿@using Protos;
+
+@inject Public.Services.CatalogService catalogService
+
+@if (Loading)
+{
+    <p class="font-italic">Loading...</p>
+}
+else if (!DisplaySubCatalogs)
+{
+    <div class="btn-group-vertical w-100" role="group">
+        @foreach (var catalog in Catalogs)
+        {
+            <button type="button" class="btn btn-outline-secondary text-left" @onclick="() => HandleCatalogChosen(catalog)">@catalog.Name</button>
+        }
+    </div>
+}
+else
+{
+    <div class="btn-group-vertical w-100" role="group">
+        <button type="button" class="btn btn-secondary text-left" @onclick="() => DisplaySubCatalogs = false">
+            <span class="oi oi-arrow-left mr-2" aria-hidden="true"></span> Back
+        </button>
+        @foreach (var catalog in SubCatalogs)
+        {
+            <button type="button" class="btn btn-outline-secondary text-left @GetActiveClassIfCatalogSelected(catalog)" @onclick="() => HandleSubCatalogChosen(catalog)">@catalog.Name</button>
+        }
+    </div>
+}
+
+@code {
+    [Parameter]
+    public long SelectedSubCatalogId { get; set; }
+
+    [Parameter]
+    public EventCallback<Catalog> OnItemChosen { get; set; }
+
+    private bool Loading { get; set; }
+    private bool LoadingSubCatalogs { get; set; }
+    private bool DisplaySubCatalogs { get; set; }
+
+    private Catalog[] Catalogs { get; set; }
+    private Catalog[] SubCatalogs { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        Loading = true;
+
+        Catalogs = await catalogService.GetCatalogs();
+
+        if (SelectedSubCatalogId != default)
+        {
+            var catalog = await catalogService.GetSubCatalog(SelectedSubCatalogId);
+
+            await HandleCatalogChosen(catalog.BaseCatalog);
+        }
+
+        Loading = false;
+    }
+
+    private string GetActiveClassIfCatalogSelected(Catalog catalog)
+    {
+        return catalog.Id == SelectedSubCatalogId
+            ? "active"
+            : string.Empty;
+    }
+
+    private async Task HandleCatalogChosen(Catalog catalog)
+    {
+        LoadingSubCatalogs = true;
+
+        SubCatalogs = await catalogService.GetSubCatalogs(catalog.Id);
+
+        DisplaySubCatalogs = true;
+
+        LoadingSubCatalogs = false;
+
+        StateHasChanged();
+    }
+
+    private async Task HandleSubCatalogChosen(Catalog catalog)
+    {
+        SelectedSubCatalogId = catalog.Id;
+        await OnItemChosen.InvokeAsync(catalog);
+    }
+}

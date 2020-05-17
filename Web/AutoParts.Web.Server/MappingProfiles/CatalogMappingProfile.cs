@@ -14,7 +14,7 @@
                 .ForMember(catalog => catalog.Id, conf => conf.MapFrom(catalogModel => catalogModel.Id))
                 .ForMember(catalog => catalog.Name, conf => conf.MapFrom(catalogModel => catalogModel.Name));
 
-            CreateMap<SubCatalog, SubCatalog>()
+            CreateMap<SubCatalogModel, SubCatalog>()
                 .ForMember(catalog => catalog.Id, conf => conf.MapFrom(catalogModel => catalogModel.Id))
                 .ForMember(catalog => catalog.Name, conf => conf.MapFrom(catalogModel => catalogModel.Name))
                 .ForMember(catalog => catalog.BaseCatalog, conf => conf.MapFrom(catalogModel => catalogModel.BaseCatalog));

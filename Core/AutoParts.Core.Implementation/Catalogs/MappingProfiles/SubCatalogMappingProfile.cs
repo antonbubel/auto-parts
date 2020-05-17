@@ -17,11 +17,20 @@
             CreateMap<AutoPartsCatalogSubGroupWithBaseGroupProjection, SubCatalogModel>()
                 .ForMember(catalogModel => catalogModel.Id, conf => conf.MapFrom(catalog => catalog.Id))
                 .ForMember(catalogModel => catalogModel.Name, conf => conf.MapFrom(catalog => catalog.Name))
-                .ForMember(catalogModel => catalogModel.BaseCatalog, conf => conf.MapFrom(catalog => catalog));
+                .ForMember(catalogModel => catalogModel.BaseCatalog, conf => conf.MapFrom(catalog => MapBaseCatalog(catalog)));
 
             CreateMap<AutoPartsCatalogSubGroupWithBaseGroupProjection, CatalogModel>()
                 .ForMember(catalogModel => catalogModel.Id, conf => conf.MapFrom(catalog => catalog.Id))
                 .ForMember(catalogModel => catalogModel.Name, conf => conf.MapFrom(catalog => catalog.Name));
+        }
+
+        private CatalogModel MapBaseCatalog(AutoPartsCatalogSubGroupWithBaseGroupProjection catalog)
+        {
+            return new CatalogModel
+            {
+                Id = catalog.AutoPartsCatalogGroupId,
+                Name = catalog.AutoPartsCatalogGroupName
+            };
         }
     }
 }

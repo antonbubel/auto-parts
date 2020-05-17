@@ -8,6 +8,6 @@
 
         public long AutoPartsCatalogGroupId { get; set; }
 
-        public long AutoPartsCatalogGroupName { get; set; }
+        public string AutoPartsCatalogGroupName { get; set; }
     }
 }

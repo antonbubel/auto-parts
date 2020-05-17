@@ -40,5 +40,17 @@ namespace AutoParts.Web.Client.Public.Services
 
             return response.Catalogs.ToArray();
         }
+
+        public async Task<SubCatalog> GetSubCatalog(long subCatalogId)
+        {
+            var request = new GetAutoPartsSubCatalogRequest
+            {
+                SubCatalogId = subCatalogId
+            };
+
+            var response = await catalogServiceClient.GetSubCatalogAsync(request);
+
+            return response.Model;
+        }
     }
 }

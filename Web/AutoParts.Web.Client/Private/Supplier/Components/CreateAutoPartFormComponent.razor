@@ -1,0 +1,487 @@
+﻿
+@using Protos;
+@using Models;
+@using Shared.Utils
+@using Blazor.FileReader
+
+@inject IFileReaderService fileReaderService
+@inject Public.Services.CountryService countryService
+@inject Public.Services.CatalogService catalogService
+@inject Public.Services.ManufacturerService manufacturerService
+@inject Public.Car.Services.CarBrandService carBrandService
+@inject Public.Car.Services.CarModelService carModelService
+@inject Public.Car.Services.CarModificationService carModificationService
+@inject Services.AutoPartManagerService autoPartManagerService
+
+@if (Loading)
+{
+    <p class="font-italic">Loading...</p>
+}
+else
+{
+<EditForm Model="@formModel" OnValidSubmit="HandleCreateAutoPart">
+    @if (Errors != null && Errors.Any())
+    {
+        <div class="my-3 alert-danger">
+            <ul>
+                @foreach (var error in Errors)
+                {
+                    <li>@error.Message</li>
+                }
+            </ul>
+        </div>
+    }
+
+    <DataAnnotationsValidator />
+
+    <div class="text-left">
+        <ValidationSummary />
+    </div>
+
+    <div class="row">
+        <div class="col-md-6">
+            <div>
+                <h3 class="h4 mb-3 font-weight-normal">
+                    Auto part info
+                </h3>
+
+                <div class="jumbotron py-4">
+                    <label for="auto-part-name">Auto part name</label>
+                    <InputText id="auto-part-name" class="form-control mb-3" placeholder="Auto part name" @bind-Value="formModel.Name" />
+
+                    <label for="auto-part-description">Auto part description</label>
+                    <InputTextArea id="auto-part-description" class="form-control mb-3" placeholder="Auto part description" @bind-Value="formModel.Description" />
+
+                    <label for="auto-part-price">Price</label>
+                    <InputNumber id="auto-part-price" class="form-control mb-3" placeholder="Price" @bind-Value="formModel.Price" />
+
+                    <label for="auto-part-quantity">Quantity</label>
+                    <InputNumber id="auto-part-quantity" class="form-control mb-3" placeholder="Quantity" @bind-Value="formModel.Quantity" />
+
+                    <label>Manufactured country</label>
+                    <select type="search" class="form-control mb-3" value="@formModel.CountryId" @oninput="HandleAutoPartCountryChosen">
+                        @foreach (var country in Countries)
+                        {
+                            <option value="@country.Id">@country.Name</option>
+                        }
+                    </select>
+
+                    <label>Auto part image</label>
+                    <div class="custom-file">
+                        <input type="file"
+                               id="inputGroupFile01"
+                               class="custom-file-input mb-3"
+                               @ref=dropTargetInput
+                               @onchange="OnInputChange" />
+                        <label class="custom-file-label" for="inputGroupFile01">@GetFileInputLabelText()</label>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div>
+                <h3 class="h4 mb-3 font-weight-normal">
+                    Auto part manufacturer
+                </h3>
+
+                <div class="jumbotron py-4">
+                    <label>Auto part manufacturer country</label>
+                    <select type="search" class="form-control mb-3" value="@selectedManufacturerCountryId" @oninput="HandleManufacturerCountryChosen">
+                        @foreach (var country in Countries)
+                        {
+                            <option value="@country.Id">@country.Name</option>
+                        }
+                    </select>
+
+                    @if (LoadingManufacturers)
+                    {
+                        <p class="font-italic">Loading...</p>
+                    }
+                    else
+                    {
+                        <label>Auto part manufacturer</label>
+                        <select type="search" class="form-control mb-3" value="@formModel.ManufacturerId" @oninput="HandleAutoPartManufacturerChosen">
+                            @foreach (var manufacturer in Manufacturers)
+                            {
+                                <option value="@manufacturer.Id">@manufacturer.Name</option>
+                            }
+                        </select>
+                    }
+                </div>
+            </div>
+            <div>
+                <h3 class="h4 mb-3 font-weight-normal">
+                    Auto part catalog
+                </h3>
+
+                <div class="jumbotron py-4">
+                    <label>Auto part catalog</label>
+                    <select type="search" class="form-control mb-3" value="@selectedCatalogId" @oninput="HandleCatalogChosen">
+                        @foreach (var catalog in Catalogs)
+                        {
+                            <option value="@catalog.Id">@catalog.Name</option>
+                        }
+                    </select>
+
+                    @if (LoadingSubCatalogs)
+                    {
+                        <p class="font-italic">Loading...</p>
+                    }
+                    else
+                    {
+                        <label>Auto part sub catalog</label>
+                        <select type="search" class="form-control mb-3" value="@formModel.SubCatalogId" @oninput="HandleAutoPartSubCatalogChosen">
+                            @foreach (var catalog in SubCatalogs)
+                            {
+                                <option value="@catalog.Id">@catalog.Name</option>
+                            }
+                        </select>
+                    }
+                </div>
+            </div>
+            <div>
+                <h3 class="h4 mb-3 font-weight-normal">
+                    Auto part car modification
+                </h3>
+                <div class="jumbotron py-4">
+                    <label>Auto part car brand</label>
+                    <select type="search" class="form-control mb-3" value="@selectedCarBrandId" @oninput="HandleCarBrandChosen">
+                        @foreach (var carBrand in CarBrands)
+                        {
+                            <option value="@carBrand.Id">@carBrand.Name</option>
+                        }
+                    </select>
+
+                    @if (LoadingCarModels)
+                    {
+                        <p class="font-italic">Loading...</p>
+                    }
+                    else
+                    {
+                        <label>Auto part car model</label>
+                        <select type="search" class="form-control mb-3" value="@selectedCarModelId" @oninput="HandleCarModelChosen">
+                            @foreach (var carModel in CarModels)
+                            {
+                                <option value="@carModel.Id">@carModel.Name</option>
+                            }
+                        </select>
+                    }
+
+                    @if (LoadingCarModels || LoadingCarModifications)
+                    {
+                        <p class="font-italic">Loading...</p>
+                    }
+                    else
+                    {
+                        <label>Auto part car modification</label>
+                        <select type="search" class="form-control mb-3" value="@formModel.CarModificationId" @oninput="HandleAutoPartCarModificationChosen">
+                            @foreach (var carModification in CarModifications)
+                            {
+                                <option value="@carModification.Id">@carModification.Name</option>
+                            }
+                        </select>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <button class="btn btn-md btn-primary mb-3 float-right" type="submit" disabled="@CreatingAutoPart">
+        Create
+    </button>
+</EditForm>
+}
+
+@code {
+    public bool Loading { get; set; } = true;
+    public bool LoadingManufacturers { get; set; } = true;
+    public bool LoadingSubCatalogs { get; set; } = true;
+    public bool LoadingCarModels { get; set; } = true;
+    public bool LoadingCarModifications { get; set; } = true;
+    public bool CreatingAutoPart { get; set; } = false;
+
+    private Country[] Countries { get; set; }
+    private Catalog[] Catalogs { get; set; }
+    private Manufacturer[] Manufacturers { get; set; }
+    private Catalog[] SubCatalogs { get; set; }
+    private CarBrand[] CarBrands { get; set; }
+    private CarModel[] CarModels { get; set; }
+    private CarModification[] CarModifications { get; set; }
+    private Error[] Errors { get; set; }
+    private List<IFileInfo> InputFileList { get; set; } = new List<IFileInfo>();
+
+    private AutoPartFormModel formModel = new AutoPartFormModel();
+    private long selectedCatalogId { get; set; }
+    private long selectedManufacturerCountryId { get; set; }
+    private long selectedCarBrandId { get; set; }
+    private long selectedCarModelId { get; set; }
+    private ElementReference dropTargetInput;
+    private IFileReaderRef inputFileReference;
+
+    protected override async Task OnInitializedAsync()
+    {
+        Loading = true;
+
+        Countries = await countryService.GetCountries();
+        Catalogs = await catalogService.GetCatalogs();
+        CarBrands = await carBrandService.GetCarBrands();
+
+        selectedManufacturerCountryId = Countries.First().Id;
+        selectedCatalogId = Catalogs.First().Id;
+        selectedCarBrandId = CarBrands.First().Id;
+
+        Loading = false;
+
+        StateHasChanged();
+
+        InputFileList.Clear();
+
+        inputFileReference = fileReaderService.CreateReference(dropTargetInput);
+
+        await FetchManufacturers();
+        await FetchSubCatalogs();
+        await FetchCarModels();
+    }
+
+    private async Task FetchManufacturers()
+    {
+        LoadingManufacturers = true;
+
+        Manufacturers = await manufacturerService.GetManufactuers(selectedManufacturerCountryId);
+
+        formModel.ManufacturerId = Manufacturers.Any()
+            ? Manufacturers.First().Id
+            : default;
+
+        LoadingManufacturers = false;
+
+        StateHasChanged();
+    }
+
+    private async Task FetchSubCatalogs()
+    {
+        LoadingSubCatalogs = true;
+
+        SubCatalogs = await catalogService.GetSubCatalogs(selectedCatalogId);
+
+        formModel.SubCatalogId = SubCatalogs.Any()
+            ? SubCatalogs.First().Id
+            : default;
+
+        LoadingSubCatalogs = false;
+
+        StateHasChanged();
+    }
+
+    private async Task FetchCarModels()
+    {
+        LoadingCarModels = true;
+
+        CarModels = await carModelService.GetCarModels(selectedCarBrandId);
+
+        selectedCarModelId = CarModels.Any()
+            ? CarModels.First().Id
+            : default;
+
+        LoadingCarModels = false;
+
+        if (selectedCarModelId != default)
+        {
+            await FetchCarModifications();
+        }
+
+        StateHasChanged();
+    }
+
+    private async Task FetchCarModifications()
+    {
+        LoadingCarModifications = true;
+
+        CarModifications = await carModificationService.GetCarModifications(selectedCarModelId);
+
+        formModel.CarModificationId = CarModifications.Any()
+            ? CarModifications.First().Id
+            : default;
+
+        LoadingCarModifications = false;
+
+        StateHasChanged();
+    }
+
+    private async Task HandleCreateAutoPart()
+    {
+        CreatingAutoPart = true;
+
+        if (InputFileList.Any())
+        {
+
+            var files = await FileUtility.ReadFilesAsync(inputFileReference);
+            var file = files.First();
+
+            formModel.ImageFileInfo = file.Key;
+            formModel.ImageFileBuffer = file.Value;
+        }
+
+        var response = await autoPartManagerService.CreateAutoPart(formModel);
+
+        if (response.Status != ResponseStatus.Ok)
+        {
+            Errors = response.Errors.ToArray();
+
+            return;
+        }
+        else
+        {
+            formModel = new AutoPartFormModel()
+            {
+                CarModificationId = formModel.CarModificationId,
+                CountryId = formModel.CountryId,
+                SubCatalogId = formModel.SubCatalogId,
+                ManufacturerId = formModel.ManufacturerId
+            };
+
+            StateHasChanged();
+
+            InputFileList.Clear();
+
+            CreatingAutoPart = false;
+
+            inputFileReference = fileReaderService.CreateReference(dropTargetInput);
+        }
+    }
+
+    private void HandleAutoPartCountryChosen(ChangeEventArgs eventArgs)
+    {
+        var selectedCountryId = (string)eventArgs.Value;
+
+        if (long.TryParse(selectedCountryId, out var countryId))
+        {
+            formModel.CountryId = countryId;
+        }
+    }
+
+    private void HandleAutoPartManufacturerChosen(ChangeEventArgs eventArgs)
+    {
+        var selectedManufacturerId = (string)eventArgs.Value;
+
+        if (long.TryParse(selectedManufacturerId, out var manufacturerId))
+        {
+            formModel.ManufacturerId = manufacturerId;
+        }
+    }
+
+    private void HandleAutoPartSubCatalogChosen(ChangeEventArgs eventArgs)
+    {
+        var selectedSubCatalogId = (string)eventArgs.Value;
+
+        if (long.TryParse(selectedSubCatalogId, out var subCatalogId))
+        {
+            formModel.SubCatalogId = subCatalogId;
+        }
+    }
+
+    private void HandleAutoPartCarModificationChosen(ChangeEventArgs eventArgs)
+    {
+        var selectedCarModificationId = (string)eventArgs.Value;
+
+        if (long.TryParse(selectedCarModificationId, out var carModificationId))
+        {
+            formModel.CarModificationId = carModificationId;
+        }
+    }
+
+    private async Task HandleManufacturerCountryChosen(ChangeEventArgs eventArgs)
+    {
+        var currentCountryId = selectedManufacturerCountryId;
+        var selectedCountryId = (string)eventArgs.Value;
+
+        if (long.TryParse(selectedCountryId, out var countryId))
+        {
+            selectedManufacturerCountryId = countryId;
+        }
+
+        if (currentCountryId != selectedManufacturerCountryId)
+        {
+            await FetchManufacturers();
+        }
+    }
+
+    private async Task HandleCatalogChosen(ChangeEventArgs eventArgs)
+    {
+        var currentCatalogId = selectedCatalogId;
+        var catalogIdFromEvent = (string)eventArgs.Value;
+
+        if (long.TryParse(catalogIdFromEvent, out var catalogId))
+        {
+            selectedCatalogId = catalogId;
+        }
+
+        if (currentCatalogId != selectedCatalogId)
+        {
+            await FetchSubCatalogs();
+        }
+    }
+
+    private async Task HandleCarBrandChosen(ChangeEventArgs eventArgs)
+    {
+        var currentCarBrandId = selectedCarBrandId;
+        var carBrandIdFromEvent = (string)eventArgs.Value;
+
+        if (long.TryParse(carBrandIdFromEvent, out var carBrandId))
+        {
+            selectedCarBrandId = carBrandId;
+        }
+
+        if (currentCarBrandId != selectedCarBrandId)
+        {
+            await FetchCarModels();
+        }
+    }
+
+    private async Task HandleCarModelChosen(ChangeEventArgs eventArgs)
+    {
+        var currentCarModelId = selectedCarModelId;
+        var carModelIdFromEvent = (string)eventArgs.Value;
+
+        if (long.TryParse(carModelIdFromEvent, out var carModelId))
+        {
+            selectedCarModelId = carModelId;
+        }
+
+        if (currentCarModelId != selectedCarModelId)
+        {
+            await FetchCarModifications();
+        }
+    }
+
+    private async Task OnInputChange(EventArgs e)
+    {
+        StateHasChanged();
+
+        await RefreshFileList(inputFileReference, InputFileList);
+    }
+
+    private string GetFileInputLabelText()
+    {
+        if (InputFileList.Any())
+        {
+            return InputFileList.First().Name;
+        }
+
+        return "Choose auto part image";
+    }
+
+    private async Task RefreshFileList(IFileReaderRef reader, List<IFileInfo> list)
+    {
+        list.Clear();
+
+        foreach (var file in await reader.EnumerateFilesAsync())
+        {
+            var fileInfo = await file.ReadFileInfoAsync();
+
+            list.Add(fileInfo);
+        }
+
+        StateHasChanged();
+    }
+}

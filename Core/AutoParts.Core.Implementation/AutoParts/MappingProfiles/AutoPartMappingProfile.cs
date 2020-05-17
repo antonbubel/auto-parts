@@ -52,7 +52,7 @@
                 .ForMember(autoPart => autoPart.Image, conf => conf.Ignore())
                 .ForMember(autoPart => autoPart.Price, conf => conf.MapFrom(notification => notification.Price))
                 .ForMember(autoPart => autoPart.Quantity, conf => conf.MapFrom(notification => notification.Quantity))
-                .ForMember(autoPart => autoPart.IsAvailable, conf => conf.MapFrom(notification => notification.IsAvailable))
+                .ForMember(autoPart => autoPart.IsAvailable, conf => conf.MapFrom(notification => notification.Quantity > 0))
                 .ForMember(autoPart => autoPart.CarModificationId, conf => conf.MapFrom(notification => notification.CarModificationId))
                 .ForMember(autoPart => autoPart.ManufacturerId, conf => conf.MapFrom(notification => notification.ManufacturerId))
                 .ForMember(autoPart => autoPart.SupplierId, conf => conf.MapFrom(notification => notification.SupplierId))
@@ -67,7 +67,7 @@
                 .ForMember(autoPart => autoPart.Image, conf => conf.Ignore())
                 .ForMember(autoPart => autoPart.Price, conf => conf.MapFrom(notification => notification.Price))
                 .ForMember(autoPart => autoPart.Quantity, conf => conf.MapFrom(notification => notification.Quantity))
-                .ForMember(autoPart => autoPart.IsAvailable, conf => conf.MapFrom(notification => notification.IsAvailable))
+                .ForMember(autoPart => autoPart.IsAvailable, conf => conf.MapFrom(notification => notification.Quantity > 0))
                 .ForMember(autoPart => autoPart.SupplierId, conf => conf.MapFrom(notification => notification.SupplierId));
         }
     }

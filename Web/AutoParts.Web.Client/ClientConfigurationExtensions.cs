@@ -58,6 +58,8 @@ namespace AutoParts.Web.Client
             services.AddTransient<CountryService>();
             services.AddTransient<ManufacturerService>();
             services.AddTransient<ManufacturerManagerService>();
+            services.AddTransient<CatalogService>();
+            services.AddTransient<AutoPartManagerService>();
 
             services.AddSingleton<CurrentUserProvider>();
         }

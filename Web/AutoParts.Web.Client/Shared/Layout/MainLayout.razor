@@ -37,6 +37,12 @@
                     <NavLink class="dropdown-item" href="./#">
                         Home
                     </NavLink>
+                    @if (currentUserProvider.CurrentUserInfo.UserType == UserType.Supplier)
+                    {
+                        <NavLink class="dropdown-item" href="supplier-dashboard">
+                            Supplier dashboard
+                        </NavLink>
+                    }
                     <div class="dropdown-divider"></div>
 
                     @if (currentUserProvider.CurrentUserInfo.UserType != UserType.Administrator)

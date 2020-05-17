@@ -20,8 +20,6 @@
 
         public int Quantity { get; set; }
 
-        public bool IsAvailable { get; set; }
-
         public long SupplierId { get; set; }
     }
 }

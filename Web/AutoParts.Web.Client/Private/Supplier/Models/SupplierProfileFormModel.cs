@@ -13,6 +13,7 @@
         public string LastName { get; set; }
 
         public string PhoneNumber { get; set; }
+
         [Required(ErrorMessage = "Organization name is required.")]
         [MaxLength(ValidationConstants.DefaultMaxLength, ErrorMessage = "Organization name must be less than 50 characters.")]
         public string OrganizationName { get; set; }

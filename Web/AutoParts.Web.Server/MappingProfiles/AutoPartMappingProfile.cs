@@ -27,10 +27,9 @@
                 .ForMember(notification => notification.Name, conf => conf.MapFrom(request => request.Name))
                 .ForMember(notification => notification.Description, conf => conf.MapFrom(request => request.Description))
                 .ForMember(notification => notification.ImageFileName, conf => conf.MapFrom(request => request.ImageFileName))
-                .ForMember(notification => notification.ImageFileBuffer, conf => conf.MapFrom(request => request.ImageFileBugger.ToByteArray()))
+                .ForMember(notification => notification.ImageFileBuffer, conf => conf.MapFrom(request => request.ImageFileBuffer.ToByteArray()))
                 .ForMember(notification => notification.Price, conf => conf.MapFrom(request => request.Price))
                 .ForMember(notification => notification.Quantity, conf => conf.MapFrom(request => request.Quantity))
-                .ForMember(notification => notification.IsAvailable, conf => conf.MapFrom(request => request.IsAvailable))
                 .ForMember(notification => notification.ManufacturerId, conf => conf.MapFrom(request => request.ManufacturerId))
                 .ForMember(notification => notification.CountryId, conf => conf.MapFrom(request => request.CountryId))
                 .ForMember(notification => notification.CarModificationId, conf => conf.MapFrom(request => request.CarModificationId))
@@ -41,10 +40,9 @@
                 .ForMember(notification => notification.Name, conf => conf.MapFrom(request => request.Name))
                 .ForMember(notification => notification.Description, conf => conf.MapFrom(request => request.Description))
                 .ForMember(notification => notification.ImageFileName, conf => conf.MapFrom(request => request.ImageFileName))
-                .ForMember(notification => notification.ImageFileBuffer, conf => conf.MapFrom(request => request.ImageFileBugger.ToByteArray()))
+                .ForMember(notification => notification.ImageFileBuffer, conf => conf.MapFrom(request => request.ImageFileBuffer.ToByteArray()))
                 .ForMember(notification => notification.Price, conf => conf.MapFrom(request => request.Price))
                 .ForMember(notification => notification.Quantity, conf => conf.MapFrom(request => request.Quantity))
-                .ForMember(notification => notification.IsAvailable, conf => conf.MapFrom(request => request.IsAvailable))
                 .ForMember(notification => notification.SupplierId, conf => conf.Ignore());
         }
 

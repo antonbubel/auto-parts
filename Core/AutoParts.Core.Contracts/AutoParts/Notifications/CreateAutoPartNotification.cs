@@ -18,8 +18,6 @@
 
         public int Quantity { get; set; }
 
-        public bool IsAvailable { get; set; }
-
         public long ManufacturerId { get; set; }
 
         public long CountryId { get; set; }

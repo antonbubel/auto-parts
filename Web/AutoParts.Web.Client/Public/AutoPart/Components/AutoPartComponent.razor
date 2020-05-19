@@ -1,53 +1,143 @@
 ﻿@using Protos;
 
-<div class="jumbotron py-4 d-flex">
+<div class="jumbotron py-4 d-sm-flex">
     @if (!string.IsNullOrEmpty(AutoPart.ImageUrl))
     {
         <div class="auto-part-image mr-4" style="background-image: url('@AutoPart.ImageUrl')"></div>
     }
-    <div class="flex-fill auto-part-description">
-        <div class="d-flex mb-2">
-            <h4 class="mb-0 flex-fill font-weight-bold">
-                @AutoPart.Name
-            </h4>
-            @if (AutoPart.IsAvailable)
-            {
-                <p class="text-primary my-auto">
-                    <span class="oi oi-circle-check mr-2" aria-hidden="true"></span> In stock
+    <div class="flex-fill">
+        <div class="row">
+            <div class="col-sm-9">
+                <h4 class="mb-2 font-weight-bold">
+                    @AutoPart.Name
+                </h4>
+                <p class="mb-3 auto-part-description">
+                    @AutoPart.Description
                 </p>
-            }
-            else
-            {
-                <p class="text-danger my-auto">
-                    <span class="oi oi-circle-x mr-2" aria-hidden="true"></span> Out of stock
+                <p class="mb-2">
+                    <strong>Quantity: </strong>@AutoPart.Quantity
                 </p>
-            }
+                <p class="mb-2">
+                    <strong>Category: </strong>@AutoPart.SubCatalogName
+                </p>
+                <p class="mb-2">
+                    <strong>Origin: </strong>@AutoPart.CountryName
+                </p>
+                <p class="mb-2">
+                    <strong>Manufacturer: </strong>@AutoPart.ManufacturerName
+                </p>
+                <p class="mb-2">
+                    <strong>Supplied by: </strong><a href="supplier/@AutoPart.SupplierId">@AutoPart.SupplierName</a>
+                </p>
+            </div>
+            <div class="col-sm-3">
+                @if (AutoPart.IsAvailable)
+                {
+                    <p class="text-primary text-right">
+                        <span class="oi oi-circle-check mr-2" aria-hidden="true"></span> In stock
+                    </p>
+                }
+                else
+                {
+                    <p class="text-danger text-right">
+                        <span class="oi oi-circle-x mr-2" aria-hidden="true"></span> Out of stock
+                    </p>
+                }
+
+                <div class="card w-100 p-3">
+                    <div class="d-flex">
+                        <div class="flex-fill" >
+                            <label class="mt-auto" for="quantity">Quantity: </label>
+                        </div>
+                        <h5 class="mb-3 text-right">
+                            <strong>Price: </strong>@AutoPart.Price$
+                        </h5>
+                    </div>
+
+                    <div class="input-group mb-2">
+                        <div class="input-group-prepend">
+                            <button class="btn btn-outline-secondary" type="button" disabled="@DecrementButtonDisabled" @onclick="DecrementQuantity">
+                                <span class="oi oi-minus" aria-hidden="true"></span>
+                            </button>
+                        </div>
+                        <input id="quantity" type="number" class="form-control text-center" value="@Quantity" disabled="@AutoPartNotAvailable" aria-describedby="quantity" @onchange="HandleQuantityChange">
+                        <div class="input-group-append">
+                            <button class="btn btn-outline-secondary" type="button" disabled="@IncrementButtonDisabled" @onclick="IncrementQuantity">
+                                <span class="oi oi-plus" aria-hidden="true"></span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <button class="btn btn-outline-primary" type="button" disabled="@AddToCartButtonDisabled" @onclick="AddToCart">
+                        <span class="oi oi-cart" aria-hidden="true"></span> Add to cart
+                    </button>
+                </div>
+            </div>
         </div>
-        <p>
-            @AutoPart.Description
-        </p>
-
-        <div class="dropdown-divider"></div>
-
-        <h5 class="mb-2">
-            <strong>Price: </strong>@AutoPart.Price$
-        </h5>
-        <p class="mb-2">
-            <strong>Category: </strong>@AutoPart.SubCatalogName
-        </p>
-        <p class="mb-2">
-            <strong>Origin: </strong>@AutoPart.CountryName
-        </p>
-        <p class="mb-2">
-            <strong>Manufacturer: </strong>@AutoPart.ManufacturerName
-        </p>
-        <p class="mb-2">
-            <strong>Supplied by: </strong><a href="supplier/@AutoPart.SupplierId">@AutoPart.SupplierName</a>
-        </p>
     </div>
 </div>
 
 @code {
     [Parameter]
     public Protos.AutoPart AutoPart { get; set; }
+
+    private int Quantity { get; set; } = 0;
+
+    private bool AutoPartNotAvailable => !AutoPart.IsAvailable;
+
+    private bool IncrementButtonDisabled =>
+        AutoPartNotAvailable || Quantity >= AutoPart.Quantity;
+
+    private bool DecrementButtonDisabled =>
+        AutoPartNotAvailable || Quantity <= 0;
+
+    private bool AddToCartButtonDisabled =>
+        Quantity <= 0;
+
+    private void HandleQuantityChange(ChangeEventArgs eventArgs)
+    {
+        var value = (string)eventArgs.Value;
+
+        if (int.TryParse(value, out var quantity))
+        {
+            if (quantity > AutoPart.Quantity)
+            {
+                quantity = AutoPart.Quantity;
+            }
+
+            if (quantity < 0)
+            {
+                quantity = 0;
+            }
+
+            Quantity = quantity;
+        }
+        else
+        {
+            Quantity = 0;
+        }
+
+        StateHasChanged();
+    }
+
+    private void IncrementQuantity()
+    {
+        if (Quantity < AutoPart.Quantity)
+        {
+            Quantity++;
+        }
+    }
+
+    private void DecrementQuantity()
+    {
+        if (Quantity > 0)
+        {
+            Quantity--;
+        }
+    }
+
+    private Task AddToCart()
+    {
+        return Task.CompletedTask;
+    }
 }

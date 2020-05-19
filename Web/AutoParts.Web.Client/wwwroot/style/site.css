@@ -289,10 +289,16 @@ app {
     left: auto !important;
 }
 
-.auto-part-description > p {
+.auto-part-description {
     word-break: break-all;
 }
 
 .page-link {
     cursor: pointer;
+}
+
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
 }

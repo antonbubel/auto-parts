@@ -1,0 +1,60 @@
+﻿@page "/cart"
+
+@using Protos;
+@using Models;
+
+@inject Services.CartService cartService;
+@inject Shared.Services.CurrentUserProvider currentUserProvider;
+
+<h2 class="mb-3">
+    <span class="oi oi-cart" aria-hidden="true"></span> Cart
+</h2>
+
+@if (Loading)
+{
+    <p class="font-italic">Loading...</p>
+}
+else
+{
+    @if (!CartItems.Any())
+    {
+        <h4 class="text-center">You haven't added anything yet :(</h4>
+    }
+    else
+    {
+        @foreach (var cartItem in CartItems)
+        {
+            <AutoParts.Web.Client.Public.Cart.Components.CartItemComponent CartItem="cartItem"></AutoParts.Web.Client.Public.Cart.Components.CartItemComponent>
+        }
+
+        <h3>
+            Total: @TotalPrice$
+        </h3>
+    }
+}
+
+@code {
+    private CartItemModel[] CartItems { get; set; }
+    private bool Loading { get; set; }
+    private double TotalPrice => CartItems.Sum(cartItem => cartItem.AutoPart.Price * cartItem.Quantity);
+
+    protected override Task OnInitializedAsync()
+    {
+        Loading = true;
+
+        CartItems = cartService.GetAutoParts();
+
+        Loading = false;
+
+        cartService.AddListener(HandleCartItemsChange);
+
+        return base.OnInitializedAsync();
+    }
+
+    private void HandleCartItemsChange()
+    {
+        CartItems = cartService.GetAutoParts();
+
+        StateHasChanged();
+    }
+}

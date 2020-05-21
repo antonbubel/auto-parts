@@ -1,5 +1,7 @@
 ﻿namespace AutoParts.Web.Client.Public.Cart.Services
 {
+    using System;
+    using System.Linq;
     using System.Collections.Generic;
 
     using Blazored.LocalStorage;
@@ -9,8 +11,6 @@
     using Models;
 
     using Shared.Constants;
-    using System.Linq;
-    using System;
 
     public class CartService
     {
@@ -20,7 +20,6 @@
 
         public CartService(ISyncLocalStorageService localStorage)
         {
-            Console.WriteLine("INITIALIZED!");
             this.localStorage = localStorage;
             cartItems = ReadCartItemsFromLocalStorage();
             listeners = new List<Action>();
@@ -28,7 +27,7 @@
 
         public CartItemModel GetAutoPart(long autoPartId)
         {
-            return cartItems.FirstOrDefault(cartItem => cartItem.AutoPartId == autoPartId);
+            return cartItems.FirstOrDefault(cartItem => cartItem.AutoPart.Id == autoPartId);
         }
 
         public CartItemModel[] GetAutoParts()
@@ -38,7 +37,7 @@
 
         public void AddAutoPart(AutoPart autoPart, int quantity)
         {
-            var existingCartItem = cartItems.FirstOrDefault(cartItem => cartItem.AutoPartId == autoPart.Id);
+            var existingCartItem = cartItems.FirstOrDefault(cartItem => cartItem.AutoPart.Id == autoPart.Id);
 
             if (existingCartItem != null)
             {
@@ -48,7 +47,7 @@
             {
                 var newCartItem = new CartItemModel
                 {
-                    AutoPartId = autoPart.Id,
+                    AutoPart = autoPart,
                     Quantity = quantity
                 };
 
@@ -60,7 +59,7 @@
 
         public void RemoveAutoPart(long autoPartId)
         {
-            cartItems = cartItems.Where(cartItems => cartItems.AutoPartId != autoPartId)
+            cartItems = cartItems.Where(cartItems => cartItems.AutoPart.Id != autoPartId)
                 .ToList();
 
             WriteCartItemsToLocalStorage();

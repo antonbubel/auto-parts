@@ -1,0 +1,111 @@
+﻿@using Protos;
+@using Models;
+
+@inject Public.Cart.Services.CartService cartService;
+
+<div class="jumbotron py-4 d-sm-flex">
+    @if (!string.IsNullOrEmpty(CartItem.AutoPart.ImageUrl))
+    {
+        <div class="auto-part-image mr-4" style="background-image: url('@CartItem.AutoPart.ImageUrl')"></div>
+    }
+    <div class="flex-fill">
+        <div class="row">
+            <div class="col-sm-9">
+                <h4 class="mb-2 font-weight-bold">
+                    @CartItem.AutoPart.Name
+                </h4>
+                <p class="mb-5 auto-part-description">
+                    @CartItem.AutoPart.Description
+                </p>
+                <h5 class="mb-3">
+                    <strong>Price: </strong>@CartItem.AutoPart.Price$
+                </h5>
+                <h5 class="mb-3">
+                    <strong>Total price: </strong>@TotalPrice$
+                </h5>
+            </div>
+            <div class="col-sm-3">
+                <div class="card w-100 p-3">
+                    <label class="mt-auto" for="quantity">Quantity: </label>
+                    <div class="input-group mb-2">
+                        <div class="input-group-prepend">
+                            <button class="btn btn-outline-secondary" type="button" disabled="@DecrementButtonDisabled" @onclick="DecrementQuantity">
+                                <span class="oi oi-minus" aria-hidden="true"></span>
+                            </button>
+                        </div>
+                        <input id="quantity" type="number" class="form-control text-center" value="@CartItem.Quantity" aria-describedby="quantity" @onchange="HandleQuantityChange">
+                        <div class="input-group-append">
+                            <button class="btn btn-outline-secondary" type="button" disabled="@IncrementButtonDisabled" @onclick="IncrementQuantity">
+                                <span class="oi oi-plus" aria-hidden="true"></span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <button class="btn btn-outline-danger" type="button" @onclick="RemoveFromCart">
+                        <span class="oi oi-x" aria-hidden="true"></span> Remove from cart
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@code {
+    [Parameter]
+    public CartItemModel CartItem { get; set; }
+
+    private bool IncrementButtonDisabled => CartItem.Quantity >= CartItem.AutoPart.Quantity;
+
+    private bool DecrementButtonDisabled => CartItem.Quantity <= 1;
+
+    private double TotalPrice => CartItem.AutoPart.Price * CartItem.Quantity;
+
+    private void HandleQuantityChange(ChangeEventArgs eventArgs)
+    {
+        var value = (string)eventArgs.Value;
+
+        if (int.TryParse(value, out var quantity))
+        {
+            if (quantity > CartItem.AutoPart.Quantity)
+            {
+                quantity = CartItem.AutoPart.Quantity;
+            }
+
+            if (quantity < 1)
+            {
+                quantity = 1;
+            }
+
+            CartItem.Quantity = quantity;
+        }
+        else
+        {
+            CartItem.Quantity = 1;
+        }
+
+        StateHasChanged();
+    }
+
+    private void IncrementQuantity()
+    {
+        if (CartItem.Quantity < CartItem.AutoPart.Quantity)
+        {
+            CartItem.Quantity++;
+            cartService.AddAutoPart(CartItem.AutoPart, CartItem.Quantity);
+        }
+    }
+
+    private void DecrementQuantity()
+    {
+        if (CartItem.Quantity > 1)
+        {
+            CartItem.Quantity--;
+            cartService.AddAutoPart(CartItem.AutoPart, CartItem.Quantity);
+        }
+    }
+
+    private void RemoveFromCart()
+    {
+        cartService.RemoveAutoPart(CartItem.AutoPart.Id);
+    }
+}

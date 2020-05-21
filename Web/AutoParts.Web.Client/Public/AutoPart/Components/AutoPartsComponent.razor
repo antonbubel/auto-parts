@@ -141,8 +141,6 @@ else
     {
         Filter.PageNumber = pageNumber;
 
-        Console.WriteLine(pageNumber);
-
         var query = QueryBuilderUtility.CreateQueryFromFilter("auto-parts", Filter);
 
         navigationManager.NavigateTo(query);

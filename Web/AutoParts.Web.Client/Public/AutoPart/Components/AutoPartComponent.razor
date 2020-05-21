@@ -1,5 +1,8 @@
 ﻿@using Protos;
 
+@inject Public.Cart.Services.CartService cartService;
+@inject Shared.Services.CurrentUserProvider currentUserProvider;
+
 <div class="jumbotron py-4 d-sm-flex">
     @if (!string.IsNullOrEmpty(AutoPart.ImageUrl))
     {
@@ -30,49 +33,73 @@
                     <strong>Supplied by: </strong><a href="supplier/@AutoPart.SupplierId">@AutoPart.SupplierName</a>
                 </p>
             </div>
-            <div class="col-sm-3">
-                @if (AutoPart.IsAvailable)
-                {
-                    <p class="text-primary text-right">
-                        <span class="oi oi-circle-check mr-2" aria-hidden="true"></span> In stock
-                    </p>
-                }
-                else
-                {
-                    <p class="text-danger text-right">
-                        <span class="oi oi-circle-x mr-2" aria-hidden="true"></span> Out of stock
-                    </p>
-                }
+            @if (!currentUserProvider.IsLoggedIn || currentUserProvider.CurrentUserInfo.UserType == UserType.User)
+            {
+                <div class="col-sm-3">
+                    @if (IsInCart && AutoPart.IsAvailable)
+                    {
+                        <p class="text-success font-weight-bold text-right">
+                            <span class="oi oi-cart" aria-hidden="true"></span> In cart
+                        </p>
+                    }
+                    @if (!IsInCart && AutoPart.IsAvailable)
+                    {
+                        <p class="text-primary text-right">
+                            <span class="oi oi-circle-check" aria-hidden="true"></span> In stock
+                        </p>
+                    }
+                    @if (!AutoPart.IsAvailable)
+                    {
+                        <p class="text-danger text-right">
+                            <span class="oi oi-circle-x" aria-hidden="true"></span> Out of stock
+                        </p>
+                    }
 
-                <div class="card w-100 p-3">
-                    <div class="d-flex">
-                        <div class="flex-fill" >
-                            <label class="mt-auto" for="quantity">Quantity: </label>
+                    <div class="card w-100 p-3">
+                        <div class="d-flex">
+                            <div class="flex-fill">
+                                <label class="mt-auto" for="quantity">Quantity: </label>
+                            </div>
+                            <h5 class="mb-3 text-right">
+                                <strong>Price: </strong>@AutoPart.Price$
+                            </h5>
                         </div>
-                        <h5 class="mb-3 text-right">
-                            <strong>Price: </strong>@AutoPart.Price$
-                        </h5>
-                    </div>
 
-                    <div class="input-group mb-2">
-                        <div class="input-group-prepend">
-                            <button class="btn btn-outline-secondary" type="button" disabled="@DecrementButtonDisabled" @onclick="DecrementQuantity">
-                                <span class="oi oi-minus" aria-hidden="true"></span>
+                        <div class="input-group mb-2">
+                            <div class="input-group-prepend">
+                                <button class="btn btn-outline-secondary" type="button" disabled="@DecrementButtonDisabled" @onclick="DecrementQuantity">
+                                    <span class="oi oi-minus" aria-hidden="true"></span>
+                                </button>
+                            </div>
+                            <input id="quantity" type="number" class="form-control text-center" value="@Quantity" disabled="@AutoPartNotAvailable" aria-describedby="quantity" @onchange="HandleQuantityChange">
+                            <div class="input-group-append">
+                                <button class="btn btn-outline-secondary" type="button" disabled="@IncrementButtonDisabled" @onclick="IncrementQuantity">
+                                    <span class="oi oi-plus" aria-hidden="true"></span>
+                                </button>
+                            </div>
+                        </div>
+
+                        @if (!IsInCart)
+                        {
+                            <button class="btn btn-outline-primary" type="button" disabled="@AddToCartButtonDisabled" @onclick="AddToCart">
+                                <span class="oi oi-cart" aria-hidden="true"></span> Add to cart
                             </button>
-                        </div>
-                        <input id="quantity" type="number" class="form-control text-center" value="@Quantity" disabled="@AutoPartNotAvailable" aria-describedby="quantity" @onchange="HandleQuantityChange">
-                        <div class="input-group-append">
-                            <button class="btn btn-outline-secondary" type="button" disabled="@IncrementButtonDisabled" @onclick="IncrementQuantity">
-                                <span class="oi oi-plus" aria-hidden="true"></span>
+                        }
+                        else
+                        {
+                            <button class="btn btn-outline-danger" type="button" @onclick="RemoveFromCart">
+                                <span class="oi oi-x" aria-hidden="true"></span> Remove from cart
                             </button>
-                        </div>
+                        }
                     </div>
-
-                    <button class="btn btn-outline-primary" type="button" disabled="@AddToCartButtonDisabled" @onclick="AddToCart">
-                        <span class="oi oi-cart" aria-hidden="true"></span> Add to cart
-                    </button>
                 </div>
-            </div>
+            }
+            else
+            {
+                <h5 class="mb-3 text-right">
+                    <strong>Price: </strong>@AutoPart.Price$
+                </h5>
+            }
         </div>
     </div>
 </div>
@@ -82,6 +109,8 @@
     public Protos.AutoPart AutoPart { get; set; }
 
     private int Quantity { get; set; } = 0;
+
+    private bool IsInCart { get; set; } = false;
 
     private bool AutoPartNotAvailable => !AutoPart.IsAvailable;
 
@@ -125,6 +154,11 @@
         if (Quantity < AutoPart.Quantity)
         {
             Quantity++;
+
+            if (IsInCart)
+            {
+                cartService.AddAutoPart(AutoPart, Quantity);
+            }
         }
     }
 
@@ -133,11 +167,34 @@
         if (Quantity > 0)
         {
             Quantity--;
+
+            if (IsInCart && Quantity != 0)
+            {
+                cartService.AddAutoPart(AutoPart, Quantity);
+            }
         }
     }
 
-    private Task AddToCart()
+    private void AddToCart()
     {
-        return Task.CompletedTask;
+        IsInCart = true;
+        cartService.AddAutoPart(AutoPart, Quantity);
+    }
+
+    private void RemoveFromCart()
+    {
+        IsInCart = false;
+        cartService.RemoveAutoPart(AutoPart.Id);
+    }
+
+    protected override void OnParametersSet()
+    {
+        var cartItem = cartService.GetAutoPart(AutoPart.Id);
+
+        if (cartItem != null)
+        {
+            IsInCart = true;
+            Quantity = cartItem.Quantity;
+        }
     }
 }

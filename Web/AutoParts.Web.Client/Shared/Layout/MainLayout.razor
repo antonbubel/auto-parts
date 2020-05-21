@@ -2,6 +2,7 @@
 
 @inject Services.CurrentUserProvider currentUserProvider
 @inject Services.CurrentUserService currentUserService
+@inject Public.Cart.Services.CartService cartService
 @inject NavigationManager navigationManager
 
 @using Utils;
@@ -103,6 +104,13 @@
                 Sign Up
             </NavLink>
         }
+
+        @if (!currentUserProvider.LoadingUserInfo && (!currentUserProvider.IsLoggedIn || currentUserProvider.CurrentUserInfo.UserType == UserType.User))
+        {
+            <a href="cart" class="btn btn-outline-primary ml-3">
+                <span class="oi oi-cart" aria-hidden="true"></span> Cart <span class="badge badge-primary ml-2">@NumberOfItemsInCart</span>
+            </a>
+        }
     </div>
 
     <div class="content container-fluid px-4">
@@ -121,6 +129,7 @@
     public bool Loading { get; set; } = true;
     public string CurrentUserSupplierProfileLink => $"supplier/{currentUserProvider.CurrentUserInfo.Id}";
     private string SearchText { get; set; }
+    private int NumberOfItemsInCart { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
@@ -132,11 +141,17 @@
         var autoPartFilter = QueryParsingUtility.ParseFilterFromUri<AutoPartsFilter>(uri);
 
         SearchText = autoPartFilter.SearchText;
+
+        cartService.AddListener(HandleCartItemsChange);
+
+        HandleCartItemsChange();
     }
 
     private async Task SignOut()
     {
         await currentUserService.SignOut();
+
+        cartService.Clear();
     }
 
     private void UpdateSearchText(ChangeEventArgs eventArgs)
@@ -168,6 +183,15 @@
         }
 
         Loading = false;
+
+        StateHasChanged();
+    }
+
+    private void HandleCartItemsChange()
+    {
+        var cartItems = cartService.GetAutoParts();
+
+        NumberOfItemsInCart = cartItems.Length;
 
         StateHasChanged();
     }

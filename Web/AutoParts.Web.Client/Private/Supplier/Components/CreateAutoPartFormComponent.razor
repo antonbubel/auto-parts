@@ -193,6 +193,9 @@ else
 }
 
 @code {
+    [Parameter]
+    public EventCallback<bool> OnAutoPartCreated { get; set; }
+
     public bool Loading { get; set; } = true;
     public bool LoadingManufacturers { get; set; } = true;
     public bool LoadingSubCatalogs { get; set; } = true;
@@ -328,6 +331,8 @@ else
         {
             Errors = response.Errors.ToArray();
 
+            await OnAutoPartCreated.InvokeAsync(false);
+
             return;
         }
         else
@@ -347,6 +352,8 @@ else
             CreatingAutoPart = false;
 
             inputFileReference = fileReaderService.CreateReference(dropTargetInput);
+
+            await OnAutoPartCreated.InvokeAsync(true);
         }
     }
 

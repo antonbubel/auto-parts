@@ -1,7 +1,56 @@
 ﻿@page "/supplier-dashboard"
 
-<AutoParts.Web.Client.Private.Supplier.Components.CreateAutoPartFormComponent></AutoParts.Web.Client.Private.Supplier.Components.CreateAutoPartFormComponent>
+@inject Shared.Services.CurrentUserProvider currentUserProvider;
+
+<h2 class="my-5 text-center">
+    Supplier dasboard
+</h2>
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-3">
+            <a class="supplier-dashboard-link-item" href="@AutoPartsPageLink">
+                <div class="jumbotron py-4 supplier-dashboard-link">
+                    <span class="oi oi-list-rich d-block text-center mb-4" aria-hidden="true"></span>
+                    <h4 class="text-center mb-0">
+                        AUTOPARTS
+                    </h4>
+                </div>
+            </a>
+        </div>
+        <div class="col-md-3">
+            <a class="supplier-dashboard-link-item" href="orders">
+                <div class="jumbotron py-4 pb-2 supplier-dashboard-link">
+                    <span class="oi oi-briefcase d-block text-center mb-4" aria-hidden="true"></span>
+                    <h4 class="text-center mb-0">
+                        ORDERS
+                    </h4>
+                </div>
+            </a>
+        </div>
+        <div class="col-md-3">
+            <a class="supplier-dashboard-link-item" href="create-new-auto-part">
+                <div class="jumbotron py-4 pb-2 supplier-dashboard-link">
+                    <span class="oi oi-plus d-block text-center mb-4" aria-hidden="true"></span>
+                    <h4 class="text-center mb-0">
+                        CREATE NEW AUTO PART
+                    </h4>
+                </div>
+            </a>
+        </div>
+        <div class="col-md-3">
+            <a class="supplier-dashboard-link-item" href="export-from-csv">
+                <div class="jumbotron py-4 pb-2 supplier-dashboard-link">
+                    <span class="oi oi-data-transfer-upload d-block text-center mb-4" aria-hidden="true"></span>
+                    <h4 class="text-center mb-0">
+                        IMPORT FROM CSV
+                    </h4>
+                </div>
+            </a>
+        </div>
+    </div>
+</div>
 
 @code {
-
+    public string AutoPartsPageLink => $"supplier/{currentUserProvider.CurrentUserInfo.Id}";
 }

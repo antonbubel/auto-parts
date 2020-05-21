@@ -1,0 +1,19 @@
+﻿@page "/create-new-auto-part"
+
+@inject NavigationManager navigationManager;
+
+<h2 class="mb-3">
+    Create new auto part
+</h2>
+
+<AutoParts.Web.Client.Private.Supplier.Components.CreateAutoPartFormComponent OnAutoPartCreated="HandleAutoPartCreated"></AutoParts.Web.Client.Private.Supplier.Components.CreateAutoPartFormComponent>
+
+@code {
+    private void HandleAutoPartCreated(bool isCreated)
+    {
+        if (isCreated)
+        {
+            navigationManager.NavigateTo("supplier-dashboard");
+        }
+    }
+}

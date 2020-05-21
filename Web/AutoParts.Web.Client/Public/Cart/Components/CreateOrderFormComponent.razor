@@ -1,0 +1,126 @@
+﻿@using Protos;
+@using Models;
+
+@inject Public.Services.CountryService countryService;
+@inject Shared.Services.CurrentUserProvider currentUserProvider;
+
+@if (Loading)
+{
+    <p class="font-italic">Loading...</p>
+}
+else
+{
+    <div class="jumbotron py-4">
+        <EditForm Model="@formModel" OnValidSubmit="HandleCreateOrder">
+            @if (Errors != null && Errors.Any())
+            {
+                <div class="my-3 alert-danger">
+                    <ul>
+                        @foreach (var error in Errors)
+                        {
+                            <li>@error.Message</li>
+                        }
+                    </ul>
+                </div>
+            }
+
+            <DataAnnotationsValidator />
+
+            <div class="text-left">
+                <ValidationSummary />
+            </div>
+
+            <div class="row">
+                <div class="col-md-12">
+                    <label for="email">Email</label>
+                    <InputText id="email" class="form-control mb-3" placeholder="Email" @bind-Value="formModel.Email" />
+                </div>
+                <div class="col-md-6">
+                    <label for="first-name">First name</label>
+                    <InputText id="first-name" class="form-control mb-3" placeholder="First name" @bind-Value="formModel.FirstName" />
+                </div>
+                <div class="col-md-6">
+                    <label for="last-name">Last name</label>
+                    <InputText id="last-name" class="form-control mb-3" placeholder="Last name" @bind-Value="formModel.LastName" />
+                </div>
+                <div class="col-md-12">
+                    <label for="street-address">Street Address</label>
+                    <InputText id="street-address" class="form-control mb-3" placeholder="Street Address" @bind-Value="formModel.StreetAddress" />
+                </div>
+                <div class="col-md-12">
+                    <label for="street-address-line-2">Street Address Line 2</label>
+                    <InputText id="street-address-line-2" class="form-control mb-3" placeholder="Street Address Line 2" @bind-Value="formModel.StreetAddressSecondLine" />
+                </div>
+                <div class="col-md-6">
+                    <label for="city">City</label>
+                    <InputText id="city" class="form-control mb-3" placeholder="City" @bind-Value="formModel.City" />
+                </div>
+                <div class="col-md-6">
+                    <label for="region">Region</label>
+                    <InputText id="region" class="form-control mb-3" placeholder="Region" @bind-Value="formModel.Region" />
+                </div>
+                <div class="col-md-6">
+                    <label for="zip">Postal / Zip Code</label>
+                    <InputText id="zip" class="form-control mb-3" placeholder="Postal / Zip Code" @bind-Value="formModel.ZipCode" />
+                </div>
+                <div class="col-md-6">
+                    <label for="country">Country</label>
+                    <select type="search" class="form-control mb-3" value="@formModel.CountryId" @oninput="HandleCountryChosen">
+                        <option>Select country...</option>
+                        @foreach (var country in Countries)
+                        {
+                            <option value="@country.Id">@country.Name</option>
+                        }
+                    </select>
+                </div>
+
+                <button class="btn btn-md btn-primary mb-3 mx-auto" type="submit" disabled="@CreatingOrder">
+                    Submit
+                </button>
+            </div>
+        </EditForm>
+    </div>
+}
+
+@code {
+    [Parameter]
+    public EventCallback<bool> OnOrderCreated { get; set; }
+
+    private bool Loading { get; set; }
+    public bool CreatingOrder { get; set; }
+
+    private Country[] Countries { get; set; }
+    private Error[] Errors { get; set; }
+    private CreateOrderFormModel formModel = new CreateOrderFormModel();
+
+    protected override async Task OnInitializedAsync()
+    {
+        Loading = true;
+
+        Countries = await countryService.GetCountries();
+
+        if (currentUserProvider.IsLoggedIn)
+        {
+            formModel.Email = currentUserProvider.CurrentUserInfo.Email;
+            formModel.FirstName = currentUserProvider.CurrentUserInfo.FirstName;
+            formModel.LastName = currentUserProvider.CurrentUserInfo.LastName;
+        }
+
+        Loading = false;
+    }
+
+    private async Task HandleCreateOrder()
+    {
+        await OnOrderCreated.InvokeAsync(true);
+    }
+
+    private void HandleCountryChosen(ChangeEventArgs eventArgs)
+    {
+        var selectedCountryId = (string)eventArgs.Value;
+
+        if (long.TryParse(selectedCountryId, out var countryId))
+        {
+            formModel.CountryId = countryId;
+        }
+    }
+}

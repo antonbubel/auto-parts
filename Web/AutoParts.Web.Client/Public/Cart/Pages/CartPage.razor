@@ -6,16 +6,16 @@
 @inject Services.CartService cartService;
 @inject Shared.Services.CurrentUserProvider currentUserProvider;
 
-<h2 class="mb-3">
-    <span class="oi oi-cart" aria-hidden="true"></span> Cart
-</h2>
-
 @if (Loading)
 {
     <p class="font-italic">Loading...</p>
 }
-else
+else if (!OrderCreated)
 {
+    <h2 class="mb-3">
+        <span class="oi oi-cart" aria-hidden="true"></span> Cart
+    </h2>
+
     @if (!CartItems.Any())
     {
         <h4 class="text-center">You haven't added anything yet :(</h4>
@@ -27,15 +27,32 @@ else
             <AutoParts.Web.Client.Public.Cart.Components.CartItemComponent CartItem="cartItem"></AutoParts.Web.Client.Public.Cart.Components.CartItemComponent>
         }
 
-        <h3>
+        <h3 class="mb-3">
             Total: @TotalPrice$
         </h3>
+
+        <AutoParts.Web.Client.Public.Cart.Components.CreateOrderFormComponent OnOrderCreated="HandleOrderCreated"></AutoParts.Web.Client.Public.Cart.Components.CreateOrderFormComponent>
     }
+}
+else
+{
+    <h3 class="text-success text-center mt-5">
+        <span class="oi oi-check" aria-hidden="true"></span> Order was created successfully!
+    </h3>
+    <h4 class="text-center mb-5">
+        Thank you for your order, we will handle it as fast as we can so can to get your delivery as soon as possible. Meanwhile, you can continue shopping :)
+    </h4>
+    <div class="w-100 continue-shopping-link">
+        <a href="" class="btn btn-lg btn-outline-success">
+            Continue shopping
+        </a>
+    </div>
 }
 
 @code {
     private CartItemModel[] CartItems { get; set; }
     private bool Loading { get; set; }
+    private bool OrderCreated { get; set; }
     private double TotalPrice => CartItems.Sum(cartItem => cartItem.AutoPart.Price * cartItem.Quantity);
 
     protected override Task OnInitializedAsync()
@@ -56,5 +73,14 @@ else
         CartItems = cartService.GetAutoParts();
 
         StateHasChanged();
+    }
+
+    private void HandleOrderCreated(bool success)
+    {
+        if (success)
+        {
+            OrderCreated = true;
+            cartService.Clear();
+        }
     }
 }

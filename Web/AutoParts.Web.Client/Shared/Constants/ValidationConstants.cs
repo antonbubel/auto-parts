@@ -17,5 +17,7 @@ namespace AutoParts.Web.Client.Shared.Constants
         public const int CarModificationMinYear = 1990;
 
         public const int CarModificationMaxYear = 2020;
+
+        public const int StreetAddressMaxLingth = 200;
     }
 }

@@ -329,3 +329,13 @@ a.supplier-dashboard-link-item:hover {
     text-decoration: none;
     cursor: pointer;
 }
+
+.continue-shopping-link {
+    position: relative;
+}
+
+.continue-shopping-link > a {
+    position: absolute;
+    left: 50%;
+    transform: translate(-50%, 0);
+}

@@ -1,5 +1,9 @@
 @import url('open-iconic/font/css/open-iconic-bootstrap.min.css');
 
+html {
+    scroll-behavior: smooth;
+}
+
 html, body {
     font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
 }
@@ -165,7 +169,7 @@ app {
 }
 
 .carousel-item {
-    height: 32rem !important;
+    height: 38rem !important;
 }
 
 .select-country-input {
@@ -186,7 +190,7 @@ app {
 }
 
 .carousel-second-image {
-    background: url(../images/autoparts-2.jpeg) no-repeat center center fixed;
+    background: url(../images/autoparts-2.jpg) no-repeat center center fixed;
     -webkit-background-size: cover;
     -moz-background-size: cover;
     -o-background-size: cover;

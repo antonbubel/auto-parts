@@ -16,7 +16,7 @@
                 .ForMember(autoPart => autoPart.Id, conf => conf.MapFrom(model => model.Id))
                 .ForMember(autoPart => autoPart.Name, conf => conf.MapFrom(model => model.Name))
                 .ForMember(autoPart => autoPart.Description, conf => conf.MapFrom(model => model.Description ?? string.Empty))
-                .ForMember(autoPart => autoPart.ImageUrl, conf => conf.MapFrom(model => model.ImageUrl))
+                .ForMember(autoPart => autoPart.ImageUrl, conf => conf.MapFrom(model => model.ImageUrl ?? string.Empty))
                 .ForMember(autoPart => autoPart.Price, conf => conf.MapFrom(model => model.Price))
                 .ForMember(autoPart => autoPart.Quantity, conf => conf.MapFrom(model => model.Quantity))
                 .ForMember(autoPart => autoPart.IsAvailable, conf => conf.MapFrom(model => model.IsAvailable))

@@ -7,6 +7,12 @@
 
     public class Order : BaseEntity<long>
     {
+        public string Email { get; set; }
+
+        public string FirstName { get; set; }
+
+        public string LastName { get; set; }
+
         public string StreetAddress { get; set; }
 
         public string StreetAddressSecondLine { get; set; }
@@ -23,7 +29,7 @@
 
         public Country Country { get; set; }
 
-        public long UserId { get; set; }
+        public long? UserId { get; set; }
 
         public User User { get; set; }
 

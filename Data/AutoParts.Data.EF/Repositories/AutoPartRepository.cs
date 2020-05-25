@@ -52,6 +52,15 @@
                 .FirstOrDefaultAsync(autoPart => autoPart.Id == key);
         }
 
+        public async Task<User[]> GetAutoPartsSuppliers(long[] autoPartIds)
+        {
+            return await GetQueryable()
+                .Where(autoPart => autoPartIds.Contains(autoPart.Id))
+                .GroupBy(autoPart => autoPart.Supplier)
+                .Select(grouppedAutoPart => grouppedAutoPart.Key.User)
+                .ToArrayAsync();
+        }
+
         public async Task<PaginatedResult<AutoPartProjection>> GetAutoParts(
             AutoPartsFilter filter,
             AutoPartsSortingOption sorting = AutoPartsSortingOption.Name,

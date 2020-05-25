@@ -8,5 +8,8 @@
 
         [Required]
         public string SupplierSignUpUrl { get; set; }
+
+        [Required]
+        public string SupplierOrdersUrl { get; set; }
     }
 }

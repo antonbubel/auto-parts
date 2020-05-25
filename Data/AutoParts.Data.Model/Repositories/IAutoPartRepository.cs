@@ -11,6 +11,8 @@
 
     public interface IAutoPartRepository : IRepository<long, AutoPart>
     {
+        Task<User[]> GetAutoPartsSuppliers(long[] autoPartIds);
+
         Task<PaginatedResult<AutoPartProjection>> GetAutoParts(
             AutoPartsFilter filter,
             AutoPartsSortingOption sorting = AutoPartsSortingOption.Name,

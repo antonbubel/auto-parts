@@ -6,6 +6,12 @@
 
     public class CreateOrderNotification : INotification
     {
+        public string Email { get; set; }
+
+        public string FirstName { get; set; }
+
+        public string LastName { get; set; }
+
         public string StreetAddress { get; set; }
 
         public string StreetAddressSecondLine { get; set; }
@@ -20,7 +26,7 @@
 
         public long CountryId { get; set; }
 
-        public long UserId { get; set; }
+        public long? UserId { get; set; }
 
         public bool SaveShippingInfo { get; set; }
 

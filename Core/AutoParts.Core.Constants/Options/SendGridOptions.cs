@@ -16,5 +16,11 @@
 
         [Required]
         public string SupplierInvitationTemplateId { get; set; }
+
+        [Required]
+        public string OrderCreatedUserTemplateId { get; set; }
+
+        [Required]
+        public string OrderCreatedSupplierTemplateId { get; set; }
     }
 }

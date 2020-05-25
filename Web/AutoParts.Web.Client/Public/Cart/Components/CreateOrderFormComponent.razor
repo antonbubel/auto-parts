@@ -1,6 +1,7 @@
 ﻿@using Protos;
 @using Models;
 
+@inject Services.OrderService orderService;
 @inject Public.Services.CountryService countryService;
 @inject Shared.Services.CurrentUserProvider currentUserProvider;
 
@@ -111,6 +112,12 @@ else
 
     private async Task HandleCreateOrder()
     {
+        CreatingOrder = true;
+
+        await orderService.CreateOrder(formModel);
+
+        CreatingOrder = false;
+
         await OnOrderCreated.InvokeAsync(true);
     }
 

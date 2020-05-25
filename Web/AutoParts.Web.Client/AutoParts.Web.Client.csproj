@@ -37,6 +37,7 @@
     <Protobuf Include="..\Protos\country.proto" GrpcServices="Client" />
     <Protobuf Include="..\Protos\manufacturer.proto" GrpcServices="Client" />
     <Protobuf Include="..\Protos\auto_part.proto" GrpcServices="Client" />
+    <Protobuf Include="..\Protos\order.proto" GrpcServices="Client" />
   </ItemGroup>
 
   <ItemGroup>

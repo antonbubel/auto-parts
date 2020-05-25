@@ -39,6 +39,7 @@
     <Protobuf Include="..\Protos\country.proto" GrpcServices="Server" />
     <Protobuf Include="..\Protos\manufacturer.proto" GrpcServices="Server" />
     <Protobuf Include="..\Protos\auto_part.proto" GrpcServices="Server" />
+    <Protobuf Include="..\Protos\order.proto" GrpcServices="Server" />
   </ItemGroup>
 
 </Project>

@@ -65,6 +65,7 @@ namespace AutoParts.Web.Client
             services.AddTransient<AutoPartService>();
 
             services.AddScoped<CartService>();
+            services.AddScoped<OrderService>();
 
             services.AddSingleton<CurrentUserProvider>();
         }

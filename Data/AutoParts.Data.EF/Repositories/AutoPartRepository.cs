@@ -54,11 +54,14 @@
 
         public async Task<User[]> GetAutoPartsSuppliers(long[] autoPartIds)
         {
-            return await GetQueryable()
+            var suppliers = await GetQueryable()
                 .Where(autoPart => autoPartIds.Contains(autoPart.Id))
-                .GroupBy(autoPart => autoPart.Supplier)
-                .Select(grouppedAutoPart => grouppedAutoPart.Key.User)
+                .Select(autoPart => autoPart.Supplier.User)
                 .ToArrayAsync();
+
+            return suppliers.GroupBy(supplier => supplier.Id)
+                .Select(grouppedSuppliers => grouppedSuppliers.First())
+                .ToArray();
         }
 
         public async Task<PaginatedResult<AutoPartProjection>> GetAutoParts(

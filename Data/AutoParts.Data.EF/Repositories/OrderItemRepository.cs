@@ -35,6 +35,8 @@
             }
 
             return await query
+                .Include(order => order.AutoPart)
+                .ThenInclude(order => order.Supplier)
                 .ProjectTo<OrderItemProjection>(mapper.ConfigurationProvider)
                 .ToArrayAsync();
         }

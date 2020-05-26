@@ -1,0 +1,59 @@
+﻿@page "/order-details/{OrderId:long}"
+
+@using Protos;
+
+@inject NavigationManager navigationManager;
+@inject Services.PrivateOrderService orderService;
+
+<div class="container">
+    @if (Loading)
+    {
+        <p class="font-italic">Loading...</p>
+    }
+    else
+    {
+        <AutoParts.Web.Client.Private.Components.OrderComponent Order="Order" IsDetailedView="true"></AutoParts.Web.Client.Private.Components.OrderComponent>
+
+        <h4 class="mb-4">
+            Total order price: @TotalPrice$
+        </h4>
+        <h5 class="mb-3">
+            Ordered auto parts:
+        </h5>
+
+        @foreach (var orderItem in OrderItems)
+        {
+            <AutoParts.Web.Client.Private.Components.OrderItemComponent OrderItem="orderItem"></AutoParts.Web.Client.Private.Components.OrderItemComponent>
+        }
+    }
+</div>
+
+@code {
+    [Parameter]
+    public long OrderId { get; set; }
+
+    private bool Loading { get; set; }
+    private Order Order { get; set; }
+    private OrderAutoPart[] OrderItems { get; set; }
+
+    private double TotalPrice => OrderItems.Sum(orderItem => orderItem.Price * orderItem.Quantity);
+
+    protected override async Task OnParametersSetAsync()
+    {
+        Loading = true;
+
+        var response = await orderService.GetOrder(OrderId);
+
+        if (response.Status != ResponseStatus.Ok)
+        {
+            navigationManager.NavigateTo(string.Empty);
+        }
+        else
+        {
+            Order = response.Order;
+            OrderItems = await orderService.GetOrderItems(OrderId);
+        }
+
+        Loading = false;
+    }
+}

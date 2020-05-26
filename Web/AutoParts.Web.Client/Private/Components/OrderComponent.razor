@@ -3,9 +3,18 @@
 
     <div class="jumbotron py-4 row">
         <div class="col-md-12 mb-3">
-            <h4>
-                Order #@Order.Id
-            </h4>
+            @if (IsDetailedView)
+            {
+                <h4>
+                    Order #@Order.Id details
+                </h4>
+            }
+            else
+            {
+                <h4>
+                    Order #@Order.Id
+                </h4>
+            }
         </div>
         <div class="col-md-6">
             <div class="px-4 h-100">
@@ -45,14 +54,20 @@
                 </p>
             </div>
         </div>
-        <div class="col-md-12 mt-3">
-            <a class="btn btn-outline-primary float-right" href="@OrderDetailsHref">View order details</a>
-        </div>
+        @if (!IsDetailedView)
+        {
+            <div class="col-md-12 mt-3">
+                <a class="btn btn-outline-primary float-right" href="@OrderDetailsHref">View order details</a>
+            </div>
+        }
     </div>
 
 @code {
     [Parameter]
     public Order Order { get; set; }
+
+    [Parameter]
+    public bool IsDetailedView { get; set; }
 
     public string MailToHref => $"mailto:{Order.Email}";
 

@@ -14,9 +14,12 @@
 
     using Protos;
 
+    using Core.Contracts.Orders.Models;
     using Core.Contracts.Orders.Requests;
     using Core.Contracts.Orders.Exceptions;
     using Core.Contracts.Orders.Notifications;
+
+    using Infrastructure.Exceptions;
 
     public class OrderService : GrpcOrderService.GrpcOrderServiceBase
     {
@@ -52,7 +55,43 @@
             return ServiceResponseBuilder.Ok;
         }
 
-        [Authorize(nameof(UserType.User))]
+        public override async Task<GetOrderResponse> GetOrder(GetOrderRequest request, ServerCallContext context)
+        {
+            var mediatorRequest = new GetOrderByIdRequest
+            {
+                OrderId = request.OrderId,
+                UserId = context.GetLoggedInUserId().Value
+            };
+
+            OrderModel order;
+
+            try
+            {
+                order = await mediator.Send(mediatorRequest);
+            }
+            catch (NotFoundException)
+            {
+                return new GetOrderResponse
+                {
+                    Status = ResponseStatus.NotFound
+                };
+            }
+            catch (ForbiddenException)
+            {
+                return new GetOrderResponse
+                {
+                    Status = ResponseStatus.Forbidden
+                };
+            }
+
+            return new GetOrderResponse
+            {
+                Order = mapper.Map<Order>(order),
+                Status = ResponseStatus.Ok
+            };
+        }
+
+        [Authorize(nameof(Protos.UserType.User))]
         public override async Task<GetUserOrdersResponse> GetUserOrders(PaginationFilter request, ServerCallContext context)
         {
             var mediatorRequest = new GetUserOrdersRequest

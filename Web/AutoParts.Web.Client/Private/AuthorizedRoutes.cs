@@ -8,6 +8,9 @@
         Profile,
 
         [Description("orders")]
-        Orders
+        Orders,
+
+        [Description("order-details/*")]
+        OrderDetails
     }
 }

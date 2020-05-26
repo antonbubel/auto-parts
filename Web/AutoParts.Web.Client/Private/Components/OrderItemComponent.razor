@@ -1,0 +1,39 @@
+﻿
+@using Protos;
+
+<div class="jumbotron py-4 d-sm-flex">
+    @if (!string.IsNullOrEmpty(OrderItem.ImageUrl))
+    {
+        <div class="auto-part-image mr-4" style="background-image: url('@OrderItem.ImageUrl')"></div>
+    }
+    <div class="flex-fill">
+        <div class="row">
+            <div class="col-sm-9">
+                <h4 class="mb-2 font-weight-bold">
+                    @OrderItem.Name
+                </h4>
+                <p class="mb-5 auto-part-description">
+                    @OrderItem.Description
+                </p>
+                <h5 class="mb-3">
+                    <strong>Supplier: </strong><a href="@SupplierHref">@OrderItem.SupplierName</a>
+                </h5>
+                <h5 class="mb-3">
+                    <strong>Price: </strong>@OrderItem.Price$
+                </h5>
+                <h5 class="mb-3">
+                    <strong>Total price: </strong>@TotalPrice$
+                </h5>
+            </div>
+        </div>
+    </div>
+</div>
+
+@code {
+    [Parameter]
+    public OrderAutoPart OrderItem { get; set; }
+
+    private double TotalPrice => OrderItem.Price * OrderItem.Quantity;
+
+    private string SupplierHref => $"supplier/{OrderItem.SupplierId}";
+}

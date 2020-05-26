@@ -44,7 +44,19 @@ namespace AutoParts.Web.Client.Private.Services
             return await orderServiceClient.GetSupplierOrdersAsync(filter, headers);
         }
 
-        public async Task<OrderAutoPart[]> GetSupplierOrders(long orderId)
+        public async Task<GetOrderResponse> GetOrder(long orderId)
+        {
+            var request = new GetOrderRequest
+            {
+                OrderId = orderId
+            };
+
+            var headers = RequestHeadersUtility.GetRequestHeaders(localStorage);
+
+            return await orderServiceClient.GetOrderAsync(request, headers);
+        }
+
+        public async Task<OrderAutoPart[]> GetOrderItems(long orderId)
         {
             var request = new GetOrderItemsRequest
             {

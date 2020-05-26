@@ -16,6 +16,6 @@
 
         public long SupplierId { get; set; }
 
-        public long SupplierName { get; set; }
+        public string SupplierName { get; set; }
     }
 }

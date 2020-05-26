@@ -5,7 +5,7 @@
 
     using Microsoft.EntityFrameworkCore;
 
-    using Base;
+    using AutoParts.Data.EF.Repositories.Base;
 
     using Model.Results;
     using Model.Entities;
@@ -15,6 +15,13 @@
     {
         public OrderRepository(IDatabaseContext context) : base(context)
         {
+        }
+
+        public override Task<Order> FindAsync(long key)
+        {
+            return GetQueryable()
+                .Include(order => order.Country)
+                .FirstOrDefaultAsync(order => order.Id == key);
         }
 
         public async Task<PaginatedResult<Order>> GetUserOrders(int itemsToSkip, int itemsToTake, long userId)

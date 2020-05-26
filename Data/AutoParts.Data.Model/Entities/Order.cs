@@ -1,5 +1,6 @@
 ﻿namespace AutoParts.Data.Model.Entities
 {
+    using System;
     using System.Collections.Generic;
 
     using Base;
@@ -24,6 +25,8 @@
         public string ZipCode { get; set; }
 
         public string Comment { get; set; }
+
+        public DateTime DateCreated { get; set; }
 
         public long CountryId { get; set; }
 

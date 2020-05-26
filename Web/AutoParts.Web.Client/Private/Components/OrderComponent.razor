@@ -1,0 +1,60 @@
+﻿
+@using Protos;
+
+    <div class="jumbotron py-4 row">
+        <div class="col-md-12 mb-3">
+            <h4>
+                Order #@Order.Id
+            </h4>
+        </div>
+        <div class="col-md-6">
+            <div class="px-4 h-100">
+                <h5 class="mt-4 mb-3">Personal info:</h5>
+                <p>
+                    <strong>Name:</strong> @Order.FirstName @Order.LastName
+                </p>
+                <p>
+                    <strong>Email:</strong> <a href="@MailToHref">@Order.Email</a>
+                </p>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="px-4 h-100">
+                <h5 class="mt-4 mb-3">Delivery info:</h5>
+                <p>
+                    <strong>Country:</strong> @Order.CountryName
+                </p>
+                <p>
+                    <strong>City:</strong> @Order.City
+                </p>
+                <p>
+                    <strong>Region:</strong> @Order.Region
+                </p>
+                <p>
+                    <strong>Street address:</strong>
+                    @Order.StreetAddress
+
+                    @if (!string.IsNullOrEmpty(Order.StreetAddressSecondLine))
+                    {
+                        <br />
+                        @Order.StreetAddressSecondLine
+                    }
+                </p>
+                <p>
+                    <strong>Postal / Zip Code:</strong> @Order.ZipCode
+                </p>
+            </div>
+        </div>
+        <div class="col-md-12 mt-3">
+            <a class="btn btn-outline-primary float-right" href="@OrderDetailsHref">View order details</a>
+        </div>
+    </div>
+
+@code {
+    [Parameter]
+    public Order Order { get; set; }
+
+    public string MailToHref => $"mailto:{Order.Email}";
+
+    public string OrderDetailsHref => $"order-details/{Order.Id}";
+}

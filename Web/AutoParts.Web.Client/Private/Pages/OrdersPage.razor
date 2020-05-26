@@ -1,0 +1,126 @@
+﻿@page "/orders"
+
+@using Protos;
+
+@inject Services.PrivateOrderService orderService;
+@inject Shared.Services.CurrentUserProvider currentUserProvider;
+
+<div class="container">
+    @if (Loading)
+    {
+        <p class="font-italic">Loading...</p>
+    }
+    else
+    {
+        if (TotalNumberOfItems == 0)
+        {
+            <h4 class="text-center">We haven't found anything :(</h4>
+        }
+        else
+        {
+            @foreach (var order in Orders)
+            {
+                <AutoParts.Web.Client.Private.Components.OrderComponent Order="order"></AutoParts.Web.Client.Private.Components.OrderComponent>
+            }
+        }
+    }
+
+    @if (TotalNumberOfItems > PageSize)
+    {
+        <nav>
+            <ul class="pagination justify-content-end">
+                @if (PageNumber != 1)
+                {
+                    <li class="page-item">
+                        <a class="page-link" aria-label="Previous" @onclick="() => NavigateToPage(PageNumber - 1)">
+                            <span aria-hidden="true">&laquo;</span>
+                            <span class="sr-only">Previous</span>
+                        </a>
+                    </li>
+                }
+
+                @foreach (var pageNumber in GetPages())
+                {
+                    <li class="page-item @GetActivePageClass(pageNumber)">
+                        <a class="page-link" @onclick="() => NavigateToPage(pageNumber)">@pageNumber</a>
+                    </li>
+                }
+
+                @if (PageNumber != TotalNumberOfPages)
+                {
+                    <li class="page-item">
+                        <a class="page-link" aria-label="Next" @onclick="() => NavigateToPage(PageNumber + 1)">
+                            <span aria-hidden="true">&raquo;</span>
+                            <span class="sr-only">Next</span>
+                        </a>
+                    </li>
+                }
+            </ul>
+        </nav>
+    }
+</div>
+
+@code {
+    private bool Loading { get; set; }
+
+    private int PageNumber { get; set; } = 1;
+    private int PageSize { get; set; } = 10;
+    private int TotalNumberOfItems { get; set; }
+    private Order[] Orders { get; set; }
+
+    private int TotalNumberOfPages => (int)Math.Ceiling(((double)TotalNumberOfItems) / PageSize);
+
+    private int[] GetPages()
+    {
+        var pages = new List<int>();
+
+        for (int pageNumber = 1; pageNumber <= TotalNumberOfPages; pageNumber++)
+        {
+            pages.Add(pageNumber);
+        }
+
+        return pages.ToArray();
+    }
+
+    private string GetActivePageClass(int pageNumber)
+    {
+        return pageNumber == PageNumber
+            ? "active"
+            : string.Empty;
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        await FetchPage();
+    }
+
+    private async Task NavigateToPage(int pageNumber)
+    {
+        PageNumber = pageNumber;
+
+        await FetchPage();
+    }
+
+    private async Task FetchPage()
+    {
+        Loading = true;
+
+        if (currentUserProvider.CurrentUserInfo.UserType == UserType.User)
+        {
+            var response = await orderService.GetUserOrders(PageNumber, PageSize);
+
+            TotalNumberOfItems = response.TotalNumberOfItems;
+            Orders = response.Orders.ToArray();
+        }
+
+        if (currentUserProvider.CurrentUserInfo.UserType == UserType.Supplier)
+        {
+            var response = await orderService.GetSupplierOrders(PageNumber, PageSize);
+
+            TotalNumberOfItems = response.TotalNumberOfItems;
+            Orders = response.Orders.ToArray();
+        }
+
+        Loading = false;
+    }
+}

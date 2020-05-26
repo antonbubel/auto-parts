@@ -5,6 +5,9 @@
     public enum AuthorizedRoutes
     {
         [Description("profile")]
-        Profile
+        Profile,
+
+        [Description("orders")]
+        Orders
     }
 }

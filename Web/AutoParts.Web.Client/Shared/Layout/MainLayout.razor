@@ -65,6 +65,13 @@
                         </NavLink>
                     }
 
+                    @if (currentUserProvider.CurrentUserInfo.UserType == UserType.User)
+                    {
+                        <NavLink class="dropdown-item" href="orders">
+                            Your orders
+                        </NavLink>
+                    }
+
                     @if (currentUserProvider.CurrentUserInfo.UserType == UserType.Administrator)
                     {
                         <NavLink class="dropdown-item" href="manage-suppliers">

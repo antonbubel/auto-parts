@@ -19,15 +19,17 @@
 
         public async Task<PaginatedResult<Order>> GetUserOrders(int itemsToSkip, int itemsToTake, long userId)
         {
-            var items = await GetQueryable()
+            var query = GetQueryable()
                 .Include(order => order.Country)
-                .Where(order => order.UserId == userId)
+                .Where(order => order.UserId == userId);
+
+            var items = await query
                 .OrderByDescending(order => order.DateCreated)
                 .ThenBy(order => order.Id)
                 .GetPartition(itemsToSkip, itemsToTake)
                 .ToArrayAsync();
 
-            var totalNumberOfItems = await GetQueryable()
+            var totalNumberOfItems = await query
                 .CountAsync();
 
             return new PaginatedResult<Order>
@@ -39,15 +41,17 @@
 
         public async Task<PaginatedResult<Order>> GetSupplierOrders(int itemsToSkip, int itemsToTake, long supplierId)
         {
-            var items = await GetQueryable()
+            var query = GetQueryable()
                 .Include(order => order.Country)
-                .Where(order => order.OrderItems.Any(orderItem => orderItem.AutoPart.SupplierId == supplierId))
+                .Where(order => order.OrderItems.Any(orderItem => orderItem.AutoPart.SupplierId == supplierId));
+
+            var items = await query
                 .OrderByDescending(order => order.DateCreated)
                 .ThenBy(order => order.Id)
                 .GetPartition(itemsToSkip, itemsToTake)
                 .ToArrayAsync();
 
-            var totalNumberOfItems = await GetQueryable()
+            var totalNumberOfItems = await query
                 .CountAsync();
 
             return new PaginatedResult<Order>

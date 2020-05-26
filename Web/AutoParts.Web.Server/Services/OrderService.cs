@@ -14,6 +14,7 @@
 
     using Protos;
 
+    using Core.Contracts.Orders.Requests;
     using Core.Contracts.Orders.Exceptions;
     using Core.Contracts.Orders.Notifications;
 
@@ -49,6 +50,68 @@
             }
 
             return ServiceResponseBuilder.Ok;
+        }
+
+        [Authorize(nameof(UserType.User))]
+        public override async Task<GetUserOrdersResponse> GetUserOrders(PaginationFilter request, ServerCallContext context)
+        {
+            var mediatorRequest = new GetUserOrdersRequest
+            {
+                PageSize = request.PageSize,
+                PageNumber = request.PageNumber,
+                UserId = context.GetLoggedInUserId().Value
+            };
+
+            var pageModel = await mediator.Send(mediatorRequest);
+
+            var response = new GetUserOrdersResponse
+            {
+                TotalNumberOfItems = pageModel.TotalNumberOfItems
+            };
+
+            mapper.Map(pageModel.Items, response.Orders);
+
+            return response;
+        }
+
+        [Authorize(nameof(UserType.Supplier))]
+        public override async Task<GetSupplierOrdersResponse> GetSupplierOrders(PaginationFilter request, ServerCallContext context)
+        {
+            var mediatorRequest = new GetSupplierOrdersRequest
+            {
+                PageSize = request.PageSize,
+                PageNumber = request.PageNumber,
+                SupplierId = context.GetLoggedInUserId().Value
+            };
+
+            var pageModel = await mediator.Send(mediatorRequest);
+
+            var response = new GetSupplierOrdersResponse
+            {
+                TotalNumberOfItems = pageModel.TotalNumberOfItems
+            };
+
+            mapper.Map(pageModel.Items, response.Orders);
+
+            return response;
+        }
+
+        [Authorize]
+        public override async Task<GetOrderItemsResponse> GetOrderItems(GetOrderItemsRequest request, ServerCallContext context)
+        {
+            var mediatorRequest = new GetOrderedAutoPartsRequest
+            {
+                OrderId = request.OrderId,
+                UserId = context.GetLoggedInUserId().Value
+            };
+
+            var orderedAutoParts = await mediator.Send(mediatorRequest);
+
+            var response = new GetOrderItemsResponse();
+
+            mapper.Map(orderedAutoParts, response.Items);
+
+            return response;
         }
     }
 }

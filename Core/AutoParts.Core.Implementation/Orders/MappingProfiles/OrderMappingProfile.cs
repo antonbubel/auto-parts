@@ -37,7 +37,8 @@
                 .ForMember(orderItem => orderItem.Quantity, conf => conf.MapFrom(model => model.Quantity))
                 .ForMember(orderItem => orderItem.OrderId, conf => conf.Ignore());
 
-            CreateMap<OrderItemProjection, OrderAutoPartModel>();
+            CreateMap<OrderItemProjection, OrderAutoPartModel>()
+                .ForMember(orderItemModel => orderItemModel.ImageUrl, conf => conf.MapFrom(projection => projection.Image));
 
             CreateMap<Order, OrderModel>()
                 .ForMember(orderModel => orderModel.CountryName, conf => conf.MapFrom(order => order.Country.Name));

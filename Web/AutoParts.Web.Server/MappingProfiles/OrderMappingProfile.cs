@@ -15,6 +15,12 @@
                 .ForMember(notification => notification.UserId, conf => conf.Ignore());
 
             CreateMap<OrderItem, OrderItemModel>();
+
+            CreateMap<OrderModel, Order>()
+                .ForMember(order => order.StreetAddressSecondLine, conf => conf.MapFrom(model => model.StreetAddressSecondLine ?? string.Empty));
+
+            CreateMap<OrderAutoPartModel, OrderAutoPart>()
+                .ForMember(autoPart => autoPart.ImageUrl, conf => conf.MapFrom(model => model.ImageUrl ?? string.Empty));
         }
     }
 }

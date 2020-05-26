@@ -8,6 +8,8 @@
 
     public interface IOrderRepository : IRepository<long, Order>
     {
-        Task<PaginatedResult<Order>> GetOrders(int itemsToSkip, int itemsToTake);
+        Task<PaginatedResult<Order>> GetUserOrders(int itemsToSkip, int itemsToTake, long userId);
+
+        Task<PaginatedResult<Order>> GetSupplierOrders(int itemsToSkip, int itemsToTake, long supplierId);
     }
 }

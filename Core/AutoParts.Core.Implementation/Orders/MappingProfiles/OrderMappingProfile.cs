@@ -2,10 +2,13 @@
 {
     using AutoMapper;
 
+    using System;
+
     using Contracts.Orders.Models;
     using Contracts.Orders.Notifications;
 
     using Data.Model.Entities;
+    using Data.Model.Projections;
     using OrderStatusEnum = Data.Model.Enums.OrderStatus;
 
     public class OrderMappingProfile : Profile
@@ -26,12 +29,18 @@
                 .ForMember(order => order.CountryId, conf => conf.MapFrom(notification => notification.CountryId))
                 .ForMember(order => order.FirstName, conf => conf.MapFrom(notification => notification.FirstName))
                 .ForMember(order => order.OrderItems, conf => conf.MapFrom(notification => notification.OrderItems))
+                .ForMember(order => order.DateCreated, conf => conf.MapFrom(notification => DateTime.UtcNow))
                 .ForMember(order => order.OrderStatusId, conf => conf.MapFrom(notification => OrderStatusEnum.Pending));
 
             CreateMap<OrderItemModel, OrderItem>()
                 .ForMember(orderItem => orderItem.AutoPartId, conf => conf.MapFrom(model => model.AutoPartId))
                 .ForMember(orderItem => orderItem.Quantity, conf => conf.MapFrom(model => model.Quantity))
                 .ForMember(orderItem => orderItem.OrderId, conf => conf.Ignore());
+
+            CreateMap<OrderItemProjection, OrderAutoPartModel>();
+
+            CreateMap<Order, OrderModel>()
+                .ForMember(orderModel => orderModel.CountryName, conf => conf.MapFrom(order => order.Country.Name));
         }
     }
 }

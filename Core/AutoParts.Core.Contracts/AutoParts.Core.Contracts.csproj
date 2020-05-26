@@ -14,8 +14,4 @@
     <ProjectReference Include="..\AutoParts.Core.Constants\AutoParts.Core.Constants.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Orders\Requests\" />
-  </ItemGroup>
-
 </Project>
